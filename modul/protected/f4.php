@@ -18,7 +18,7 @@
 		
 		switch($target){
 			case "f40" : $resultList = requestDataDplega('f4', 'f40'); break;
-			//case "f401": $resultList = requestDataDplega(); break;
+			case "f401": $resultList = getLingkupAreaListSection(); break;
 			case "f402": $resultList = getBatasAreaListSection(); break;
 			case "f412": $resultList = getWilayahOnlyListSection($data); break;
 

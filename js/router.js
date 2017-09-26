@@ -480,6 +480,7 @@ function r_customCallBack(formType, group, target, recentId, formId, pId){
 				r_navigateTo(0);
 				if(recentId.avatar == "" || recentId.avatar == null) { 
 					recentId.avatar = "avatar-default.jpg"; 
+				
 				}
 				$("#navigation .user-frame img").attr('src', 'img/avatar/' + recentId.avatar);
 				$("#navigation .user-frame p.caption span").html(recentId.username);

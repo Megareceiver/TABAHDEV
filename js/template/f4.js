@@ -14,7 +14,7 @@ function r_f4Pengaturan() {
 		body	= '<div class="row no-head"><div class="container">';
 		part[0] = '';
 			
-		if(r_getCookie('lingkupAreaLihat') == '1') { 
+		if(r_getCookie('TABAH_lingkupAreaLihat') == '1') { 
 			part[0] = part[0] + 
 			'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -35,7 +35,7 @@ function r_f4Pengaturan() {
 			'</div>';
 		}
 
-		if(r_getCookie('pengaturanVerifikasiLihat') == '1') { 
+		if(r_getCookie('TABAH_pengaturanVerifikasiLihat') == '1') { 
 			part[0] = part[0] + 
 			'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -56,7 +56,7 @@ function r_f4Pengaturan() {
 			'</div>';
 		}
 
-		if(r_getCookie('beritaLihat') == '1') { 
+		if(r_getCookie('TABAH_beritaLihat') == '1') { 
 			part[0] = part[0] + 
 			'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -76,7 +76,7 @@ function r_f4Pengaturan() {
 			'</div>';
 		}
 
-		if(r_getCookie('konfigurasiLihat') == '1') { 
+		if(r_getCookie('TABAH_konfigurasiLihat') == '1') { 
 			part[0] = part[0] + 
 				'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -195,7 +195,7 @@ function r_f4LingkupArea() {
 		
 		//-- fill part
 		//-- Provinsi ==========================================================================
-		if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
+		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
 			part[0] = part[0] +
 			'<form id="f-provinsi-create" f-group = "f4" f-target = "f411">' +
 				'<div class="cards">' +
@@ -285,7 +285,7 @@ function r_f4LingkupArea() {
 		
 		//--
 		//-- wilayah ==========================================================================
-		if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
+		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
 			part[1] = part[1] +
 			'<form id="f-wilayah-create" f-group = "f4" f-target = "f412">' +
 				'<div class="cards">' +
@@ -390,7 +390,7 @@ function r_f4LingkupArea() {
 		
 		//--
 		//-- kecamatan ==========================================================================
-		if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
+		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
 			part[2] = part[2] +
 			'<form id="f-kecamatan-create" f-group = "f4" f-target = "f413">' +
 				'<div class="cards">' +
@@ -496,7 +496,7 @@ function r_f4LingkupArea() {
 		
 		//--
 		//-- kelurahan ==========================================================================
-		if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
+		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
 			part[3] = part[3] +
 			'<form id="f-kelurahan-create" f-group = "f4" f-target = "f414">' +
 				'<div class="cards">' +
@@ -888,7 +888,7 @@ function r_f4BeritaGenerator(data){
 							'description= "'+data[loop].isiBerita+'" '+
 						'type="button" class="clear btn-link detail-click text-cyan">Baca lebih lanjut</button>';
 
-			if(r_getCookie('beritaHapus') == '1'){			
+			if(r_getCookie('TABAH_beritaHapus') == '1'){			
 				genHtml = genHtml +
 				' | <button id-button = '+data[loop].idBerita+' type="reset" class="clear btn-link text-pink">Hapus</button>';
 			}
@@ -1169,7 +1169,7 @@ function r_f4DaftarPersyaratan() {
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-verifikasi" class="col-md-8 col-md-offset-2">';
 
-		if(r_getCookie('pengaturanVerifikasiTambah') == '1' || r_getCookie('pengaturanVerifikasiUbah') == '1'){
+		if(r_getCookie('TABAH_pengaturanVerifikasiTambah') == '1' || r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){
 			body = body + 
 			'<form id="f-verifikasi-create" f-group = "f4" f-target = "f422">' +
 				'<div class="cards">' +
@@ -1324,7 +1324,7 @@ function r_f4GrupPersyaratan() {
 		//--open
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-grupVerifikasi" class="col-md-8 col-md-offset-2">';
-		if(r_getCookie('pengaturanVerifikasiTambah') == '1' || r_getCookie('pengaturanVerifikasiUbah') == '1'){
+		if(r_getCookie('TABAH_pengaturanVerifikasiTambah') == '1' || r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){
 			body = body + 
 			'<form id="f-grupVerifikasi-create" f-group = "f4" f-target = "f421">' +
 				'<div class="cards">' +
@@ -1587,7 +1587,7 @@ function r_f4BentukLembaga() {
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-bentukLembaga" class="col-md-8 col-md-offset-2">';
 
-		if(r_getCookie('pengaturanKelembagaanTambah') == '1' || r_getCookie('pengaturanKelembagaanUbah') == '1'){
+		if(r_getCookie('TABAH_pengaturanKelembagaanTambah') == '1' || r_getCookie('TABAH_pengaturanKelembagaanUbah') == '1'){
 			body = body + 
 			'<form id="f-bentukLembaga-create" f-group="f4" f-target="f431">' +
 				'<div class="cards">' +
@@ -1743,7 +1743,7 @@ function r_f4LegalitasLembaga() {
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-legalitas" class="col-md-8 col-md-offset-2">';
 
-		if(r_getCookie('pengaturanKelembagaanTambah') == '1' || r_getCookie('pengaturanKelembagaanUbah') == '1'){
+		if(r_getCookie('TABAH_pengaturanKelembagaanTambah') == '1' || r_getCookie('TABAH_pengaturanKelembagaanUbah') == '1'){
 			body = body + 
 			'<form id="f-legalitas-create" f-group="f4" f-target="f432">' +
 				'<div class="cards">' +
@@ -1893,7 +1893,7 @@ function r_f4BidangGerakLembaga() {
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-bidangGerak" class="col-md-8 col-md-offset-2">';
 
-		if(r_getCookie('pengaturanKelembagaanTambah') == '1' || r_getCookie('pengaturanKelembagaanUbah') == '1'){
+		if(r_getCookie('TABAH_pengaturanKelembagaanTambah') == '1' || r_getCookie('TABAH_pengaturanKelembagaanUbah') == '1'){
 			body = body + 
 			'<form id="f-bidangGerak-create" f-group="f4" f-target="f433">' +
 				'<div class="cards">' +
@@ -2192,7 +2192,7 @@ function r_f4DaftarBerita() {
 		head	= '';
 		body	= '<div class="row no-head"><div class="container">';
 		body	= body + '<div class="col-md-8 col-md-offset-2">';
-		if(r_getCookie('beritaTambah') == '1'){
+		if(r_getCookie('TABAH_beritaTambah') == '1'){
 			body 	= body + 
 			'<form id="f-berita-create" f-group = "f4" f-target = "f441">' +
 				'<div class="cards">' +
@@ -2840,13 +2840,13 @@ function r_f4InfoPersonal() {
 		//--close
 		
 		//--gen
-		res = (r_getCookie('userLevel') == '1') ? 2 : 3;
+		res = (r_getCookie('TABAH_userLevel') == '1') ? 2 : 3;
 		headPage.html(r_headPageHtml(res, 'Informasi personal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
 		
 		//--command reactor
-		res = (r_getCookie('userLevel') == '1') ? 12 : 4;
+		res = (r_getCookie('TABAH_userLevel') == '1') ? 12 : 4;
 		$("#pEditInformasiPersonal").unbind().on('click', function(){ r_navigateTo(462); });
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(res); });
 		toggleBoxActivator();
@@ -2963,7 +2963,7 @@ function r_f4FormInfoPersonal() {
 		//--close
 		
 		//--gen
-		res = (r_getCookie('userLevel') == '1') ? 2 : 3;
+		res = (r_getCookie('TABAH_userLevel') == '1') ? 2 : 3;
 		headPage.html(r_headPageHtml(res, 'Form info personal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
@@ -3017,21 +3017,21 @@ function r_f4OptionList(target){
 	switch(target){
 		case 41 :
 		case 411: 			
-			if(r_getCookie('lingkupAreaUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
-			if(r_getCookie('lingkupAreaHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
+			if(r_getCookie('TABAH_lingkupAreaUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
+			if(r_getCookie('TABAH_lingkupAreaHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
 		break;
 
 		case 42 :
 		case 421: 
-			if(r_getCookie('pengaturanVerifikasiUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
-			if(r_getCookie('pengaturanVerifikasiHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
+			if(r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
+			if(r_getCookie('TABAH_pengaturanVerifikasiHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
 		break;
 		
 		case 43 : 
 		case 431:
 		case 432: 
-			if(r_getCookie('pengaturanKelembagaaUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
-			if(r_getCookie('pengaturanKelembagaaHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
+			if(r_getCookie('TABAH_pengaturanKelembagaaUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
+			if(r_getCookie('TABAH_pengaturanKelembagaaHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
 		break;
 	}
 

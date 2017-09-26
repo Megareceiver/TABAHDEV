@@ -183,7 +183,7 @@ function r_f1DaftarProposal(packet) {
 		headPage.html(r_headPageHtml(4, namaBentukLembagaState));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		
-		var ul = r_getCookie('kelembagaanTambah');
+		var ul = r_getCookie('TABAH_kelembagaanTambah');
 		if(ul == '1') footPage.html(r_footPageHtml('add'));
 		$("#preload").remove();
 		
@@ -608,7 +608,7 @@ function r_f1DetailLembaga(packet) {
 		
 		//--gen
 		var temp = 3;
-		if(String(r_getCookie('userLevel')) == '1'){ temp = 0; }
+		if(String(r_getCookie('TABAH_userLevel')) == '1'){ temp = 0; }
 		headPage.html(r_headPageHtml(temp, 'Profil lembaga'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
@@ -871,14 +871,14 @@ function r_f1FormProposal(packet){
 		
 		//--gen
 		var temp = 3;
-		if(String(r_getCookie('userLevel')) == '1'){ temp = 2; }
+		if(String(r_getCookie('TABAH_userLevel')) == '1'){ temp = 2; }
 		headPage.html(r_headPageHtml(temp, 'Form proposal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		r_f1legaitasGenerator(dataLegalitas); //generate legalitas form
 		$("#preload").remove();
 		
 		//--command reactor
-		navito = ((String(r_getCookie('userLevel')) == '1') ? 12 : 1);
+		navito = ((String(r_getCookie('TABAH_userLevel')) == '1') ? 12 : 1);
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(navito); });
 		
 		// $(".reset").unbind().on('click', function(){ clearTargetForm('f-kelembagaan-create'); });
@@ -1661,7 +1661,7 @@ function r_f1KoleksiLembaga() {
 		
 		//--gen
 		accm = 5;
-		if(r_getCookie('login') == 'yes') { accm = 4; }
+		if(r_getCookie('TABAH_login') == 'yes') { accm = 4; }
 		headPage.html(r_headPageHtml(accm, 'Koleksi'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
@@ -1822,7 +1822,7 @@ function r_f1PrestasiLembaga() {
 		
 		//--gen
 		accm = 5;
-		if(r_getCookie('login') == 'yes') { accm = 4; }
+		if(r_getCookie('TABAH_login') == 'yes') { accm = 4; }
 		headPage.html(r_headPageHtml(accm, 'Prestasi'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();

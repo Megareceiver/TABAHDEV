@@ -193,7 +193,7 @@ function r_f3Autentikasi() {
 		headPage.html(r_headPageHtml(4, 'Autentikasi'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		
-		var ul = r_getCookie('userLevel');
+		var ul = r_getCookie('TABAH_userLevel');
 		if(ul == '3' || ul == '7') footPage.html(r_footPageHtml('add'));
 		$("#preload").remove();
 		
