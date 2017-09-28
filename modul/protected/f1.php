@@ -14,11 +14,11 @@
 		$errorMsg	= "";
 	
 		/* refferences */
-		
 		switch($target){
 			case "f1110" : $resultList = getListLembagaan($data); break;
 			case "f11101": $resultList = getListAllLembagaan($data); break;
-			case "f1111" : $resultList = getDetailLembagaan($data); break;
+			case "f1111" : $dataPost   = json_encode(array("refferences" => $data['refferences']));
+						   $resultList = requestDataDplega('f1', $target, $dataPost); break;
 			case "f1112" : $resultList = getFetchLembagaan($data); break;
 			case "f1113" : $resultList = legalitasByNoreg($data); break;
 			case "f1114" : $resultList = legalitasByBentukLembaga($data); break;
@@ -34,6 +34,32 @@
 		$json = $resultList;
 		
 		return $json;
+	}
+
+	function requestDataDplega($group, $target, $data){
+		// URL API
+		$urlApi = getApiUrl().'requestData/'.$group.'/'.$target;
+		$client = curl_init();
+		//$data 	= json_encode($data);
+
+		$options = array(
+		    CURLOPT_URL				=> $urlApi, // Set URL of API
+		    CURLOPT_CUSTOMREQUEST 	=> "POST", // Set request method
+		    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
+		    CURLOPT_POSTFIELDS 		=> $data, // Send the data in HTTP POST
+		);
+		
+		curl_setopt_array($client, $options);
+
+		// Execute and Get the response
+		$response = curl_exec($client);
+		// Get HTTP Code response
+		$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
+		// Close cURL session
+		curl_close($client);
+
+		$response=json_decode($response);
+		return $response;
 	}
 
 	function createData($data, $target){
