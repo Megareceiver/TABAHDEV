@@ -26,10 +26,41 @@ function r_f1Proposal() {
 		'</div>';
 
 		part[1] = part[1] +
-		'<div class="cards clear">' +
-			'<div class="description-box click-frame group-click">' +
-				'<img class="icon-set" src="img/sources/icon-1.png"/>' +
-				'<p class="title-set">Proposal Awal</p>' +
+		'<div class="cards proposal-list" id="">' +
+			'<div class="row default">' +
+				'<div class="col-xs-12">' +
+					'<div class="list-box">' +
+						'<div class="list-icon bg-green"><span class="fa fa-file-text-o"></span></div>' +
+						'<p class="list-text">Proposal Awal</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="clearfix"></div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] +
+		'<div class="cards proposal-list" id="">' +
+			'<div class="row default">' +
+				'<div class="col-xs-12">' +
+					'<div class="list-box">' +
+						'<div class="list-icon bg-green"><span class="fa fa-file-text-o"></span></div>' +
+						'<p class="list-text">Proposal Awal</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="clearfix"></div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] +
+		'<div class="cards proposal-list" id="">' +
+			'<div class="row default">' +
+				'<div class="col-xs-12">' +
+					'<div class="list-box">' +
+						'<div class="list-icon bg-green"><span class="fa fa-file-text-o"></span></div>' +
+						'<p class="list-text">Proposal Awal</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="clearfix"></div>' +
 			'</div>' +
 		'</div>';
 			
