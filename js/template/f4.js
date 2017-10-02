@@ -131,7 +131,7 @@ function r_f4Pengaturan() {
 		$("#preload").remove();
 		
 		//--command reactor
-		$("#pPembagianTim").unbind().on		 ('click', function(){ r_navigateTo(4); });
+		$("#pPembagianTim").unbind().on		 ('click', function(){ r_navigateTo(41); });
 		$("#pAnggota").unbind().on	 		 ('click', function(){ r_navigateTo(3); });
 		$("#pDaftarPersyaratan").unbind().on ('click', function(){ r_navigateTo(42); });
 		$("#pGrupPersyaratan").unbind().on	 ('click', function(){ r_navigateTo(421); });
@@ -145,9 +145,7 @@ function r_f4Pengaturan() {
 	});
 }
 
-//F4 LINGKUP AREA
-//=====================================
-function r_f4LingkupArea() {
+function r_f4TimWilayah() {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
@@ -156,119 +154,41 @@ function r_f4LingkupArea() {
 		part	= ['','','',''];
 		content = '';
 		counter = 0;
-		dataHead= [
-			{'idFilter': '1', 'area':'Provinsi',  'jumlahData': ''},
-			{'idFilter': '2', 'area':'Wilayah',   'jumlahData': ''},
-			{'idFilter': '3', 'area':'Kecamatan', 'jumlahData': ''},
-			{'idFilter': '4', 'area':'Kelurahan', 'jumlahData': ''},
-		];
-		
-		data = optionD; // updatting global variable
 
-		optionBatch = r_f4OptionList(411); 
+		data = p_getData('f4', 'f401');
+		data = data.feedData;
+		optionBatch = r_f4OptionList(401); 
 		
 		//--open
-		head = 
-		'<div class="row head">' +
-			'<div class="container">' +
-				'<div class="col-md-8 col-md-offset-2">' +
-					'<div class="tab-header">' +
-						'<ul>';
-		
-		for(var loop = 0; loop < dataHead.length; loop++){
-			head = head + '<li class="tab-navigator" tab-headIndex="' + dataHead[loop].idFilter + '">' + dataHead[loop].area + '</li>';
-		}
-		
-		head = head +
-						'</ul>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-		'</div>';
-		
+		head = '';
 		body = '<div class="row no-head"><div class="container">';
 		
 		//-- open part
-		for(var loop = 0; loop < dataHead.length; loop++){
-			part[loop] = '<div id="section-' + dataHead[loop].area + '" tab-contentIndex="' + dataHead[loop].idFilter + '" class="tab-container col-md-8 col-md-offset-2">';
-		}
+		part[0] = '<div id="timWilayah" class="col-md-8 col-md-offset-2">';
 		
 		//-- fill part
-		//-- Provinsi ==========================================================================
-		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
-			part[0] = part[0] +
-			'<form id="f-provinsi-create" f-group = "f4" f-target = "f411">' +
-				'<div class="cards">' +
-					'<div class="cards-header">' +
-						'<h4>Provinsi</h4>' +
-						'<p class="offset">form untuk menambahkan data provinsi.</p>' +
-						'<div class="btn-collapse right">' +
-							'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-				'<div class="cards flush">' +
+		if(data != null && data.length > 0){
+			for(var loop = 0; loop < data.length; loop++){
+				part[0] = part[0] + 
+				'<div class="cards timWilayah-list list-edit" id ="'+ loop +'timWilayah-' + data[loop].idData + '">' +
 					'<div class="row default">' +
-						'<div class="col-md-3">' +
-							'<div class="input-box">' +
-								'<input placeholder="Kode provinsi (*)" maxlength="2" name="kode" tabindex="1" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-md-9">' +
-							'<div class="input-box">' +
-								'<input name="idData" tabindex="1" type="hidden" value="" />' +
-								'<input placeholder="Provinsi (*)" name="nama" tabindex="1" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</form>' +
-			'<!--div class="cards">' +
-				'<div class="row default">' +
-					'<div class="col-md-12">' +
-						'<div class="input-box fixed">' +
-							'<div class="icon-box left">' +
-								'<input placeholder="Pencarian" class="list-search" f-group = "f4" f-target = "f411" tabindex="13" type="text" value="" />' +
-								'<span class="fa fa-search"></span>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div-->';
-		}
-		
-		if(data[0].provinsi.length > 0){
-			counter = data[0].provinsi.length;
-			if(counter > 0){
-				for(var loop = 0; loop < counter; loop++){
-					part[0] = part[0] + 
-					'<div class="cards provinsi-list list-edit" id ="'+ loop +'provinsi-' + data[0].provinsi[loop].idData + '">' +
-						'<div class="row default">' +
-							'<div class="col-xs-3 col-sm-2">' +
-								'<div class="list-box">' +
-									'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-									'<p class="list-text">' + data[0].provinsi[loop].noreg + '</p>' +
+						'<div class="col-xs-12">' +
+							'<div class="list-box">' +
+								'<div class="list-icon bg-green"><span class="fa fa-object-group"></span></div>' +
+								'<p class="list-text">' + data[loop].namaTim + '</p>' +
+								'<div class="list-button click-option"' + 
+									'p-label		="' + data[loop].namaTim + '"' + 
+									'p-id			="' + data[loop].idData + '"' +
+									'p-group		="f4"' + 
+									'p-target		="f401"' +
+									'p-container	="' + loop + 'timWilayah-' + data[loop].idData + '">' +
+									'<span class="fa fa-ellipsis-v"></span>' +
 								'</div>' +
 							'</div>' +
-							'<div class="col-xs-9 col-sm-10">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].provinsi[loop].caption + '</p>' +
-									'<div class="list-button click-option"' + 
-										'p-label		="' + data[0].provinsi[loop].caption + '"' + 
-										'p-id			="' + data[0].provinsi[loop].idData + '"' +
-										'p-noreg		="' + data[0].provinsi[loop].noreg + '"' +
-										'p-group		="f4"' + 
-										'p-target		="' + data[0].provinsi[loop].group + '"' +
-										'p-container	="' + loop + 'provinsi-' + data[0].provinsi[loop].idData + '">' +
-										'<span class="fa fa-ellipsis-v"></span>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-							'<div class="clearfix"></div>' +
 						'</div>' +
-					'</div>';
-				}
+						'<div class="clearfix"></div>' +
+					'</div>' +
+				'</div>';
 			}
 		}else{
 			part[0] = part[0] + 
@@ -283,335 +203,16 @@ function r_f4LingkupArea() {
 			'</div>';
 		}
 		
-		//--
-		//-- wilayah ==========================================================================
-		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
-			part[1] = part[1] +
-			'<form id="f-wilayah-create" f-group = "f4" f-target = "f412">' +
-				'<div class="cards">' +
-					'<div class="cards-header">' +
-						'<h4>Wilayah</h4>' +
-						'<p class="offset">form untuk menambahkan data wilayah berdasarkan provinsi.</p>' +
-						'<div class="btn-collapse right">' +
-							'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-				'<div class="cards flush">' +
-					'<div class="row default">' +
-						'<div class="col-md-9 col-md-offset-3">' +
-							'<div class="select-box">' +
-								'<select name="referensi" tabindex="1">' +
-									'<option value="" selected>Provinsi (*)</option>' +
-									r_optionDHtml('provinsi') +
-								'</select>' +
-							'</div>' +
-						'</div>' +
-						'<div class="clearfix"></div>' +
-						'<div class="col-md-3">' +
-							'<div class="input-box">' +
-								'<input name="idData" tabindex="1" type="hidden" value="" />' +
-								'<input placeholder="Kode wilayah (*)" maxlength="2" name="kode" tabindex="1" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-md-9">' +
-							'<div class="input-box">' +
-								'<input placeholder="Wilayah (*)" name="nama" tabindex="21" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</form>' +
-			'<!--div class="cards">' +
-				'<div class="row default">' +
-					'<div class="col-md-12">' +
-						'<div class="input-box fixed">' +
-							'<div class="icon-box left">' +
-								'<input placeholder="Pencarian" tabindex="23" type="text" value="" />' +
-								'<span class="fa fa-search"></span>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div-->';
-		}
-		
-		if(data[0].wilayah.length > 0){
-			counter = data[0].wilayah.length;
-			if(counter > 0){
-				for(var loop   = 0; loop < data[0].wilayah.length; loop++){
-					part[1] = part[1] + 
-					'<div class="cards wilayah-list list-edit" id="' + loop + 'wilayah-' + data[0].wilayah[loop].idData + '">' +
-						'<div class="row default">' +
-							'<div class="col-xs-3 col-sm-2">' +
-								'<div class="list-box">' +
-									'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-									'<p class="list-text">' + data[0].wilayah[loop].noreg + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div class="col-xs-5 col-sm-6">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].wilayah[loop].caption + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div class="col-xs-4 col-sm-4">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].wilayah[loop].references + '</p>' +
-									'<div class="list-button click-option"' + 
-										'p-label		="' + data[0].wilayah[loop].caption + '"' + 
-										'p-id			="' + data[0].wilayah[loop].idData + '"' +
-										'p-noreg		="' + data[0].wilayah[loop].noreg + '"' +
-										'p-references	="' + data[0].wilayah[loop].referencesKey + '"' +
-										'p-group		="f4"' + 
-										'p-target		="' + data[0].wilayah[loop].group + '"' +
-										'p-container	="' + loop + 'wilayah-' + data[0].wilayah[loop].idData + '">' +
-										'<span class="fa fa-ellipsis-v"></span>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-							'<div class="clearfix"></div>' +
-						'</div>' +
-					'</div>';
-				}
-			}
-		}else{
-			part[1] = part[1] + 
-			'<div class="cards emptyList">' +
-				'<div class="row default">' +
-					'<div class="col-xs-12">' +
-						'<div class="list-box text-center clear">' +
-							'<p class="list-text">Data tidak ditemukan</p>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>';
-		}
-		
-		//--
-		//-- kecamatan ==========================================================================
-		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
-			part[2] = part[2] +
-			'<form id="f-kecamatan-create" f-group = "f4" f-target = "f413">' +
-				'<div class="cards">' +
-					'<div class="cards-header">' +
-						'<h4>Kecamatan</h4>' +
-						'<p class="offset">form untuk menambahkan data kecamatan berdasarkan wilayah.</p>' +
-						'<div class="btn-collapse right">' +
-							'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-				'<div class="cards flush">' +
-					'<div class="row default">' +
-						'<div class="col-md-9 col-md-offset-3">' +
-							'<div class="select-box">' +
-								'<select name="referensi" tabindex="1">' +
-									'<option value="" selected>Wilayah (*)</option>' +
-									r_optionDHtml('wilayah') +
-								'</select>' +
-							'</div>' +
-						'</div>' +
-						'<div class="clearfix"></div>' +
-						'<div class="col-md-3">' +
-							'<div class="input-box">' +
-								'<input name="idData" tabindex="1" type="hidden" value="" />' +
-								'<input placeholder="Kode kecamatan (*)" maxlength="2" name="kode" tabindex="1" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-md-9">' +
-							'<div class="input-box">' +
-								'<input placeholder="Kecamatan (*)" name="nama" tabindex="31" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</form>' +
-			'<!--div class="cards">' +
-				'<div class="row default">' +
-					'<div class="col-md-12">' +
-						'<div class="input-box fixed">' +
-							'<div class="icon-box left">' +
-								'<input placeholder="Pencarian" tabindex="33" type="text" value="" />' +
-								'<span class="fa fa-search"></span>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div-->';
-		}
-		
-		if(data[0].kecamatan.length > 0){
-			counter = data[0].kecamatan.length;
-			if(counter > 0){
-				for(var loop = 0; loop < data[0].kecamatan.length; loop++){
-					part[2] = part[2] + 
-					'<div class="cards kecamatan-list list-edit" id="' + loop + 'kecamatan-' + data[0].kecamatan[loop].idData + '">' +
-						'<div class="row default">' +
-							'<div class="col-xs-3 col-sm-2">' +
-								'<div class="list-box">' +
-									'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-									'<p class="list-text">' + data[0].kecamatan[loop].noreg + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div class="col-xs-5 col-sm-6">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].kecamatan[loop].caption + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div class="col-xs-4 col-sm-4">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].kecamatan[loop].references + '</p>' +
-									'<div class="list-button click-option"' + 
-										'p-label		="' + data[0].kecamatan[loop].caption + '"' + 
-										'p-id			="' + data[0].kecamatan[loop].idData + '"' +
-										'p-noreg		="' + data[0].kecamatan[loop].noreg + '"' +
-										'p-references	="' + data[0].kecamatan[loop].referencesKey + '"' +
-										'p-group		="f4"' + 
-										'p-target		="' + data[0].kecamatan[loop].group + '"' +
-										'p-container	="' + loop + 'kecamatan-' + data[0].kecamatan[loop].idData + '">' +
-										'<span class="fa fa-ellipsis-v"></span>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-							'<div class="clearfix"></div>' +
-						'</div>' +
-					'</div>';
-				}
-			}
-		}else{
-			part[2] = part[2] + 
-			'<div class="cards emptyList">' +
-				'<div class="row default">' +
-					'<div class="col-xs-12">' +
-						'<div class="list-box text-center clear">' +
-							'<p class="list-text">Data tidak ditemukan</p>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>';
-		}
-		
-		
-		//--
-		//-- kelurahan ==========================================================================
-		if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){
-			part[3] = part[3] +
-			'<form id="f-kelurahan-create" f-group = "f4" f-target = "f414">' +
-				'<div class="cards">' +
-					'<div class="cards-header">' +
-						'<h4>Kelurahan</h4>' +
-						'<p class="offset">form untuk menambahkan data kelurahan berdasarkan Kecamatan.</p>' +
-						'<div class="btn-collapse right">' +
-							'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-				'<div class="cards flush">' +
-					'<div class="row default">' +
-						'<div class="col-md-9 col-md-offset-3">' +
-							'<div class="select-box">' +
-								'<select name="referensi" tabindex="1">' +
-									'<option value="" selected>Kecamatan (*)</option>' +
-									r_optionDHtml('kecamatan') +
-								'</select>' +
-							'</div>' +
-						'</div>' +
-						'<div class="clearfix"></div>' +
-						'<div class="col-md-3">' +
-							'<div class="input-box">' +
-								'<input name="idData" tabindex="1" type="hidden" value="" />' +
-								'<input placeholder="Kode kelurahan (*)" maxlength="2" name="kode" tabindex="1" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-md-9">' +
-							'<div class="input-box">' +
-								'<input placeholder="Kelurahan (*)" name="nama" tabindex="31" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</form>' +
-			'<!--div class="cards">' +
-				'<div class="row default">' +
-					'<div class="col-md-12">' +
-						'<div class="input-box fixed">' +
-							'<div class="icon-box left">' +
-								'<input placeholder="Pencarian" tabindex="33" type="text" value="" />' +
-								'<span class="fa fa-search"></span>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div-->';
-		}
-		
-		if(data[0].kelurahan.length > 0){
-			counter = data[0].kelurahan.length;
-			if(counter > 0){
-				for(var loop = 0; loop < data[0].kelurahan.length; loop++){
-					part[3] = part[3] + 
-					'<div class="cards kelurahan-lis list-editt" id="' + loop + 'kelurahan-' + data[0].kelurahan[loop].idData + '">' +
-						'<div class="row default">' +
-							'<div class="col-xs-3 col-sm-2">' +
-								'<div class="list-box">' +
-									'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-									'<p class="list-text">' + data[0].kelurahan[loop].noreg + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div class="col-xs-5 col-sm-6">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].kelurahan[loop].caption + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div class="col-xs-4 col-sm-4">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">' + data[0].kelurahan[loop].references + '</p>' +
-									'<div class="list-button click-option"' + 
-										'p-label		="' + data[0].kelurahan[loop].caption + '"' + 
-										'p-id			="' + data[0].kelurahan[loop].idData + '"' +
-										'p-noreg		="' + data[0].kelurahan[loop].noreg + '"' +
-										'p-references	="' + data[0].kelurahan[loop].referencesKey + '"' +
-										'p-group		="f4"' + 
-										'p-target		="' + data[0].kelurahan[loop].group + '"' +
-										'p-container	="' + loop + 'kelurahan-' + data[0].kelurahan[loop].idData + '">' +
-										'<span class="fa fa-ellipsis-v"></span>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-							'<div class="clearfix"></div>' +
-						'</div>' +
-					'</div>';
-				}
-			}
-		}else{
-			part[3] = part[3] + 
-			'<div class="cards emptyList">' +
-				'<div class="row default">' +
-					'<div class="col-xs-12">' +
-						'<div class="list-box text-center clear">' +
-							'<p class="list-text">Data tidak ditemukan</p>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>';
-		}
-		
-		
 		//-- close part
-		for(var loop   = 0; loop < dataHead.length; loop++){
-			part[loop] = part[loop] + '</div>';
-			body       = body + part[loop];
-		}
+		part[0] = part[0] + '</div>';
+		body       = body + part[0];
 		
 		body	= body + '</div></div>';
-		content = '<section id="">' + head + body + '</section>';
+		content = '<section>' + head + body + '</section>';
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(3, 'Lingkup Area'));
+		headPage.html(r_headPageHtml(3, 'Tim wilayah'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
 		
@@ -623,243 +224,250 @@ function r_f4LingkupArea() {
 			pGroup 			= $(this).attr('p-group');
 			pTarget			= $(this).attr('p-target')
 			pId				= $(this).attr('p-id');
-			pNoreg			= $(this).attr('p-noreg');
 			pLabel			= $(this).attr('p-label');
 			pContainer		= $(this).attr('p-container');
-			pReferences		= $(this).attr('p-references');
-			pReferencesKey	= $(this).attr('p-referencesKey');
 			showOptionList(); 
 			
 			//-- option activator
-			$("#edit-card").unbind().on("click", function(){ 
-				hideOptionList(); 
-				r_f4LingkupAreaEditor(pTarget, pId, pNoreg, pLabel, pReferences); 
-			});
+			$("#add-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(410, pId + "::" + pLabel); });
 			
+		});
+		
+		r_navbarReactor();
+	
+		//form reactor
+		p_formHandler("f-timWilayah-create" , "addData");
+	});
+}
+
+// function r_f4TimWilayahEditor(id, label){
+// 	$("#f-timWilayah-create [name='idData']").val(id).attr('readonly','readonly');
+// 	$("#f-timWilayah-create [name='nama']").val(label);
+// 	p_formHandler("f-timWilayah-create" , "updateData");
+// } 
+
+// function r_f4TimWilayahDataGenerator(formType, data){
+// 	var genHtml = "";
+// 	if(data.length > 0){
+// 		for(var loop=0; loop<data.length; loop++){
+// 			genHtml = genHtml +
+// 			'<div class="cards timWilayah-list list-edit" id ="timWilayah-' + data[loop].idData + '">' +
+// 				'<div class="row default">' +
+// 					'<div class="col-xs-12">' +
+// 						'<div class="list-box">' +
+// 							'<div class="list-icon bg-green"><span class="fa fa-object-group"></span></div>' +
+// 							'<p class="list-text">' + data[loop].namaTim + '</p>' +
+// 							'<div class="list-button click-option"' + 
+// 								'p-label		="' + data[loop].namaTim + '"' + 
+// 								'p-id			="' + data[loop].idData + '"' +
+// 								'p-group		="f4"' + 
+// 								'p-target		="f401"' +
+// 								'p-container	="timWilayah-' + data[loop].idData + '">' +
+// 								'<span class="fa fa-ellipsis-v"></span>' +
+// 							'</div>' +
+// 						'</div>' +
+// 					'</div>' +
+// 					'<div class="clearfix"></div>' +
+// 				'</div>' +
+// 			'</div>';
+// 		}
+// 	}else{
+// 		genHtml = genHtml +
+// 		'<div class="cards emptyList">' +
+// 			'<div class="row default">' +
+// 				'<div class="col-xs-12">' +
+// 					'<div class="list-box text-center clear">' +
+// 						'<p class="list-text">Data tidak ditemukan</p>' +
+// 					'</div>' +
+// 				'</div>' +
+// 			'</div>' +
+// 		'</div>';
+// 	}
+
+// 	if(formType == "addData"){
+// 		$("#timWilayah .emptyList").remove();
+// 		$("#timWilayah").append(genHtml);
+// 	}else if (formType == "updateData"){
+// 		$("#" + pContainer).replaceWith(genHtml);
+// 	}
+	
+// 	//reactor
+// 	$(".click-option").unbind().on("click", function(){ 
+// 		//packet session
+// 		clearPacket();
+// 		pGroup 		= $(this).attr('p-group');
+// 		pTarget		= $(this).attr('p-target')
+// 		pId			= $(this).attr('p-id');
+// 		pLabel		= $(this).attr('p-label');
+// 		pContainer	= $(this).attr('p-container');
+// 		showOptionList(); 
+		
+// 		//-- option activator
+// 		$("#edit-card").unbind().on("click", function(){ 
+// 			hideOptionList(); 
+// 			r_f4TimWilayahEditor(pId, pLabel); 
+// 		});
+		
+// 		$("#delete-card").unbind().on("click", function(){ 
+// 			hideOptionList(); 
+// 			showOptionConfirm('delete');
+// 			$(".option-yes").unbind().on("click", function(){ 
+// 				hideOptionList(); 
+// 				if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
+// 					$('#' + pContainer).remove();
+// 					clearPacket();
+// 				}; 
+// 			});
+// 		});
+// 	});
+// }
+
+function r_f4AnggotaTimWilayah(packet) {
+	$("body").prepend(preload);
+	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
+		mainPage.html('');
+		head  	= '';
+		body  	= '';
+		part	= ['','','',''];
+		content = '';
+		counter = 0;
+
+		if(packet[0] == undefined || packet == "" || packet == null || packet == "start"){
+			packet = tim_look_reader();
+		}
+
+		packet 		= packet.split("::");
+		packetLabel = packet[1];
+		packet 		= packet[0];
+
+		tim_look_set(packet + "::" + packetLabel);
+
+		data = p_getData('f4', 'f410', packet);
+		data = data.feedData;
+		optionBatch = r_f4OptionList(410); 
+		
+		//--open
+		head = '';
+		body = '<div class="row no-head"><div class="container">';
+		
+		//-- open part
+		part[0] = '<div id="anggotaTimWilayah" class="col-md-8 col-md-offset-2">';
+		
+		//-- fill part
+		//-- Provinsi ==========================================================================
+		if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
+			part[0] = part[0] +
+			'<form id="f-anggotaTimWilayah-create" f-group = "f4" f-target = "f410">' +
+				'<div class="cards">' +
+					'<div class="cards-header">' +
+						'<h4>Tambah anggota wilayah</h4>' +
+						'<p class="offset">form untuk menambahkan data wilayah kedalam tim wilayah.</p>' +
+						'<div class="btn-collapse right">' +
+							'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
+							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+				'<div class="cards flush">' +
+					'<div class="row default">' +
+						'<div class="col-md-12">' +
+							'<div class="select-box">' +
+								'<input name="idTim" tabindex="1" type="hidden" value="' + packet + '" />' +
+								'<select tabindex="1" name="idWilayah">' +
+									'<option value="" selected>Pilih Wilayah (*)</option>' +
+									r_optionDHtml('wilayahSpecial') +
+								'</select>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</form>';
+		}
+		
+		if(data != null && data.length > 0){
+			for(var loop = 0; loop < data.length; loop++){
+				part[0] = part[0] + 
+				'<div class="cards anggotaTimWilayah-list list-edit" id ="'+ loop +'anggotaTimWilayah-' + data[loop].idData + '">' +
+					'<div class="row default">' +
+						'<div class="col-xs-12">' +
+							'<div class="list-box">' +
+								'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
+								'<p class="list-text">' + data[loop].namaWilayah + '</p>' +
+								'<div class="list-button click-option"' + 
+									'p-label		="' + data[loop].namaWilayah + '"' + 
+									'p-id			="' + packet + '"' +
+									'p-references	="' + data[loop].idData + '"' +
+									'p-group		="f4"' + 
+									'p-target		="f410"' +
+									'p-container	="' + loop + 'anggotaTimWilayah-' + data[loop].idData + '">' +
+									'<span class="fa fa-ellipsis-v"></span>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+						'<div class="clearfix"></div>' +
+					'</div>' +
+				'</div>';
+			}
+		}else{
+			part[0] = part[0] + 
+			'<div class="cards emptyList">' +
+				'<div class="row default">' +
+					'<div class="col-xs-12">' +
+						'<div class="list-box text-center clear">' +
+							'<p class="list-text">Data tidak ditemukan</p>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>';
+		}
+		
+		//-- close part
+		part[0] = part[0] + '</div>';
+		body       = body + part[0];
+		
+		body	= body + '</div></div>';
+		content = '<section>' + head + body + '</section>';
+		//--close
+		
+		//--gen
+		headPage.html(r_headPageHtml(3, packetLabel));
+		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+		$("#preload").remove();
+		
+		//--command reactor
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(400); });
+		$(".click-option").unbind().on("click", function(){ 
+			//packet session
+			clearPacket();
+			pGroup 			= $(this).attr('p-group');
+			pTarget			= $(this).attr('p-target')
+			pId				= $(this).attr('p-id');
+			pLabel			= $(this).attr('p-label');
+			pContainer		= $(this).attr('p-container');
+			pReferencesKey  = $(this).attr('p-references');
+			showOptionList(); 
+			
+			//-- option activator
 			$("#delete-card").unbind().on("click", function(){ 
 				hideOptionList(); 
 				showOptionConfirm('delete');
 				$(".option-yes").unbind().on("click", function(){ 
 					hideOptionList(); 
-					if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
+					if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
+						dataAdd = {'idData': pReferencesKey, "caption": pLabel};
+						r_f4AddArrayList(optionSpecial, dataAdd);
+						r_f4AnggotaTimWilayahOptionGenerator();
 						$('#' + pContainer).remove();
-						var dataTemp = '';
-						if 	   (pTarget == "f411") dataTemp = optionD[0].provinsi; 
-						else if(pTarget == "f412") dataTemp = optionD[0].wilayah; 
-						else if(pTarget == "f413") dataTemp = optionD[0].kecamatan; 
-						else if(pTarget == "f414") dataTemp = optionD[0].kelurahan; 
-						r_f4RemoveLingkupAreaArray(dataTemp, pId);
 						clearPacket();
 					}; 
 				});
 			});
 		});
 		
-		/*tab reader*/
-		if(r_tabReader() == null){
-			r_tabSet(1);
-			$('[tab-headIndex = "1"]').addClass('active');
-			$('[tab-contentIndex = "1"]').addClass('active');
-		}else{
-			$('[tab-headIndex = "' + r_tabReader() + '"]').addClass('active');
-			$('[tab-contentIndex = "' + r_tabReader() + '"]').addClass('active');
-		}
-		
-		tabActivator();
-		r_f4TabAdvance();
-		fileBrowserActivator();
 		r_navbarReactor();
 	
 		//form reactor
-		p_formHandler("f-provinsi-create" , "addData");
-		p_formHandler("f-wilayah-create"  , "addData");
-		p_formHandler("f-kecamatan-create", "addData");
-		p_formHandler("f-kelurahan-create", "addData");
-	});
-}
-
-function r_f4TabAdvance(){
-	$('.tab-navigator').on('click', function(){ 
-		var tabIndex = $(this).attr("tab-headIndex");
-		switch(tabIndex){
-			case '2': 
-				$("#f-wilayah-create [name=referensi]").html('<option value="" selected>Provinsi</option>' + r_optionDHtml('provinsi'));
-			break;
-			case '3': 
-				$("#f-kecamatan-create [name=referensi]").html('<option value="" selected>Wilayah</option>' + r_optionDHtml('wilayah'));
-			break;
-			case '4': 
-				$("#f-kelurahan-create [name=referensi]").html('<option value="" selected>Kecamatan</option>' + r_optionDHtml('kecamatan'));
-			break;
-		}
-	});
-}
-
-function r_f4LingkupAreaEditor(target, id, noreg, label, referencesKey){
-	switch(target){
-		case "f411":
-			$("#f-provinsi-create [name='idData']").val(id).attr('readonly','readonly');
-			$("#f-provinsi-create [name='kode']").val(noreg);
-			$("#f-provinsi-create [name='nama']").val(label);
-			p_formHandler("f-provinsi-create" , "updateData");
-		break;
-		case "f412":
-			$("#f-wilayah-create [name='idData']").val(id);
-			$("#f-wilayah-create [name='kode']").val(noreg);
-			$("#f-wilayah-create [name='nama']").val(label);
-			$("#f-wilayah-create [name='referensi']").val(referencesKey);
-			p_formHandler("f-wilayah-create" , "updateData");
-		break;
-		case "f413":
-			$("#f-kecamatan-create [name='idData']").val(id);
-			$("#f-kecamatan-create [name='kode']").val(noreg);
-			$("#f-kecamatan-create [name='nama']").val(label);
-			$("#f-kecamatan-create [name='referensi']").val(referencesKey);
-			p_formHandler("f-kecamatan-create" , "updateData");
-		break;
-		case "f414":
-			$("#f-kelurahan-create [name='idData']").val(id);
-			$("#f-kelurahan-create [name='kode']").val(noreg);
-			$("#f-kelurahan-create [name='nama']").val(label);
-			$("#f-kelurahan-create [name='referensi']").val(referencesKey);
-			p_formHandler("f-kelurahan-create" , "updateData");
-		break;
-	}
-} 
-
-function r_f4LingkupAreaDataGenerator(formType, type, data, sectionId){
-	var genHtml = "";
-	if(data.length > 0){
-		if(type == 'provinsi'){
-			for(var loop=0; loop<data.length; loop++){
-				genHtml = genHtml +
-				'<div class="cards provinsi-list list-edit" id ="provinsi-' + data[loop].idData + '">' +
-					'<div class="row default">' +
-						'<div class="col-xs-2">' +
-							'<div class="list-box">' +
-								'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-								'<p class="list-text">' + data[loop].noreg + '</p>' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-xs-10">' +
-							'<div class="list-box clear">' +
-								'<p class="list-text">' + data[loop].caption + '</p>' +
-								'<div class="list-button click-option"' + 
-									'p-label		="' + data[loop].caption + '"' + 
-									'p-id			="' + data[loop].idData + '"' +
-									'p-noreg		="' + data[loop].noreg + '"' +
-									'p-group		="f4"' + 
-									'p-target		="f411"' +
-									'p-container	="provinsi-' + data[loop].idData + '">' +
-									'<span class="fa fa-ellipsis-v"></span>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-						'<div class="clearfix"></div>' +
-					'</div>' +
-				'</div>';
-			}
-		}else{
-			var vTemp ="";
-			if		(type == "wilayah")  { vTemp = "f412"; }
-			else if	(type == "kecamatan"){ vTemp = "f413"; }
-			else if (type == "kelurahan"){ vTemp = "f414"; }
-			for(var loop=0; loop<data.length; loop++){
-				genHtml = genHtml +
-				'<div class="cards ' + type + '-list" id="' + type + '-' + data[loop].noreg + '">' +
-					'<div class="row default">' +
-						'<div class="col-xs-2">' +
-							'<div class="list-box">' +
-								'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-								'<p class="list-text">' + data[loop].noreg + '</p>' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-xs-6">' +
-							'<div class="list-box clear">' +
-								'<p class="list-text">' + data[loop].caption + '</p>' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-xs-4">' +
-							'<div class="list-box clear">' +
-								'<p class="list-text">' + data[loop].references + '</p>' +
-								'<div class="list-button click-option"' + 
-									'p-label		="' + data[loop].caption + '"' + 
-									'p-id			="' + data[loop].idData + '"' +
-									'p-noreg		="' + data[loop].noreg + '"' +
-									'p-references	="' + data[loop].referencesKey + '"' +
-									'p-group		="f4"' + 
-									'p-target		="' + vTemp + '"' +
-									'p-container	="' + type + '-' + data[loop].noreg + '">' +
-									'<span class="fa fa-ellipsis-v"></span>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-						'<div class="clearfix"></div>' +
-					'</div>' +
-				'</div>';
-			}
-		}
-	}else{
-		genHtml = genHtml +
-		'<div class="cards emptyList">' +
-			'<div class="row default">' +
-				'<div class="col-xs-12">' +
-					'<div class="list-box text-center clear">' +
-						'<p class="list-text">Data tidak ditemukan</p>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-		'</div>';
-	}
-
-	if(formType == "addData"){
-		$("#" + sectionId + ' .emptyList').remove();
-		$("#" + sectionId).append(genHtml);
-
-		if(type=="provinsi") 	   r_f4AddLingkupAreaArray(optionD[0].provinsi,  data[0]);
-		else if(type=="wilayah")   r_f4AddLingkupAreaArray(optionD[0].wilayah,   data[0]);
-		else if(type=="kecamatan") r_f4AddLingkupAreaArray(optionD[0].kecamatan, data[0]);
-		else if(type=="kelurahan") r_f4AddLingkupAreaArray(optionD[0].kelurahan, data[0]);
-	}else if (formType == "updateData"){
-		$("#" + pContainer).replaceWith(genHtml);
-
-		if(type=="provinsi") 	   r_f4ChangeLingkupAreaArray(optionD[0].provinsi,  data[0], data[0].idData);
-		else if(type=="wilayah")   r_f4ChangeLingkupAreaArray(optionD[0].wilayah,   data[0], data[0].idData);
-		else if(type=="kecamatan") r_f4ChangeLingkupAreaArray(optionD[0].kecamatan, data[0], data[0].idData);
-		else if(type=="kelurahan") r_f4ChangeLingkupAreaArray(optionD[0].kelurahan, data[0], data[0].idData);
-	}
-	
-	//reactor
-	$(".click-option").unbind().on("click", function(){ 
-		//packet session
-		clearPacket();
-		pGroup 		= $(this).attr('p-group');
-		pTarget		= $(this).attr('p-target')
-		pId			= $(this).attr('p-id');
-		pNoreg 		= $(this).attr('p-noreg');
-		pLabel		= $(this).attr('p-label');
-		pContainer		= $(this).attr('p-container');
-		pReferences		= $(this).attr('p-references');
-		pReferencesKey	= $(this).attr('p-referencesKey');
-		showOptionList(); 
-		
-		//-- option activator
-		$("#edit-card").unbind().on("click", function(){ 
-			hideOptionList(); 
-			r_f4LingkupAreaEditor(pTarget, pId, pNoreg, pLabel, pReferences); 
-		});
-
-		$("#delete-card").unbind().on("click", function(){ 
-			hideOptionList(); 
-			showOptionConfirm('delete');
-			$(".option-yes").unbind().on("click", function(){ 
-				hideOptionList(); 
-				if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
-					$('#' + pContainer).remove(); 
-					clearPacket();
-				}; 
-			});
-		});
+		p_formHandler("f-anggotaTimWilayah-create" , "addData");
 	});
 }
 
@@ -1567,7 +1175,7 @@ function r_f4VerifikasiDataGenerator(formType, type, data, sectionId){
 
 //F4 KELEMBAGAAN :: BENTUK LEMBAGA, LEGALITAS LEMBAGA, BIDANG GERAK
 //=====================================
-function r_f4BentukLembaga() {
+function r_f4TimWilayahs() {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
@@ -1592,8 +1200,8 @@ function r_f4BentukLembaga() {
 			'<form id="f-bentukLembaga-create" f-group="f4" f-target="f431">' +
 				'<div class="cards">' +
 					'<div class="cards-header">' +
-						'<h4>Bentuk lembaga</h4>' +
-						'<p class="offset">form untuk menambahkan data bentuk lembaga.</p>' +
+						'<h4>Tim wilayah</h4>' +
+						'<p class="offset">form untuk menambahkan data tim pembagian wilayah.</p>' +
 						'<div class="btn-collapse right">' +
 							'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
 							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
@@ -1605,12 +1213,7 @@ function r_f4BentukLembaga() {
 						'<div class="col-md-12">' +
 							'<div class="input-box">' +
 								'<input name="pId" tabindex="1" type="hidden" value="" />' +
-								'<input placeholder="Bentuk lembaga" name="nama" tabindex="1" type="text" value="" />' +
-							'</div>' +
-						'</div>' +
-						'<div class="col-md-6">' +
-							'<div class="input-box rows-2">' +
-								'<textarea placeholder="Deskripsi" name="deskripsi" tabindex="2" class="rows-2"></textarea>' +
+								'<input placeholder="Tim wilayah" name="nama" tabindex="1" type="text" value="" />' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
@@ -1670,7 +1273,7 @@ function r_f4BentukLembaga() {
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(3, 'Bentuk lembaga'));
+		headPage.html(r_headPageHtml(3, 'Tim wilayah'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
 		
@@ -3015,10 +2618,8 @@ function r_f4RemoveLingkupAreaArray(data, id){
 function r_f4OptionList(target){
 	var res = [];
 	switch(target){
-		case 41 :
-		case 411: 			
-			if(r_getCookie('TABAH_lingkupAreaUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
-			if(r_getCookie('TABAH_lingkupAreaHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
+		case 401 :
+			if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){ res.push({'selector': 'add-card', 'icon': 'plus', 'label': 'Tambah anggota'}); }
 		break;
 
 		case 42 :

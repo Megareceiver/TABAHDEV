@@ -18,7 +18,7 @@
 		
 		switch($target){
 			case "f40" : $resultList = requestDataDplega('f4', 'f40'); break;
-			case "f401": $resultList = getLingkupAreaListSection(); break;
+			case "f401": $resultList = requestDataDplega('f4', 'f401'); break;
 			case "f402": $resultList = getBatasAreaListSection(); break;
 			case "f412": $resultList = getWilayahOnlyListSection($data); break;
 
@@ -63,7 +63,7 @@
 		return $response;
 	}
 	
-	function getLingkupAreaListSection(){
+	function getTimWilayahListSection(){
 		/* initial condition */
 		$resultList = array();
 		$table 		= "";
@@ -80,67 +80,26 @@
 		if($gate){		
 			// connection = true
 			$sql = 	"	SELECT 
-							kl.idData as idKelurahan, 
-							kl.kodeKelurahan, 
-							namaKelurahan, 
-							kc.idData as idKecamatan,
-							kc.kodeKecamatan,
-							namaKecamatan, 
-							wl.idData as idWilayah,
-							wl.kodeWilayah,
-							namaWilayah, 
-							pr.idData as idProvinsi,
-							pr.kodeProvinsi,
-							namaProvinsi
+							idData,
+							namaTim
 						FROM
-							dplega_100_provinsi pr
-						JOIN
-							dplega_101_wilayah wl
-							ON pr.idData = wl.idProvinsi
-						JOIN
-							dplega_102_kecamatan kc
-							ON wl.idData = kc.idWilayah
-						JOIN
-							dplega_103_kelurahan kl
-							ON kc.idData = kl.idKecamatan
-						ORDER BY namaKelurahan ASC
+							tabah_100_timwilayah
+						ORDER BY namaTim ASC
 					";
 						
 			$result = mysqli_query($gate, $sql);
 			if($result){
 				if(mysqli_num_rows($result) > 0) {
 					// output data of each row
-					$fetchTemp		= "";
-					$fetch 	  		= array();
-					$fetchDetail	= array();
 					$record    		= array();
-					$recordDetail   = array();
 					while($row = mysqli_fetch_assoc($result)) {
-						
-						unset($fetch); $fetch = array();
-						
-						$fetch 		   = $row['namaKelurahan'].", ".$row['namaKecamatan']." ".$row['namaWilayah']." | ".$row['namaProvinsi'];
-						$fetchDetail = array(
-									"idKelurahan" 	=> $row['idKelurahan'],
-									"kodeKelurahan" => $row['kodeKelurahan'],
-									"namaKelurahan" => $row['namaKelurahan'],
-									"idKecamatan" 	=> $row['idKecamatan'],
-									"kodeKecamatan" => $row['kodeKecamatan'],
-									"namaKecamatan" => $row['namaKecamatan'],
-									"idWilayah" 	=> $row['idWilayah'],
-									"kodeWilayah" 	=> $row['kodeWilayah'],
-									"namaWilayah" 	=> $row['namaWilayah'],
-									"idProvinsi" 	=> $row['idProvinsi'],
-									"kodeProvinsi" 	=> $row['kodeProvinsi'],
-									"namaProvinsi" 	=> $row['namaProvinsi']
-								);
-						
-						array_push($record, $fetch); 
-						array_push($recordDetail, $fetchDetail); 
-
+						array_push($record, array(
+									"idData" 	=> $row['idData'],
+									"namaTim" 	=> $row['namaTim']
+								));
 					}
 					
-					$resultList = array( "feedStatus" => "succes", "feedMessage" => "Data ditemukan!", "feedData" => array($record), "feedDataDetail" =>  array("list" => $recordDetail));
+					$resultList = array( "feedStatus" => "succes", "feedMessage" => "Data ditemukan!", "feedData" => $record);
 				}else {
 					$resultList = array( "feedStatus" => "succes", "feedMessage" => "Data tidak ditemukan!", "feedData" => array());
 				}
@@ -756,10 +715,7 @@
 		/* refferences */
 		
 		switch($target){
-			case "f411": $resultList = createLingkupAreaSection($target, $data); break;
-			case "f412": $resultList = createLingkupAreaSection($target, $data); break;
-			case "f413": $resultList = createLingkupAreaSection($target, $data); break;
-			case "f414": $resultList = createLingkupAreaSection($target, $data); break;
+			case "f401": $resultList = createTimWilayahSection($target, $data); break;
 			
 			case "f421": $resultList = createVerifikasiSection($target, $data); break;
 			case "f422": $resultList = createVerifikasiSection($target, $data); break;
@@ -778,7 +734,7 @@
 		return $json;
 	}
 	
-	function createLingkupAreaSection($target, $data){
+	function createTimWilayahSection($target, $data){
 		/* initial condition */
 		$resultList = array();
 		$table 		= "";
@@ -793,18 +749,7 @@
 		$recentId	= "";
 		
 		/* validation */
-		if($target == "f411"){
-			if(
-				!isset($data['kode']) || $data['kode']==""
-				|| !isset($data['nama']) || $data['nama']==""
-			){ $error = 1; }
-		}elseif($target == "f412" || $target == "f413" || $target == "f414"){
-			if(
-				!isset($data['kode']) || $data['kode']==""
-				|| !isset($data['nama']) || $data['nama']==""
-				|| !isset($data['referensi']) || $data['referensi']==""
-			){ $error = 1; }
-		}
+		if(!isset($data['nama']) || $data['nama']==""){ $error = 1; }
 			
 		if($error != 1){
 			
@@ -812,76 +757,19 @@
 			$gate = openGate();
 			if($gate){		
 				// connection = true
-				$sql = "";
-				if($target == "f411"){
-					$sql = 	
-					" 	INSERT INTO dplega_100_provinsi
-						(
-							kodeProvinsi,
-							namaProvinsi,
-							createdBy, createdDate
-						)
-						VALUES
-						(
-							'".$data['kode']."',
-							'".$data['nama']."',
-							'".$_SESSION['username']."', NOW()
-						)
-					";
-				}elseif($target == "f412"){
-					$sql = 	
-					" 	INSERT INTO dplega_101_wilayah
-						(
-							idProvinsi,
-							kodeWilayah,
-							namaWilayah,
-							createdBy, createdDate
-						)
-						VALUES
-						(
-							'".$data['referensi']."',
-							'".$data['kode']."',
-							'".$data['nama']."',
-							'".$_SESSION['username']."', NOW()
-						)
-					";
-				}elseif($target == "f413"){
-					$sql = 	
-					" 	INSERT INTO dplega_102_kecamatan
-						(
-							idWilayah,
-							kodeKecamatan,
-							namaKecamatan,
-							createdBy, createdDate
-						)
-						VALUES
-						(
-							'".$data['referensi']."',
-							'".$data['kode']."',
-							'".$data['nama']."',
-							'".$_SESSION['username']."', NOW()
-						)
-					";
-				}elseif($target == "f414"){
-					$sql = 	
-					" 	INSERT INTO dplega_103_kelurahan
-						(
-							idKecamatan,
-							kodeKelurahan,
-							namaKelurahan,
-							createdBy, createdDate
-						)
-						VALUES
-						(
-							'".$data['referensi']."',
-							'".$data['kode']."',
-							'".$data['nama']."',
-							'".$_SESSION['username']."', NOW()
-						)
-					";
-				}
-				
-	
+				$sql = 	
+				" 	INSERT INTO tabah_100_timwilayah
+					(
+						namaTim,
+						createdBy, createdDate
+					)
+					VALUES
+					(
+						'".$data['nama']."',
+						'".$_SESSION['username']."', NOW()
+					)
+				";
+
 				$result = mysqli_query($gate, $sql);
 				if($result){	
 					$recentId	= mysqli_insert_id($gate);
@@ -1275,10 +1163,7 @@
 		/* refferences */
 		
 		switch($target){
-			case "f411": $resultList = changeLingkupAreaSection($target, $data); break;
-			case "f412": $resultList = changeLingkupAreaSection($target, $data); break;
-			case "f413": $resultList = changeLingkupAreaSection($target, $data); break;
-			case "f414": $resultList = changeLingkupAreaSection($target, $data); break;
+			case "f401": $resultList = changeTimWilayahSection($target, $data); break;
 			
 			case "f421": $resultList = changeVerifikasiSection($target, $data); break;
 			case "f422": $resultList = changeVerifikasiSection($target, $data); break;
@@ -1295,7 +1180,7 @@
 		return $json;
 	}
 	
-	function changeLingkupAreaSection($target, $data){
+	function changeTimWilayahSection($target, $data){
 		/* initial condition */
 		$resultList = array();
 		$table 		= "";
@@ -1310,18 +1195,7 @@
 		$recentId	= "";
 		
 		/* validation */
-		if($target == "f411"){
-			if(
-				!isset($data['kode']) || $data['kode']=="" 
-				|| !isset($data['nama']) || $data['nama']=="" 
-			){ $error = 1; }
-		}elseif($target == "f412" || $target == "f413" || $target == "f414"){
-			if(
-				!isset($data['kode']) || $data['kode']=="" 
-				|| !isset($data['nama']) || $data['nama']=="" 
-				|| !isset($data['referensi']) || $data['referensi']=="" 
-			){ $error = 1; }
-		}
+		if(!isset($data['nama']) || $data['nama']==""){ $error = 1; }
 			
 		if($error != 1){
 			
@@ -1329,55 +1203,15 @@
 			$gate = openGate();
 			if($gate){		
 				// connection = true
-				$sql = 	 "";
-				if($target == "f411"){
-					$sql = 	
-					" 	UPDATE dplega_100_provinsi
-						SET
-							kodeProvinsi = '".$data['kode']."',
-							namaProvinsi = '".$data['nama']."',
-							changedBy 	 = '".$_SESSION['username']."',
-							changedDate  = NOW()
-						WHERE 
-							idData = '".$data['idData']."'
-					";
-				}elseif($target == "f412"){
-					$sql = 	
-					" 	UPDATE dplega_101_wilayah
-						SET
-							kodeWilayah  = '".$data['kode']."',
-							namaWilayah  = '".$data['nama']."',
-							idProvinsi 	 = '".$data['referensi']."',
-							changedBy 	 = '".$_SESSION['username']."',
-							changedDate  = NOW()
-						WHERE 
-							idData = '".$data['idData']."'
-					";
-				}elseif($target == "f413"){
-					$sql = 	
-					" 	UPDATE dplega_102_kecamatan
-						SET
-							kodeKecamatan = '".$data['kode']."',
-							namaKecamatan = '".$data['nama']."',
-							idWilayah     = '".$data['referensi']."',
-							changedBy 	  = '".$_SESSION['username']."',
-							changedDate   = NOW()
-						WHERE 
-							idData = '".$data['idData']."'
-					";
-				}elseif($target == "f414"){
-					$sql = 	
-					" 	UPDATE dplega_103_kelurahan
-						SET
-							kodeKelurahan = '".$data['kode']."',
-							namaKelurahan = '".$data['nama']."',
-							idKecamatan   = '".$data['referensi']."',
-							changedBy 	  = '".$_SESSION['username']."',
-							changedDate   = NOW()
-						WHERE 
-							idData = '".$data['idData']."'
-					";
-				}
+				$sql = 	
+				" 	UPDATE tabah_100_timwilayah
+					SET
+						namaTim 	 = '".$data['nama']."',
+						changedBy 	 = '".$_SESSION['username']."',
+						changedDate  = NOW()
+					WHERE 
+						idData = '".$data['idData']."'
+				";
 
 				$result = mysqli_query($gate, $sql);
 				if($result){	
@@ -1389,7 +1223,7 @@
 					//error state
 					$error		= 1;
 					$resultType = "danger";
-					$resultMsg	= "Terjadi kesalahan fatal, data gagal diubah!".mysqli_error($gate);
+					$resultMsg	= "Terjadi kesalahan fatal, data gagal diubah!";
 				}
 				
 				closeGate($gate);
@@ -1653,16 +1487,9 @@
 		$errorMsg	= "";
 	
 		/* refferences */
-		// f41 : provinsi
-		// f42 : wilayah
-		// f43 : kecamatan
-		// f44 : kelurahan
 		
 		switch($target){
-			case "f411": $resultList = deleteLingkupAreaSection($target, $data); break;
-			case "f412": $resultList = deleteLingkupAreaSection($target, $data); break;
-			case "f413": $resultList = deleteLingkupAreaSection($target, $data); break;
-			case "f414": $resultList = deleteLingkupAreaSection($target, $data); break;
+			case "f401": $resultList = deleteTimWilayahSection($target, $data); break;
 			
 			case "f421": $resultList = deleteVerifikasiSection($target, $data); break;
 			case "f422": $resultList = deleteVerifikasiSection($target, $data); break;
@@ -1682,7 +1509,7 @@
 	}
 	
 	
-	function deleteLingkupAreaSection($target, $data){
+	function deleteTimWilayahSection($target, $data){
 		/* initial condition */
 		$resultList = array();
 		$table 		= "";
@@ -1704,35 +1531,12 @@
 			$gate = openGate();
 			if($gate){		
 				// connection = true
-				if($target == "f411"){
-					$sql = 	
-					" 	DELETE FROM dplega_100_provinsi
-						WHERE 
-							idData =
-							'".$data['pId']."'
-					";
-				}elseif($target == "f412"){
-					$sql = 	
-					" 	DELETE FROM dplega_101_wilayah
-						WHERE 
-							idData =
-							'".$data['pId']."'
-					";
-				}elseif($target == "f413"){
-					$sql = 	
-					" 	DELETE FROM dplega_102_kecamatan
-						WHERE 
-							idData =
-							'".$data['pId']."'
-					";
-				}elseif($target == "f414"){
-					$sql = 	
-					" 	DELETE FROM dplega_103_kelurahan
-						WHERE 
-							idData =
-							'".$data['pId']."'
-					";
-				}
+				$sql = 	
+				" 	DELETE FROM tabah_100_timwilayah
+					WHERE 
+						idData =
+						'".$data['pId']."'
+				";
 				
 				$result = mysqli_query($gate, $sql);
 				if($result){	

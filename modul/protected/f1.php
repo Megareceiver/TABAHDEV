@@ -15,13 +15,14 @@
 	
 		/* refferences */
 		switch($target){
+			case "f001"  : $resultList = getSummaryBentukLembaga($data); break;
 			case "f1110" : $resultList = getListLembagaan($data); break;
 			case "f11101": $resultList = getListAllLembagaan($data); break;
 			case "f1111" : $dataPost   = json_encode(array("refferences" => $data['refferences']));
 						   $resultList = requestDataDplega('f1', $target, $dataPost); break;
 			case "f1112" : $resultList = getFetchLembagaan($data); break;
 			case "f1113" : $resultList = legalitasByNoreg($data); break;
-			case "f1114" : $resultList = legalitasByBentukLembaga($data); break;
+			case "f1114" : $resultList = persyaratanByBentukLembaga($data); break;
 			case "f117"  : $resultList = getKoleksiSection($data); break;
 			case "f119"  : $resultList = getPrestasiSection($data); break;
 			case "f141"  : $resultList = getKoleksi($data); break;
@@ -48,6 +49,29 @@
 		    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
 		    CURLOPT_POSTFIELDS 		=> $data, // Send the data in HTTP POST
 		);
+		
+		curl_setopt_array($client, $options);
+
+		// Execute and Get the response
+		$response = curl_exec($client);
+		// Get HTTP Code response
+		$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
+		// Close cURL session
+		curl_close($client);
+
+		$response=json_decode($response);
+		return $response;
+	}
+
+	function requestDataGetDplega($group, $target){
+		// URL API
+		$urlApi = getApiUrl().'requestData/'.$group.'/'.$target;
+		$client = curl_init();
+		$options = array(
+		    CURLOPT_URL				=> $urlApi, // Set URL of API
+		    CURLOPT_CUSTOMREQUEST 	=> "GET", // Set request method
+		    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
+	    );
 		
 		curl_setopt_array($client, $options);
 
@@ -164,7 +188,7 @@
 		return $json;
 	}
 
-	function getListLembagaan($data){
+	function getSummaryBentukLembaga(){
 		/* initial condition */
 		$resultList = array();
 		$table 		= "";
@@ -175,15 +199,7 @@
 		$error		= 0;
 		$errorType  = "";
 		$errorMsg	= "";
-		$dumb		= "";
-		$dumbQuery['keyword'] 		= ""; 
-		$dumbQuery['refferences'] 	= ""; 
-		$dumbQuery['provinsi'] 	= ""; 
-		$dumbQuery['wilayah'] 	= ""; 
-		$dumbQuery['kecamatan'] = ""; 
-		$dumbQuery['kelurahan'] = ""; 
-		$dumbFieldS	= "";
-		$dumbQueryS	= "";
+		$bentukLembaga = array();
 
 		//Validation 
 		if(isset($data['refferences']) && $data['refferences'] != ""){	
@@ -191,247 +207,57 @@
 			$gate = openGate();
 			if($gate){		
 				// connection = true
-				$dumb = explode(',', $data['refferences']);
-				if($dumb[0] == 'single') { $data['refferences'] = $dumb[1]; }
-				else {
-					$data['refferences'] 	=  $dumb[1];
+				$bentukLembaga = requestDataGetDplega('f4', 'f431');
+				if(isset($bentukLembaga['feedStatus']) && $bentukLembaga['feedStatus'] != "success"){ $error = 1; }
 
-					if(isset($dumb[2]) && $dumb[2] != "") { $dumbQuery['provinsi' ]	= "AND l.kodeProvinsi  = '".$dumb[2]."'"; }
-					if(isset($dumb[3]) && $dumb[3] != "") { $dumbQuery['wilayah'  ]	= "AND l.kodeWilayah   = '".$dumb[3]."'"; }
-					if(isset($dumb[4]) && $dumb[4] != "") { $dumbQuery['kecamatan']	= "AND l.kodeKecamatan = '".$dumb[4]."'"; }
-					if(isset($dumb[5]) && $dumb[5] != "") { $dumbQuery['kelurahan']	= "AND l.kodeKelurahan = '".$dumb[5]."'"; }
-				}
-
-				/* AUTHENTICATION */
-				if(
-					   isset($_SESSION['login']) && $_SESSION['login'] == "yes" 
-					&& isset($_SESSION['userLevel']) && $_SESSION['userLevel'] != "7"){
-					switch ($_SESSION['lingkupArea']) {
-						case '3': 
-							$dumbFieldS = "l.kodeProvinsi"; 
-							$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
-							$dumbQuery['provinsi' ] = $dumbQueryS;
-						break;
-						case '2': 
-							$dumbFieldS = "l.kodeWilayah"; 
-							$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
-							$dumbQuery['wilayah' ] = $dumbQueryS;
-						break;
-						case '1': 
-							$dumbFieldS = "l.kodeKecamatan"; 
-							$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
-							$dumbQuery['kecamatan' ] = $dumbQueryS;
-						break;
-						default: break;
-					}
-
-					
-				}
-				/* AUTHENTICATION END */
-
-				if(isset($data['keyword']) && $data['keyword'] != ""){	
-					$dumbQuery['keyword'] = "
-					AND
-						( 	
-							l.noRegistrasi		LIKE '%".$data['keyword']."%' OR 
-							l.nama 				LIKE '%".$data['keyword']."%' 
-						)
+				if($error != 1){
+					$sql = 	
+					"
+						SELECT 
 					";
-				}
 
-				if(isset($data['refferences']) && $data['refferences'] != ""){	
-					$dumbQuery['refferences'] = "AND l.kodeBentukLembaga = '".$data['refferences']."' ";
-				}
-
-				$sql = 	
-				"
-					SELECT * FROM (
-						SELECT  
-							'Ajuan' as `group`,
-							l.`noRegistrasi` as id,
-							l.`noRegistrasi` as noreg,
-							l.`nama` as nama,
-							l.`noTelp` as telp,
-							l.`email` as email,
-							`username` as username,
-							namaProvinsi as np,
-							namaWilayah as nw,
-							namaKecamatan as nc,
-							namaKelurahan as nk,
-							namaBentukLembaga as nb,
-							CONCAT_WS(' ', l.`alamat`, 'RT.',l.`noRt`, '/', 'RW.', l.`noRw`, `namaKelurahan`, `namaKecamatan`, `namaWilayah`, `namaProvinsi`) as alamat,
-							COALESCE(`urlGambarLogo`, '') as picture,
-							l.createdDate as sort
-						FROM 
-							dplega_000_lembaga_temp l 
-						LEFT JOIN
-							dplega_100_provinsi p ON l.kodeProvinsi = p.idData
-						LEFT JOIN
-							dplega_101_wilayah w ON l.kodeWilayah = w.idData
-						LEFT JOIN
-							dplega_102_kecamatan kc ON l.kodeKecamatan = kc.idData
-						LEFT JOIN
-							dplega_103_kelurahan kl ON l.kodeKelurahan = kl.idData
-						JOIN
-							dplega_200_bentuklembaga bl ON l.kodeBentukLembaga = bl.kodeBentukLembaga
-						JOIN
-							dplega_910_user u ON l.noRegistrasi = u.noRegistrasi
-						WHERE 
-						l.statusAktif = '1'
-						".$dumbQuery['refferences']."
-						".$dumbQuery['keyword']."
-						".$dumbQuery['provinsi' ]."
-						".$dumbQuery['wilayah'  ]."
-						".$dumbQuery['kecamatan']." 
-						".$dumbQuery['kelurahan']." 
-						 ORDER BY sort DESC
-					) as table_1
-					UNION
-					SELECT * FROM (
-						SELECT  
-							'Perubahan' as `group`,
-							l.`noRegistrasi` as id,
-							l.`noRegistrasi` as noreg,
-							l.`nama` as nama,
-							l.`noTelp` as telp,
-							l.`email` as email,
-							`username` as username,
-							namaProvinsi as np,
-							namaWilayah as nw,
-							namaKecamatan as nc,
-							namaKelurahan as nk,
-							namaBentukLembaga as nb,
-							CONCAT_WS(' ', l.`alamat`, 'RT.',l.`noRt`, '/', 'RW.', l.`noRw`, `namaKelurahan`, `namaKecamatan`, `namaWilayah`, `namaProvinsi`) as alamat,
-							COALESCE(`urlGambarLogo`, 'avatar-default.jpg') as picture,
-							l.createdDate as sort
-						FROM 
-							dplega_000_lembaga_temp l 
-						LEFT JOIN
-							dplega_100_provinsi p ON l.kodeProvinsi = p.idData
-						LEFT JOIN
-							dplega_101_wilayah w ON l.kodeWilayah = w.idData
-						LEFT JOIN
-							dplega_102_kecamatan kc ON l.kodeKecamatan = kc.idData
-						LEFT JOIN
-							dplega_103_kelurahan kl ON l.kodeKelurahan = kl.idData
-						JOIN
-							dplega_200_bentuklembaga bl ON l.kodeBentukLembaga = bl.kodeBentukLembaga
-						JOIN
-							dplega_910_user u ON l.noRegistrasi = u.noRegistrasi
-						WHERE 
-						l.statusAktif = '2'
-						".$dumbQuery['refferences']."
-						".$dumbQuery['keyword']."
-						".$dumbQuery['provinsi' ]."
-						".$dumbQuery['wilayah'  ]."
-						".$dumbQuery['kecamatan']." 
-						".$dumbQuery['kelurahan']." 
-						 ORDER BY sort DESC
-					) as table_2
-					UNION
-					SELECT * FROM (
-						SELECT  
-							'Valid' as `group`,
-							l.`noRegistrasi` as id,
-							l.`noRegistrasi` as noreg,
-							l.`nama` as nama,
-							l.`noTelp` as telp,
-							l.`email` as email,
-							`username` as username,
-							namaProvinsi as np,
-							namaWilayah as nw,
-							namaKecamatan as nc,
-							namaKelurahan as nk,
-							namaBentukLembaga as nb,
-							CONCAT_WS(' ', l.`alamat`, 'RT.',l.`noRt`, '/', 'RW.', l.`noRw`, `namaKelurahan`, `namaKecamatan`, `namaWilayah`, `namaProvinsi`) as alamat,
-							COALESCE(`urlGambarLogo`, 'avatar-default.jpg') as picture,
-							l.createdDate as sort
-						FROM 
-							dplega_000_lembaga l 
-						LEFT JOIN
-							dplega_100_provinsi p ON l.kodeProvinsi = p.idData
-						LEFT JOIN
-							dplega_101_wilayah w ON l.kodeWilayah = w.idData
-						LEFT JOIN
-							dplega_102_kecamatan kc ON l.kodeKecamatan = kc.idData
-						LEFT JOIN
-							dplega_103_kelurahan kl ON l.kodeKelurahan = kl.idData
-						JOIN
-							dplega_200_bentuklembaga bl ON l.kodeBentukLembaga = bl.kodeBentukLembaga
-						JOIN
-							dplega_910_user u ON l.noRegistrasi = u.noRegistrasi
-						WHERE 
-						l.statusAktif = '1'
-						".$dumbQuery['refferences']."
-						".$dumbQuery['keyword']."
-						".$dumbQuery['provinsi' ]."
-						".$dumbQuery['wilayah'  ]."
-						".$dumbQuery['kecamatan']." 
-						".$dumbQuery['kelurahan']." 
-						 ORDER BY sort DESC
-					) as table_3
-				";
-
-				$result = mysqli_query($gate, $sql);
-				if($result){
-					$package    = array();  
-					$packageDumb= array();  
-					$fetch 	    = array(); 
-					$dataDumb['Ajuan']		= array(); 
-					$dataDumb['Perubahan']	= array(); 
-					$dataDumb['Valid']		= array(); 
-				
-					if(mysqli_num_rows($result) > 0) {
-						// output data of each row 
-						while($row = mysqli_fetch_assoc($result)) {
-
-							$fetch = array(
-								"id"   		=> $row['id'],
-								"username" 	=> $row['username'],
-								"noreg" 	=> $row['noreg'],
-								"nama" 		=> $row['nama'],
-								"telp" 		=> $row['telp'],
-								"email"		=> $row['email'],
-								"alamat"	=> $row['alamat'],
-								"np"		=> $row['np'],
-								"nw"		=> $row['nw'],
-								"nc"		=> $row['nc'],
-								"nk"		=> $row['nk'],
-								"nb"		=> $row['nb'],
-								"picture"	=> $row['picture']
-							);
-							
-							array_push($dataDumb[$row['group']], $fetch); 
-							unset($fetch); $fetch = array();
-						}
-
-						array_push($packageDumb, array("group" => "Ajuan", "collapse" => "n", "list" => $dataDumb['Ajuan']));
-						array_push($packageDumb, array("group" => "Perubahan", "collapse" => "n", "list" => $dataDumb['Perubahan']));
-						array_push($packageDumb, array("group" => "Valid", "collapse" => "n", "list" => $dataDumb['Valid']));
-						
-						/*session fetch*/
-						$access1  = sessionFecth('kelembagaan');
-						$access2  = sessionFecth('verifikasi');
-						$options = array();
-
-						if($access1['lihat']  == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "view-card", "icon" => "search", "label" => "Lihat selengkapnya"));
-						// if($access1['lihat']  == '1') array_push($options, array("selector" => "download-card", "icon" => "download", "label" => "Unduh (.pdf)"));
-						if($access2['tambah'] == '1' || $access2['ubah']   == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "verification-card", "icon" => "check", "label" => "Verifikasi"));
-						if($access1['ubah']   == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "edit-card", "icon" => "pencil", "label" => "Ubah profil"));
-						if($access1['hapus']  == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "delete-card", "icon" => "trash", "label" => "Hapus lembaga"));
-						
-						$package = array(
-							"lembaga" => $packageDumb,
-							"option" => $options
-						);
-						
-						$resultList = array( "feedStatus" => "success", "feedMessage" => "Data ditemukan!", "feedData" => $package);
-					}else {
-						$resultList = array( "feedStatus" => "success", "feedMessage" => "Data tidak ditemukan!", "feedData" => array());
-					}
-				}			
+					$result = mysqli_query($gate, $sql);
+					if($result){
+						$package    = array();  
+						$packageDumb= array();  
+						$fetch 	    = array(); 
+						$dataDumb['Ajuan']		= array(); 
+						$dataDumb['Perubahan']	= array(); 
+						$dataDumb['Valid']		= array(); 
 					
-				closeGate($gate);
+						if(mysqli_num_rows($result) > 0) {
+							// output data of each row 
+							while($row = mysqli_fetch_assoc($result)) {
+
+								$fetch = array(
+									"id"   		=> $row['id'],
+									"username" 	=> $row['username'],
+									"noreg" 	=> $row['noreg'],
+									"nama" 		=> $row['nama'],
+									"telp" 		=> $row['telp'],
+									"email"		=> $row['email'],
+									"alamat"	=> $row['alamat'],
+									"np"		=> $row['np'],
+									"nw"		=> $row['nw'],
+									"nc"		=> $row['nc'],
+									"nk"		=> $row['nk'],
+									"nb"		=> $row['nb'],
+									"picture"	=> $row['picture']
+								);
+								
+								array_push($dataDumb[$row['group']], $fetch); 
+								unset($fetch); $fetch = array();
+							}
+
+						
+							
+							$resultList = array( "feedStatus" => "success", "feedMessage" => "Data ditemukan!", "feedData" => $package);
+						}else {
+							$resultList = array( "feedStatus" => "success", "feedMessage" => "Data tidak ditemukan!", "feedData" => array());
+						}
+						closeGate($gate);
+					}			
+				}
 			}else {
 				//error state
 				$error		= 1;
@@ -3111,7 +2937,7 @@
 		return $json;
 	}
 
-	function legalitasByBentukLembaga($data){
+	function persyaratanByBentukLembaga($data){
 		/* initial condition */
 		$resultList = array();
 		$table 		= "";

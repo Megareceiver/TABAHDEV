@@ -69,11 +69,12 @@ function r_navigateTo(index, packet, access) {
 			case 13 : r_f1VerifikasiLembaga(packet);	break;
 			case 15 : r_f1FormProposal(packet);			break;
 			
-			case 3  : r_f3Autentikasi(); 				break;
+			case 3  : r_f3Anggota(); 					break;
 			case 31 : r_f3FormUser(packet);				break;
 			
 			case 4  : r_f4Pengaturan();					break;
-			case 41 : r_f4LingkupArea();				break;
+			case 41 : r_f4TimWilayah();					break;
+			case 410: r_f4AnggotaTimWilayah(packet);	break;
 			case 411: r_f4TransferLembaga();			break;
 			
 			case 42 : r_f4DaftarPersyaratan();			break;
@@ -332,19 +333,18 @@ function r_customCallBack(formType, group, target, recentId, formId, pId){
 			}
 		break;
 		case 'f4': //megan
+
 			switch(target){
-				case 'f411':
+				case 'f401':
+
 					dataFec = [{ 
 							'idData' 		: recentId, 
-							'noreg'	 		: $('#f-provinsi-create input[name="kode"]').val(), 
-							'caption'		: $('#f-provinsi-create input[name="nama"]').val(),
-							'references' 	: '',
-							'referencesKey' : ''
+							'namaTim'		: $('#f-timWilayah-create input[name="nama"]').val(),
 					}];
-					
-					r_f4LingkupAreaDataGenerator(formType, 'provinsi', dataFec, 'section-Provinsi');
-					clearTargetForm('f-provinsi-create');
-					p_formHandler("f-provinsi-create" , "addData");
+				
+					r_f4TimWilayahDataGenerator(formType, dataFec);
+					clearTargetForm('f-timWilayah-create');
+					p_formHandler("f-timWilayah-create" , "addData");
 				break;
 				case 'f412':
 					dataFec = [{ 
@@ -1596,6 +1596,8 @@ function profile_look_reader(){	return String(r_getCookie('TABAH_profile_look'))
 function news_look_set(id){ r_setCookie('TABAH_news_look', id, 1); }
 function news_look_reader(){ return String(r_getCookie('TABAH_news_look'));}
 
+function tim_look_set(id){ r_setCookie('TABAH_tim_look', id, 1); }
+function tim_look_reader(){	return String(r_getCookie('TABAH_tim_look'));}
 // function r_initCookie(){
 	//r_setCookie('TABAH_profile_look', '', 1);
 // }

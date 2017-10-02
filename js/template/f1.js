@@ -714,8 +714,8 @@ function r_f1FormProposal(packet){
 		]; 
 
 		//get list all list lembaga { WARNING:: it might be make it slower}
-		dataAllLembaga	= p_getData('f1','f11101');
-		dataAllLembaga	= lembagaFetchArray(dataAllLembaga.feedData);
+		// dataAllLembaga	= p_getData('f1','f11101');
+		// dataAllLembaga	= lembagaFetchArray(dataAllLembaga.feedData);
 		//--open
 		head	= 
 		'<div class="row head">' +

@@ -1,6 +1,6 @@
 //F3 AUTHENTICATION
 //=====================================
-function r_f3Autentikasi() {
+function r_f3Anggota() {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
@@ -190,7 +190,7 @@ function r_f3Autentikasi() {
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(4, 'Autentikasi'));
+		headPage.html(r_headPageHtml(4, 'Anggota'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		
 		var ul = r_getCookie('TABAH_userLevel');
