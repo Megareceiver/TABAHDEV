@@ -8,63 +8,31 @@ function r_f1Proposal() {
 		body  	= '';
 		part	= ['',''];
 		content = '';
-		data 	= p_getData('f4', 'f431');
-		data 	= data.feedData; 
 		
 		//--open
 		head	= '';
 		body	= '<div class="row no-head"><div class="container">';
-		part[0] = '<div class="col-md-4 hidden-xs hidden-sm">';
 		part[1] = '<div class="col-md-6 col-md-offset-1">';
-		
-		part[0] = part[0] +
-		'<div class="cards-label">' +
-			'<p><strong>Rekapitulasi data</strong></p>' +
-			'<p>menunjukan kalkulasi data lembaga yang sudah diverifikasi.</p>' +
-		'</div>' +
-		'<div class="space-box"></div>';
 		
 		part[1] = part[1] +
 		'<div class="cards title">' +
 			'<div class="cards-header">' +
-				'<h4>Bentuk Lembaga</h4>' +
-				'<p>daftar lembaga berdasarkan pengelompokan bentuk lembaga.</p>' +
+				'<h4>Proposal</h4>' +
+				'<p>Proposal dielompokan berdasarkan statusnya.</p>' +
 				'<div class="btn-collapse right">' +
 					'<button class="clear" type="button"><span class="fa fa-refresh"></span></button>' +
 				'</div>' +
 			'</div>' +
 		'</div>';
-		
-		//--render data
-		for(var loop = 0; loop < data.length; loop++){
-			//--left
-			part[0] = part[0] +
-			'<div class="cards">' +
-				'<div class="cards-header">' +
-					'<p class="fixed offset text-black">' + data[loop].caption + '</p>' +
-					'<div class="btn-collapse right">' +
-						'<span id="counter-select">' + (parseInt(data[loop].ajuan) + parseInt(data[loop].valid)) + '</span>' +
-					'</div>' +
-				'</div>' +
-			'</div>';
+
+		part[1] = part[1] +
+		'<div class="cards clear">' +
+			'<div class="description-box click-frame group-click">' +
+				'<img class="icon-set" src="img/sources/icon-1.png"/>' +
+				'<p class="title-set">Proposal Awal</p>' +
+			'</div>' +
+		'</div>';
 			
-			//--right
-			var placeImg = data[loop].noreg;
-				placeImg = placeImg.substr((placeImg.length-1), 1);
-			var temPic = ((data[loop].picture != null && data[loop].picture != '') ? data[loop].picture : 'icon-'+placeImg+'.png');
-			part[1] = part[1] +
-			'<div class="cards clear">' +
-				'<div class="description-box click-frame group-click" p-id="' + data[loop].noreg + '" p-caption="' + data[loop].caption + '">' +
-					'<img class="icon-set" src="img/sources/' + temPic + '"/>' +
-					'<p class="title-set">' + data[loop].caption + '</p>' +
-					'<p class="text-set">' + data[loop].description + '</p>' +
-				'</div>' +
-			'</div>';
-			
-			mop = "";
-		}
-		
-		part[0] = part[0] + '</div-->';
 		part[1] = part[1] + '</div>';
 		body	= body 	  + part[1] + part[0] + '</div></div>';
 		content = '<section id="kelembagaan">' + head + body + '</section>';
