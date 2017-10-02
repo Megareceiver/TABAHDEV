@@ -1,4 +1,4 @@
-/* UI DPLEGA JS */
+/* UI DPLEGA JS *//**/
 /*-- public declare*/
 var headHome 			= $('header.main');
 var headPage 			= $('header.parent');
