@@ -17,16 +17,16 @@
 			if($dataRes->feedStatus == "success"){	
 				$feedData = $dataRes->feedId;
 
-				$_SESSION["login"] 			= $feedData->login;
-				$_SESSION["noRegistrasi"] 	= $feedData->noRegistrasi;
-				$_SESSION["username"] 		= $feedData->username;
-				$_SESSION["nama"] 			= $feedData->nama;
-				$_SESSION["userLevel"] 		= $feedData->userLevel;
-				$_SESSION["urlGambar"] 		= $feedData->avatar;
-				$_SESSION["lingkupArea"] 	= $feedData->lingkupArea;
-				$_SESSION["idBatasArea"] 	= $feedData->idBatasArea;
-				$_SESSION["statusActive"] 	= $feedData->statusActive;
-				$_SESSION["accessList"] 	= $feedData->accessList;
+				$_SESSION["TABAH_login"] 			= $feedData->login;
+				$_SESSION["TABAH_noRegistrasi"] 	= $feedData->noRegistrasi;
+				$_SESSION["TABAH_username"] 		= $feedData->username;
+				$_SESSION["TABAH_nama"] 			= $feedData->nama;
+				$_SESSION["TABAH_userLevel"] 		= $feedData->userLevel;
+				$_SESSION["TABAH_urlGambar"] 		= $feedData->avatar;
+				$_SESSION["TABAH_lingkupArea"] 	= $feedData->lingkupArea;
+				$_SESSION["TABAH_idBatasArea"] 	= $feedData->idBatasArea;
+				$_SESSION["TABAH_statusActive"] 	= $feedData->statusActive;
+				$_SESSION["TABAH_accessList"] 	= $feedData->accessList;
 
 				$resultList = $dataRes;
 			}
@@ -94,19 +94,19 @@
 		$json = array( "status" => "failed");
 
 		// remove all session variables		
-		unset($_SESSION["nama"]);
-		unset($_SESSION["username"]);
-		unset($_SESSION["userLevel"]);
-		unset($_SESSION["urlGambar"]);
+		unset($_SESSION["TABAH_nama"]);
+		unset($_SESSION["TABAH_username"]);
+		unset($_SESSION["TABAH_userLevel"]);
+		unset($_SESSION["TABAH_urlGambar"]);
 
-		unset($_SESSION["login"]); 
-		unset($_SESSION["noRegistrasi"]);
-		unset($_SESSION["username"]);
-		unset($_SESSION["nama"]);
-		unset($_SESSION["userLevel"]);
-		unset($_SESSION["urlGambar"]);
-		unset($_SESSION["statusActive"]);
-		unset($_SESSION["accessList"]);
+		unset($_SESSION["TABAH_login"]); 
+		unset($_SESSION["TABAH_noRegistrasi"]);
+		unset($_SESSION["TABAH_username"]);
+		unset($_SESSION["TABAH_nama"]);
+		unset($_SESSION["TABAH_userLevel"]);
+		unset($_SESSION["TABAH_urlGambar"]);
+		unset($_SESSION["TABAH_statusActive"]);
+		unset($_SESSION["TABAH_accessList"]);
 		
 		if(session_destroy()){ $json = array( "feedStatus" => "success"); } 		
 		
