@@ -220,7 +220,7 @@ function r_f1ProposalGenerator(data = null){
 			'<div id="' + data[loop].idData + '" class="cards clear">' +
 				'<div class="description-box">' +
 					'<div class="click-frame">' +
-						'<img class="icon-set" src=""/>' +
+						'<div class="icon-set bg-sky"><span class="fa fa-file-text-o"></span></div>' +
 						'<p class="title-set">' + data[loop].namaLembaga + '</p>' +
 						'<div class="text-set">' +
 							'<span class="id-set">' + data[loop].noRegistrasi + '</span>' +
@@ -240,11 +240,11 @@ function r_f1ProposalGenerator(data = null){
 						'<div class="col-md-6">' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
-								'<p class="list-text"></p>' +
+								'<p class="list-text">' + data[loop].noTelp + '</p>' +
 							'</div>' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
-								'<p class="list-text"></p>' +
+								'<p class="list-text">' + data[loop].email + '</p>' +
 							'</div>' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
@@ -254,15 +254,15 @@ function r_f1ProposalGenerator(data = null){
 						'<div class="col-md-6">' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-flag"></span></div>' +
-								'<p class="list-text"></p>' +
+								'<p class="list-text">' + data[loop].tujuan + '</p>' +
 							'</div>' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-tag"></span></div>' +
-								'<p class="list-text"></p>' +
+								'<p class="list-text">' + data[loop].latarBelakang + '</p>' +
 							'</div>' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-money"></span></div>' +
-								'<p class="list-text"></p>' +
+								'<p class="list-text">' + data[loop].nominal + '</p>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +

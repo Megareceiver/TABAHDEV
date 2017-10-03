@@ -272,6 +272,8 @@
 									"idData"   		=> $row['idData'],
 									"noRegistrasi" 	=> $row['noRegistrasi'],
 									"namaLembaga" 	=> $dataResult[$counter]->nama,
+									"noTelp" 		=> $dataResult[$counter]->noTelp,
+									"email" 		=> $dataResult[$counter]->email,
 									"tujuan" 		=> $row['tujuan'],
 									"latarBelakang" => $row['latarBelakang'],
 									"nominal" 		=> 'Rp. '.number_format($row['nominal']),
