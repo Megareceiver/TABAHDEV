@@ -89,14 +89,14 @@ function r_f3Anggota() {
 		var tempL 	= "";
 		var tempH 	= "";
 		var placeImg= "";
-		
+		console.log(data);
 		if(data!= null && data.length != 0){
 			for(var loop = 0; loop < data.length; loop++){	
 				placeImg 	= (data[loop].noreg != "") ? data[loop].noreg : data[loop].id;
 				placeImg 	= placeImg.substr((placeImg.length-1), 1);
 
 				tempL	 	= (data[loop].noreg != "") ? 'Lembaga :: ' : '';
-				temPic   	= (data[loop].picture != "" && data[loop].picture != null) ? 'img/logo/' + data[loop].picture : 'img/logo/avatar-' + placeImg + '.jpg';
+				temPic   	= (data[loop].picture != "" && data[loop].picture != null) ? 'img/avatar/' + data[loop].picture : 'img/avatar/avatar-' + placeImg + '.jpg';
 				
 
 				if(tempH != data[loop].userLevel){
@@ -119,60 +119,8 @@ function r_f3Anggota() {
 								'<span class="desc-text">' + data[loop].email + '</span>' +
 							'</div>' +
 						'</div>' +
-						'<button class="click-option btn-set toggle-click clear" toggle-target="' + data[loop].id + '-group" type="button"><span class="fa fa-chevron-down"></span></button>' +
 					'</div>' +
 				'</div>';
-				
-				if(data[loop].access != null){
-					//-- access list
-					tempP = "";
-					for(var loopY = 0; loopY < data[loop].access.length; loopY++){
-						tempPR = "";
-						if(loopY ==  (data[loop].access.length - 1)) { tempP = "flush"; }
-						if(loopY ==  (data[loop].access.length - 1) && data[loop].userLevel == '1') { tempPR = "flush"; }
-						
-						switch(data[loop].access[loopY].status){
-							case "0"	 : tempR = ""; break;
-							case "1"	 : tempR = "checked"; break;
-							default		 : tempR = ""; break;
-						}
-						
-						part[1] = part[1] +
-						'<div class="cards toggle-content ' + data[loop].id + '-group ' + tempPR + '">' +
-							'<div class="list-box clear">' +
-								'<p class="list-text ' + data[loop].access[loopY].type + '">' + data[loop].access[loopY].label + '</p>' +
-								'<div class="switch-box clear fixed-position right">' +
-									'<input id="' + data[loop].access[loopY].id + '" pId="' + data[loop].username + '" class="userActivator" type="checkbox" ' + tempR + ' />' +
-									'<label for="' + data[loop].access[loopY].id + '"></label>' +
-								'</div>' +
-							'</div>' +
-						'</div>';
-
-						if(loopY ==  (data[loop].access.length - 1) && data[loop].userLevel != '1') { 
-							part[1] = part[1] + 
-							'<div class="cards ' + tempP + ' toggle-content ' + data[loop].id + '-group">' +
-								'<div class="list-box clear">' +
-									'<p class="list-text">';
-
-										part[1] = part[1] + 
-										'<span class="click text-cyan" id="' + data[loop].id  + '-group-edit"' +
-											'p-referencesKey="' + data[loop].username + '"' +
-											'p-container	="' + data[loop].id + '-group">Ubah</span> &nbsp; | &nbsp;'
-
-										part[1] = part[1] + 
-										'<span class="click text-pink"id="' + data[loop].id  + '-group-hapus"' +
-											'p-label		="' + data[loop].nama + '"' + 
-											'p-id			="' + data[loop].username+ '"' +
-											'p-referencesKey=""' +
-											'p-group		="f3"' + 
-											'p-target		="f31"' +
-											'p-container	="' + data[loop].id + '-group">Hapus</span>' +
-									'</p>' +
-								'</div>' +
-							'</div>';
-						}
-					}
-				}
 			}
 		}else{
 			part[1] = part[1] +
@@ -266,73 +214,6 @@ function r_f3FormUser(packet) {
 		body  	= '';
 		part	= ['','','',''];
 		content = '';
-		
-		// dataAccess = [
-		// 	{
-		// 		'module': 'kelembagaan', 'group': "Kelembagaan", "list": 
-		// 		[
-		// 			{"id": "kelembagaan-lihat", "state": "checked='checked'"},
-		// 			{"id": "kelembagaan-tambah", "state": ""},
-		// 			{"id": "kelembagaan-ubah", "state": ""},
-		// 			{"id": "kelembagaan-hapus", "state": ""},
-		// 		]
-		// 	},
-		// 	{
-		// 		'module': 'lingkupArea', 'group': "Lingkup Area", "list": 
-		// 		[
-		// 			{"id": "lingkupArea-lihat", "state": ""},
-		// 			{"id": "lingkupArea-tambah", "state": ""},
-		// 			{"id": "lingkupArea-ubah", "state": ""},
-		// 			{"id": "lingkupArea-hapus", "state": ""},
-		// 		]
-		// 	},
-		// 	{
-		// 		'module': 'pengaturanKelembagaan', 'group': "Pengaturan kelembagaan", "list": 
-		// 		[
-		// 			{"id": "pengaturanKelembagaan-lihat", "state": ""},
-		// 			{"id": "pengaturanKelembagaan-tambah", "state": ""},
-		// 			{"id": "pengaturanKelembagaan-ubah", "state": ""},
-		// 			{"id": "pengaturanKelembagaan-hapus", "state": ""},
-		// 		]
-		// 	},
-		// 	{
-		// 		'module': 'pengaturanVerifikasi', 'group': "Pengaturan verifikasi", "list": 
-		// 		[
-		// 			{"id": "pengaturanVerifikasi-lihat", "state": ""},
-		// 			{"id": "pengaturanVerifikasi-tambah", "state": ""},
-		// 			{"id": "pengaturanVerifikasi-ubah", "state": ""},
-		// 			{"id": "pengaturanVerifikasi-hapus", "state": ""},
-		// 		]
-		// 	},
-		// 	{
-		// 		'module': 'berita', 'group': "Berita", "list": 
-		// 		[
-		// 			{"id": "berita-lihat", "state": ""},
-		// 			{"id": "berita-tambah", "state": ""},
-		// 			{"id": "berita-ubah", "state": ""},
-		// 			{"id": "berita-hapus", "state": ""},
-		// 		]
-		// 	},
-		// 	{
-		// 		'module': 'konfigurasi', 'group': "Konfigurasi & pemeliharaan aplikasi", "list": 
-		// 		[
-		// 			{"id": "konfigurasi-lihat", "state": ""},
-		// 			{"id": "konfigurasi-tambah", "state": ""},
-		// 			{"id": "konfigurasi-ubah", "state": ""},
-		// 			{"id": "konfigurasi-hapus", "state": ""},
-		// 		]
-		// 	},
-		// 	{
-		// 		'module': 'verifikasi', 'group': "Verifikasi lembaga", "list": 
-		// 		[
-		// 			{"id": "verifikasi-lihat", "state": ""},
-		// 			{"id": "verifikasi-tambah", "state": ""},
-		// 			{"id": "verifikasi-ubah", "state": ""},
-		// 			{"id": "verifikasi-hapus", "state": ""},
-		// 		]
-		// 	}
-
-		// ];
 
 		//Cookie set
 		if(packet == undefined || packet == "" || packet == null || packet == "start"){
@@ -480,62 +361,7 @@ function r_f3FormUser(packet) {
 						'<div class="empty-box flush"></div>' +
 					'</div>' +
 				'</div>' +
-			'</div>' ;/*+
-			'<div class="cards">' +
-				'<div class="row default">' +
-					'<div class="col-md-4">' +
-						'<div class="input-box">' +
-							'<p>Pengaturan akses untuk setiap user.</p>' +
-							'<p><b>Akses menu</b> &nbsp; <span class="click text-pink" id="selectAll">Pilih semua</span></p>' +
-						'</div>' +
-					'</div>' +
-					'<div class="col-md-2 col-xs-3">' +
-						'<div class="input-box">' +
-							'<p><b>Lihat</b></p>' +
-						'</div>' +
-					'</div>' +
-					'<div class="col-md-2 col-xs-3">' +
-						'<div class="input-box">' +
-							'<p><b>Tambah</b></p>' +
-						'</div>' +
-					'</div>' +
-					'<div class="col-md-2 col-xs-3">' +
-						'<div class="input-box">' +
-							'<p><b>Ubah</b></p>' +
-						'</div>' +
-					'</div>' +
-					'<div class="col-md-2 col-xs-3">' +
-						'<div class="input-box">' +
-							'<p><b>Hapus</b></p>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>';
-
-		for(loop=0; loop<dataAccess.length; loop++){
-			body = body + 
-			'<div class="cards">' +
-				'<div class="row default">' +
-					'<div class="col-md-4">' +
-						'<div class="input-box">' +
-							'<p>' + dataAccess[loop].group + '</p>' +
-					  		'<input name="module[]" value="' + dataAccess[loop].module + '" type="hidden">' +
-						'</div>' +
-					'</div>';
-			for(loopY=0; loopY<dataAccess[loop].list.length; loopY++){		
-				body = body + 
-				'<div class="col-md-2 col-xs-3">' +
-					'<div class="check-box">' +
-					  '<input id="' + dataAccess[loop].list[loopY].id + '" name="' + dataAccess[loop].list[loopY].id + '" value="1" type="checkbox" ' + dataAccess[loop].list[loopY].state + '>' +
-					  '<label for="' + dataAccess[loop].list[loopY].id + '"><span class="inner"></span><span class="icon"></span></label>' +
-					'</div>' +
-				'</div>';
-			}
-
-			body = body + 		
-				'</div>' +
-			'</div>';
-		}*/
+			'</div>' ;
 
 		body	= body + '</form></div></div></div>';
 		content = '<section id="">' + head + body + '</section>';
@@ -580,23 +406,6 @@ function r_f3FormUser(packet) {
 			});
 		});
 
-		// $('#selectAll').click(function(event) {
-		//   	if($(this).html() == "Pilih semua"){
-		// 	     // Iterate each checkbox
-		// 	     $(':checkbox').each(function() {
-		// 	          this.checked = true;
-		// 	     });
-
-		// 	     $(this).html("Bersihkan");
-		//   	}
-		//   	else {
-		// 	    $(':checkbox').each(function() {
-		// 	          this.checked = false;
-		// 	     });
-		// 	    $(this).html("Pilih semua");
-		//   	}
-		// });
-
 		dataTemp  	= p_getData('f4', 'f40', '');
 		sData 	    = dataTemp.feedData;
 		sDetailData = dataTemp.feedDataDetail;
@@ -607,12 +416,9 @@ function r_f3FormUser(packet) {
 				var temp  = sData;
 				var tempD = sDetailData;
 				
-				// if 	   ($(this).val() == '3') { temp = sData.provinsi; 	tempD = sDetailData.provinsi; }
-				// else if($(this).val() == '2') { temp = sData.wilayah; 	tempD = sDetailData.wilayah; }
-				// else if($(this).val() == '1') { temp = sData.kecamatan; tempD = sDetailData.kecamatan; }
-				if 	   ($(this).val() == '3') { temp = sData.provinsi; }
-				else if($(this).val() == '2') { temp = sData.wilayah; }
-				else if($(this).val() == '1') { temp = sData.kecamatan; }
+				if 	   ($(this).val() == '3') { temp = sData.provinsi; 	tempD = sDetailData.provinsi; }
+				else if($(this).val() == '2') { temp = sData.wilayah; 	tempD = sDetailData.wilayah; }
+				else if($(this).val() == '1') { temp = sData.kecamatan; tempD = sDetailData.kecamatan; }
 				autoCompleteActivator("batasArea", temp, tempD, "batasArea");
 			}else{
 				$("#batasArea").autocomplete("destroy");
@@ -625,8 +431,6 @@ function r_f3FormUser(packet) {
 
 		//autocomplete
 		autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
-		console.log(sourcesData);
-		// autoCompleteActivator("batasWilayah", sourcesWilayah, sourcesWilayahDetail, "batasWilayah");
 		
 		//form reactor
 		p_formHandler("f-user-create" , "addData");
@@ -680,16 +484,6 @@ function r_f3FormUserDataGenerator(packet){
 	}
 
 	$(':checkbox').each(function() { this.checked = false; });
-
-	// var state = 0;
-	// for(loop=0; loop<data.access.length; loop++){
-	// 	if(data.access[loop].lihat == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-lihat]').prop('checked', true);}
-	// 	if(data.access[loop].tambah == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-tambah]').prop('checked', true);}
-	// 	if(data.access[loop].ubah == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-ubah]').prop('checked', true);}
-	// 	if(data.access[loop].hapus == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-hapus]').prop('checked', true);}
-	// }
-
-	// if(state > 0) {$('#selectAll').html("Bersihkan");}
 
 	//form reactor
 	p_formHandler("f-user-create" , "updateData");
