@@ -56,20 +56,20 @@
 			// connection = true
 			/* AUTHENTICATION */
 			if(
-				   isset($_SESSION['login']) && $_SESSION['login'] == "yes" 
-				&& isset($_SESSION['userLevel']) && $_SESSION['userLevel'] != "7"){
-				switch ($_SESSION['lingkupArea']) {
+				   isset($_SESSION['TABAH_login']) && $_SESSION['TABAH_login'] == "yes" 
+				&& isset($_SESSION['TABAH_userLevel']) && $_SESSION['TABAH_userLevel'] != "7"){
+				switch ($_SESSION['TABAH_lingkupArea']) {
 					case '3': $dumbFieldS = "kodeProvinsi"; break;
 					case '2': $dumbFieldS = "kodeWilayah"; break;
 					case '1': $dumbFieldS = "kodeKecamatan"; break;
 					default: break;
 				}
 
-				$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
+				$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['TABAH_idBatasArea']."'" : '';
 			}
 			/* AUTHENTICATION END */
 
-			$sql = "SELECT * FROM dplega_910_user WHERE username != 'admin' AND userLevel != '".$_SESSION['userLevel']."' ".$dumbQueryS." ORDER BY userLevel DESC, nama ASC";
+			$sql = "SELECT * FROM dplega_910_user WHERE username != 'admin' AND userLevel != '".$_SESSION['TABAH_userLevel']."' ".$dumbQueryS." ORDER BY userLevel DESC, nama ASC";
 					
 			$result = mysqli_query($gate, $sql);
 			if($result){
@@ -358,7 +358,7 @@
 		$errorType  = "";
 		$errorMsg	= "";
 		$dumbTable  = "";
-		$username 	= $_SESSION['username'];
+		$username 	= $_SESSION['TABAH_username'];
 
 		/* open connection */ 
 		$gate = openGate();
@@ -483,7 +483,7 @@
 		$errorType  = "";
 		$errorMsg	= "";
 		$dumbTable  = "";
-		$username 	= $_SESSION['username'];
+		$username 	= $_SESSION['TABAH_username'];
 		$unReadData	 = array();
 		$unReadData2 = array();
 		$collectData = array();
@@ -635,7 +635,7 @@
 		
 		return $json;
 	}
-
+	
 	function createUserSection($target, $data){
 		/* initial condition */
 		$resultList = array();
@@ -710,7 +710,7 @@
 							'".$data['lingkupArea']."',
 							'".$data['idBatasArea']."',
 							'1',
-							'".$_SESSION['username']."',NOW()
+							'".$_SESSION['TABAH_username']."',NOW()
 						)
 					";
 
@@ -792,7 +792,7 @@
 										'".$tambah."',
 										'".$ubah."',
 										'".$hapus."',
-										'".$_SESSION['username']."',NOW()
+										'".$_SESSION['TABAH_username']."',NOW()
 									);
 								";
 
@@ -946,7 +946,7 @@
 								lingkupArea			= '".$data['lingkupArea']."',
 								userLevel			= '".$data['userLevel']."',
 								".$dumbQuery."
-								changedBy 			= '".$_SESSION['username']."',
+								changedBy 			= '".$_SESSION['TABAH_username']."',
 								changedDate			= NOW()
 							
 							WHERE
@@ -1041,7 +1041,7 @@
 												tambah = '".$tambah."',
 												ubah = '".$ubah."',
 												hapus = '".$hapus."',
-												changedBy = '".$_SESSION['username']."',
+												changedBy = '".$_SESSION['TABAH_username']."',
 												changedDate = NOW()
 											WHERE
 												username = '".$username."'
@@ -1069,7 +1069,7 @@
 												'".$tambah."',
 												'".$ubah."',
 												'".$hapus."',
-												'".$_SESSION['username']."',NOW()
+												'".$_SESSION['TABAH_username']."',NOW()
 											);
 										";
 									}
@@ -1153,7 +1153,7 @@
 			// connection = true
 				//checking section
 
-				$username = $_SESSION['username'];
+				$username = $_SESSION['TABAH_username'];
 				$sql 	= " SELECT username FROM dplega_910_user WHERE username = '".$username."'";
 				$result = mysqli_query($gate, $sql);
 				if(mysqli_num_rows($result) <= 0) {
@@ -1310,7 +1310,7 @@
 				$gate = openGate();
 				if($gate){
 				// connection = true
-					$username = $_SESSION['username'];
+					$username = $_SESSION['TABAH_username'];
 					$sql 	= " SELECT username FROM dplega_910_user WHERE username = '".$username."' AND password = md5('".$data['oldPassword']."')";
 					$result = mysqli_query($gate, $sql);
 					if(mysqli_num_rows($result) <= 0) {
@@ -1415,7 +1415,7 @@
 					"	UPDATE dplega_910_user
 						SET
 							statusActive		= '".$data['refferenceId']."',
-							changedBy 			= '".$_SESSION['username']."',
+							changedBy 			= '".$_SESSION['TABAH_username']."',
 							changedDate			= NOW()
 						
 						WHERE
@@ -1432,7 +1432,7 @@
 						"	UPDATE dplega_911_useraccess
 							SET
 								statusAktif 		= '".$data['refferenceId']."',
-								changedBy 			= '".$_SESSION['username']."',
+								changedBy 			= '".$_SESSION['TABAH_username']."',
 								changedDate			= NOW()
 							
 							WHERE

@@ -75,12 +75,12 @@
 		$error = 1; 
 		if (session_status() == PHP_SESSION_NONE) {session_start();} // session start
 
-		if(isset($_SESSION['login']) && $_SESSION['login'] == "yes") $error = 0;
+		if(isset($_SESSION['TABAH_login']) && $_SESSION['TABAH_login'] == "yes") $error = 0;
 		if($accessLevel != ''){
 			$error = 1;
 			$temp  = is_array($accessLevel) ? $accessLevel : explode(',',$accessLevel);
 			 foreach($temp as $level){
-				if(isset($_SESSION['userLevel']) && $_SESSION['userLevel'] == $level) $error = 0;
+				if(isset($_SESSION['TABAH_userLevel']) && $_SESSION['TABAH_userLevel'] == $level) $error = 0;
 			}
 		}
 		
