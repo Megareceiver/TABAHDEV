@@ -196,7 +196,7 @@ function r_f4TimWilayah() {
 				'<div class="row default">' +
 					'<div class="col-xs-12">' +
 						'<div class="list-box text-center clear">' +
-							'<p class="list-text">Data tidak ditemukan</p>' +
+							'<p class="list-text">Data tidak ditemukan.</p>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -326,11 +326,12 @@ function r_f4AnggotaTimWilayah(packet) {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
-		head  	= '';
-		body  	= '';
-		part	= ['','','',''];
-		content = '';
-		counter = 0;
+		head  		= '';
+		body  		= '';
+		part		= ['','','',''];
+		content 	= '';
+		counter 	= 0;
+		anggotaHtml	= '';
 
 		if(packet[0] == undefined || packet == "" || packet == null || packet == "start"){
 			packet = tim_look_reader();
@@ -341,9 +342,7 @@ function r_f4AnggotaTimWilayah(packet) {
 		packet 		= packet[0];
 
 		tim_look_set(packet + "::" + packetLabel);
-
-		data = p_getData('f4', 'f410', packet);
-		data = data.feedData;
+		// data = p_getData('f4', 'f410', packet);
 		optionBatch = r_f4OptionList(410); 
 		
 		//--open
@@ -355,7 +354,7 @@ function r_f4AnggotaTimWilayah(packet) {
 		
 		//-- fill part
 		//-- Provinsi ==========================================================================
-		if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
+		// if(r_getCookie('lingkupAreaTambah') == '1' || r_getCookie('lingkupAreaUbah') == '1'){
 			part[0] = part[0] +
 			'<form id="f-anggotaTimWilayah-create" f-group = "f4" f-target = "f410">' +
 				'<div class="cards">' +
@@ -375,14 +374,14 @@ function r_f4AnggotaTimWilayah(packet) {
 								'<input name="idTim" tabindex="1" type="hidden" value="' + packet + '" />' +
 								'<select tabindex="1" name="idWilayah">' +
 									'<option value="" selected>Pilih Wilayah (*)</option>' +
-									r_optionDHtml('wilayahSpecial') +
+									r_optionDHtml('anggotaWilayah') +
 								'</select>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
 			'</form>';
-		}
+		// }
 		
 		if(data != null && data.length > 0){
 			for(var loop = 0; loop < data.length; loop++){
@@ -414,7 +413,7 @@ function r_f4AnggotaTimWilayah(packet) {
 				'<div class="row default">' +
 					'<div class="col-xs-12">' +
 						'<div class="list-box text-center clear">' +
-							'<p class="list-text">Data tidak ditemukan</p>' +
+							'<p class="list-text">Data tidak ditemukan.</p>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -435,7 +434,7 @@ function r_f4AnggotaTimWilayah(packet) {
 		$("#preload").remove();
 		
 		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(400); });
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(41); });
 		$(".click-option").unbind().on("click", function(){ 
 			//packet session
 			clearPacket();
