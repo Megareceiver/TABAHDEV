@@ -589,16 +589,16 @@
 
 				/* AUTHENTICATION */
 				if(
-					   isset($_SESSION['login']) && $_SESSION['login'] == "yes" 
-					&& isset($_SESSION['userLevel']) && $_SESSION['userLevel'] != "7"){
-					switch ($_SESSION['lingkupArea']) {
+					   isset($_SESSION['TABAH_login']) && $_SESSION['TABAH_login'] == "yes" 
+					&& isset($_SESSION['TABAH_userLevel']) && $_SESSION['TABAH_userLevel'] != "7"){
+					switch ($_SESSION['TABAH_lingkupArea']) {
 						case '3': $dumbFieldS = "kodeProvinsi"; break;
 						case '2': $dumbFieldS = "kodeWilayah"; break;
 						case '1': $dumbFieldS = "kodeKecamatan"; break;
 						default: break;
 					}
 
-					$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
+					$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['TABAH_idBatasArea']."'" : '';
 				}
 				/* AUTHENTICATION END */
 
@@ -716,6 +716,7 @@
 		
 		switch($target){
 			case "f401": $resultList = createTimWilayahSection($target, $data); break;
+			case "f410": $resultList = createAnggotaWilayahSection($target, $data); break;
 			
 			case "f421": $resultList = createVerifikasiSection($target, $data); break;
 			case "f422": $resultList = createVerifikasiSection($target, $data); break;
@@ -766,7 +767,7 @@
 					VALUES
 					(
 						'".$data['nama']."',
-						'".$_SESSION['username']."', NOW()
+						'".$_SESSION['TABAH_username']."', NOW()
 					)
 				";
 
@@ -810,6 +811,82 @@
 		return $json;
 	}
 	
+	function createAnggotaWilayahSection($target, $data){
+		/* initial condition */
+		$resultList = array();
+		$table 		= "";
+		$field 		= array();
+		$rows		= 0;
+		$condition 	= "";
+		$orderBy	= "";
+		$error		= 0;
+		$resultType = "";
+		$resultMsg	= "";
+		$counter	= "";
+		$recentId	= "";
+		
+		/* validation */
+		if(!isset($data['id']) || $data['id']==""){ $error = 1; }
+			
+		if($error != 1){
+			
+			/* open connection */ 
+			$gate = openGate();
+			if($gate){		
+				// connection = true
+				$sql = 	
+				" 	INSERT INTO tabah_100_timwilayah
+					(
+						namaTim,
+						createdBy, createdDate
+					)
+					VALUES
+					(
+						'".$data['nama']."',
+						'".$_SESSION['TABAH_username']."', NOW()
+					)
+				";
+
+				$result = mysqli_query($gate, $sql);
+				if($result){	
+					$recentId	= mysqli_insert_id($gate);
+					$error	    = 0;
+					$resultType = "success";
+					$resultMsg  = "Input berhasil disimpan.";		
+				}else{
+					//error state
+					$error		= 1;
+					$resultType = "danger";
+					$resultMsg	= "Terjadi kesalahan fatal, input gagal disimpan!";
+				}
+				
+				closeGate($gate);
+			}else{
+				//error state
+				$error		= 1;
+				$resultType = "danger";
+				$resultMsg	= "Terjadi kesalahan, tidak dapat terhubung ke server!";
+			}
+		}else{
+			//error state
+			$error		= 1;
+			$resultType = "danger";
+			$resultMsg	= "Terjadi kesalahan, mandatory tidak boleh kosong!";
+		}
+		
+		if($error == 1){
+			//error state
+			$resultList = array( "feedStatus" => "failed", "feedType" => $resultType, "feedMessage" => $resultMsg);
+		}else{
+			$resultList = array( "feedStatus" => "success", "feedType" => $resultType, "feedMessage" => $resultMsg, "feedId" => $recentId);
+		}
+		
+		/* result fetch */
+		$json = $resultList;
+		
+		return $json;
+	}
+
 	function createVerifikasiSection($target, $data){
 		/* initial condition */
 		$resultList = array();
@@ -852,7 +929,7 @@
 						VALUES
 						(
 							'".$data['nama']."',
-							'".$_SESSION['username']."', NOW()
+							'".$_SESSION['TABAH_username']."', NOW()
 						)
 					";
 				}elseif($target == "f422"){
@@ -867,7 +944,7 @@
 						(
 							'".$data['nama']."',
 							'".$data['referensi']."',
-							'".$_SESSION['username']."', NOW()
+							'".$_SESSION['TABAH_username']."', NOW()
 						)
 					";
 				}
@@ -961,7 +1038,7 @@
 						(
 							'".$data['nama']."',
 							'".$data['deskripsi']."',
-							'".$_SESSION['username']."', NOW()
+							'".$_SESSION['TABAH_username']."', NOW()
 						)
 					";
 				}elseif($target == "f432"){
@@ -976,7 +1053,7 @@
 						(
 							'".$data['nama']."',
 							'".$data['referensi']."',
-							'".$_SESSION['username']."', NOW()
+							'".$_SESSION['TABAH_username']."', NOW()
 						)
 					";
 				}elseif($target == "f433"){
@@ -989,7 +1066,7 @@
 						VALUES
 						(
 							'".$data['nama']."',
-							'".$_SESSION['username']."', NOW()
+							'".$_SESSION['TABAH_username']."', NOW()
 						)
 					";
 				}
@@ -1072,7 +1149,7 @@
 					(
 						'".$data['judul']."',
 						'".$data['isiBerita']."',
-						'".$_SESSION['username']."', NOW()
+						'".$_SESSION['TABAH_username']."', NOW()
 					)
 				";
 				
@@ -1207,7 +1284,7 @@
 				" 	UPDATE tabah_100_timwilayah
 					SET
 						namaTim 	 = '".$data['nama']."',
-						changedBy 	 = '".$_SESSION['username']."',
+						changedBy 	 = '".$_SESSION['TABAH_username']."',
 						changedDate  = NOW()
 					WHERE 
 						idData = '".$data['idData']."'
@@ -1296,7 +1373,7 @@
 					" 	UPDATE dplega_220_grupVerifikasi
 						SET
 							namaGrupVerifikasi = '".$data['nama']."',
-							changedBy 	 = '".$_SESSION['username']."',
+							changedBy 	 = '".$_SESSION['TABAH_username']."',
 							changedDate  = NOW()
 						WHERE 
 							kodeGrupVerifikasi =
@@ -1308,7 +1385,7 @@
 						SET
 							namaVerifikasi = '".$data['nama']."',
 							kodeGrupVerifikasi = '".$data['referensi']."',
-							changedBy 	 = '".$_SESSION['username']."',
+							changedBy 	 = '".$_SESSION['TABAH_username']."',
 							changedDate  = NOW()
 						WHERE 
 							kodeVerifikasi =
@@ -1407,7 +1484,7 @@
 						SET
 							namaBentukLembaga = '".$data['nama']."',
 							deskripsi 	 = '".$data['deskripsi']."',
-							changedBy 	 = '".$_SESSION['username']."',
+							changedBy 	 = '".$_SESSION['TABAH_username']."',
 							changedDate  = NOW()
 						WHERE 
 							kodeBentukLembaga = '".$data['pId']."'
@@ -1418,7 +1495,7 @@
 						SET
 							namaPersyaratan	  = '".$data['nama']."',
 							kodeBentukLembaga = '".$data['referensi']."',
-							changedBy 	 = '".$_SESSION['username']."',
+							changedBy 	 = '".$_SESSION['TABAH_username']."',
 							changedDate  = NOW()
 						WHERE 
 							kodePersyaratan = '".$data['pId']."'
@@ -1428,7 +1505,7 @@
 					" 	UPDATE dplega_210_bidangGerak
 						SET
 							namaBidangGerak = '".$data['nama']."'
-							changedBy 	 	= '".$_SESSION['username']."',
+							changedBy 	 	= '".$_SESSION['TABAH_username']."',
 							changedDate  	= NOW()
 						WHERE 
 							kodeBidangGerak = '".$data['pId']."'
