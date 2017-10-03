@@ -63,8 +63,12 @@ function r_navigateTo(index, packet, access) {
 			case 0  : r_f0Dashboard(); 					break;
 			case 0.1: r_f0Bantuan(); 					break;
 			
-			case 1  : r_f1Proposal(); 					break;
-			case 11 : r_f1DaftarProposal(packet); 		break;
+			case 111 : r_f1DaftarProposalAwal(packet); 		break;
+			case 112 : r_f1DaftarProposalPencairan(packet); break;
+			case 113 : r_f1DaftarLaporan(packet); 			break;
+			case 114 : r_f1DaftarRiwayatPengajuan(packet); 	break;
+			case 115 : r_f1DaftarRiwayatPencairan(packet); 	break;
+			
 			case 12 : r_f1DetailLembaga(packet); 		break;
 			case 13 : r_f1VerifikasiLembaga(packet);	break;
 			case 15 : r_f1FormProposal(packet);			break;
@@ -1545,8 +1549,11 @@ function r_navbarReactor(){
 	/*--syncnav menubar*/ syncnavReactor();
 	
 	$("#option.syncnav .dashboard")  .unbind().on("click", function(){ r_navigateTo(0); });
-	$("#option.syncnav .proposal").unbind().on("click", function(){ r_navigateTo(1); });
-	$("#option.syncnav .riwayat")	 .unbind().on("click", function(){ r_navigateTo(16); });
+	$("#option.syncnav .proposalAwal").unbind().on("click", function(){ r_navigateTo(111); });
+	$("#option.syncnav .proposalPencairan").unbind().on("click", function(){ r_navigateTo(112); });
+	$("#option.syncnav .berkasLaporan").unbind().on("click", function(){ r_navigateTo(113); });
+	$("#option.syncnav .riwayatPengajuan").unbind().on("click", function(){ r_navigateTo(114); });
+	$("#option.syncnav .riwayatPencairan").unbind().on("click", function(){ r_navigateTo(115); });
 	$("#option.syncnav .pengaturan") .unbind().on("click", function(){ r_navigateTo(4); });
 	// $("#option.syncnav .bantuan") 	 .unbind().on("click", function(){ r_navigateTo(0.1); });
 	$("#option.syncnav .log-off")	 .unbind().on("click", function(){ p_logout(); r_navigateTo(); });

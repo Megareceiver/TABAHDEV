@@ -65,8 +65,7 @@
 		/* refferences */
 		switch($target){
 			case "f001"  : $resultList = getSummaryBentukLembaga($data); break;
-			case "f1110" : $resultList = getListLembagaan($data); break;
-			case "f11101": $resultList = getListAllLembagaan($data); break;
+			case "f111"	 : $resultList = getProposalAwal($data); break;
 			case "f1111" : $dataPost   = json_encode(array("refferences" => $data['refferences']));
 						   $resultList = requestDataDplega('f1', $target, $dataPost); break;
 			
@@ -153,5 +152,7 @@
 		return $json;
 	}
 
-
+	function getProposalAwal($data){
+		
+	}
 ?>

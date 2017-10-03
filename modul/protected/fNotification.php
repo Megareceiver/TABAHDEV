@@ -55,11 +55,11 @@
 			FROM dplega_901_notifications
 			WHERE 
 			(
-				targetUser = '".$_SESSION['username']."'
+				targetUser = '".$_SESSION['TABAH_username']."'
 			OR
 				targetUser = 'public'
 			OR
-				createdBy = '".$_SESSION['username']."'
+				createdBy = '".$_SESSION['TABAH_username']."'
 			)
 			ORDER BY idData DESC";
 					
@@ -115,11 +115,11 @@
 					UPDATE dplega_901_notifications SET statusBaca = '1'
 					WHERE 
 					(
-						targetUser = '".$_SESSION['username']."'
+						targetUser = '".$_SESSION['TABAH_username']."'
 					OR
 						targetUser = 'public'
 					OR
-						createdBy = '".$_SESSION['username']."'
+						createdBy = '".$_SESSION['TABAH_username']."'
 					)
 					AND 
 						statusBaca = '0'
@@ -180,11 +180,11 @@
 			FROM dplega_901_notifications
 			WHERE 
 			(
-				targetUser = '".$_SESSION['username']."'
+				targetUser = '".$_SESSION['TABAH_username']."'
 			OR
 				targetUser = 'public'
 			OR
-				createdBy = '".$_SESSION['username']."'
+				createdBy = '".$_SESSION['TABAH_username']."'
 			)
 			AND 
 				statusBaca = '0'

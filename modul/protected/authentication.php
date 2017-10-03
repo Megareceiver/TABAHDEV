@@ -6,7 +6,7 @@
 		$username  		= $data['username'];
 		$password		= $data['password'];
 		$dataRes		= array();
-		$resultList 	= array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => $username.'/'.$password.' '."Local :: username atau password yang anda masukan salah!", "feedData" => array());
+		$resultList 	= array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "username atau password yang anda masukan salah!", "feedData" => array());
 
 		//validation 
 		$dataPost = array("username" => $username, "password" => $password);
@@ -14,21 +14,23 @@
 		if($username != "" && $password != ""){
 			$dataRes = requestLoginDplega('flogin','dplega', $dataPost);
 			/* result fetch */
-			if($dataRes->feedStatus == "success"){	
-				$feedData = $dataRes->feedId;
+			if($dataRes){
+				if($dataRes->feedStatus == "success"){	
+					$feedData = $dataRes->feedId;
 
-				$_SESSION["TABAH_login"] 			= $feedData->login;
-				$_SESSION["TABAH_noRegistrasi"] 	= $feedData->noRegistrasi;
-				$_SESSION["TABAH_username"] 		= $feedData->username;
-				$_SESSION["TABAH_nama"] 			= $feedData->nama;
-				$_SESSION["TABAH_userLevel"] 		= $feedData->userLevel;
-				$_SESSION["TABAH_urlGambar"] 		= $feedData->avatar;
-				$_SESSION["TABAH_lingkupArea"] 	= $feedData->lingkupArea;
-				$_SESSION["TABAH_idBatasArea"] 	= $feedData->idBatasArea;
-				$_SESSION["TABAH_statusActive"] 	= $feedData->statusActive;
-				$_SESSION["TABAH_accessList"] 	= $feedData->accessList;
+					$_SESSION["TABAH_login"] 			= $feedData->login;
+					$_SESSION["TABAH_noRegistrasi"] 	= $feedData->noRegistrasi;
+					$_SESSION["TABAH_username"] 		= $feedData->username;
+					$_SESSION["TABAH_nama"] 			= $feedData->nama;
+					$_SESSION["TABAH_userLevel"] 		= $feedData->userLevel;
+					$_SESSION["TABAH_urlGambar"] 		= $feedData->avatar;
+					$_SESSION["TABAH_lingkupArea"] 	= $feedData->lingkupArea;
+					$_SESSION["TABAH_idBatasArea"] 	= $feedData->idBatasArea;
+					$_SESSION["TABAH_statusActive"] 	= $feedData->statusActive;
+					$_SESSION["TABAH_accessList"] 	= $feedData->accessList;
 
-				$resultList = $dataRes;
+					$resultList = $dataRes;
+				}
 			}
 
 			$resultList = $dataRes;
