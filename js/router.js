@@ -105,7 +105,7 @@ function r_navigateTo(index, packet, access) {
 	}
 
 	if(r_getCookie('TABAH_login') == 'yes' && r_getCookie('TABAH_userLevel') != '1' && notifChecker == 0){
-	    setTimeout(function(){ r_notifRequest(); }, 1000);
+	    // setTimeout(function(){ r_notifRequest(); }, 1000);
 	}
 }
 
@@ -588,10 +588,11 @@ function r_optionDHtml(group){
 			}
 		break;
 		case "level": 
-			if(r_getCookie('TABAH_userLevel') == '7' || r_getCookie('TABAH_userLevel') == '3')
+			// if(r_getCookie('TABAH_userLevel') == '7' || r_getCookie('TABAH_userLevel') == '3')
 				optionHtml = optionHtml + '<option value="2">Level 2</option>';
-			if(r_getCookie('TABAH_userLevel') == '7')
+			// if(r_getCookie('TABAH_userLevel') == '7')
 				optionHtml = optionHtml + '<option value="3">Level 3</option>';
+				optionHtml = optionHtml + '<option value="4">Level 4</option>';
 		break;
 		case "kelembagaan": 
 			var data 	= p_getData('f4', 'f431'); 

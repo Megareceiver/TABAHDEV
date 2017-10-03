@@ -24,7 +24,7 @@ function p_logout(){
 			r_clearCookies();
 		},
 		complete: function(xhr,status) { },
-		error: function(xhr,status,error) { showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server! ' + error); }
+		error: function(xhr,status,error) { console.log(xhr); showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server! ' + error); }
 	});
 
 	return reStatus;
@@ -67,7 +67,7 @@ function p_removeData(group, target, pId, refferenceId){
 			showNotification(data.feedType, 'removed', data.feedMessage);
 		},
 		complete: function(xhr,status) { hideNotification('waiting'); },
-		error: function(xhr,status,error) { showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
+		error: function(xhr,status,error) { console.log(xhr); showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
 	});
 	
 	return reStatus;
@@ -89,7 +89,7 @@ function p_changeData(group, target, pId, refferenceId, dataFetch){
 			showNotification(data.feedType, 'changed', data.feedMessage);
 		},
 		complete: function(xhr,status) { hideNotification('waiting'); },
-		error: function(xhr,status,error) { showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
+		error: function(xhr,status,error) { console.log(xhr); showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
 	});
 	
 	return reStatus;
@@ -111,7 +111,7 @@ function p_restore(group, target, pId, refferenceId){
 			showNotification(data.feedType, 'changed', data.feedMessage);
 		},
 		complete: function(xhr,status) { hideNotification('waiting'); },
-		error: function(xhr,status,error) { showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
+		error: function(xhr,status,error) { console.log(xhr); showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
 	});
 	
 	return reStatus;

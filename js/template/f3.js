@@ -267,72 +267,72 @@ function r_f3FormUser(packet) {
 		part	= ['','','',''];
 		content = '';
 		
-		dataAccess = [
-			{
-				'module': 'kelembagaan', 'group': "Kelembagaan", "list": 
-				[
-					{"id": "kelembagaan-lihat", "state": "checked='checked'"},
-					{"id": "kelembagaan-tambah", "state": ""},
-					{"id": "kelembagaan-ubah", "state": ""},
-					{"id": "kelembagaan-hapus", "state": ""},
-				]
-			},
-			{
-				'module': 'lingkupArea', 'group': "Lingkup Area", "list": 
-				[
-					{"id": "lingkupArea-lihat", "state": ""},
-					{"id": "lingkupArea-tambah", "state": ""},
-					{"id": "lingkupArea-ubah", "state": ""},
-					{"id": "lingkupArea-hapus", "state": ""},
-				]
-			},
-			{
-				'module': 'pengaturanKelembagaan', 'group': "Pengaturan kelembagaan", "list": 
-				[
-					{"id": "pengaturanKelembagaan-lihat", "state": ""},
-					{"id": "pengaturanKelembagaan-tambah", "state": ""},
-					{"id": "pengaturanKelembagaan-ubah", "state": ""},
-					{"id": "pengaturanKelembagaan-hapus", "state": ""},
-				]
-			},
-			{
-				'module': 'pengaturanVerifikasi', 'group': "Pengaturan verifikasi", "list": 
-				[
-					{"id": "pengaturanVerifikasi-lihat", "state": ""},
-					{"id": "pengaturanVerifikasi-tambah", "state": ""},
-					{"id": "pengaturanVerifikasi-ubah", "state": ""},
-					{"id": "pengaturanVerifikasi-hapus", "state": ""},
-				]
-			},
-			{
-				'module': 'berita', 'group': "Berita", "list": 
-				[
-					{"id": "berita-lihat", "state": ""},
-					{"id": "berita-tambah", "state": ""},
-					{"id": "berita-ubah", "state": ""},
-					{"id": "berita-hapus", "state": ""},
-				]
-			},
-			{
-				'module': 'konfigurasi', 'group': "Konfigurasi & pemeliharaan aplikasi", "list": 
-				[
-					{"id": "konfigurasi-lihat", "state": ""},
-					{"id": "konfigurasi-tambah", "state": ""},
-					{"id": "konfigurasi-ubah", "state": ""},
-					{"id": "konfigurasi-hapus", "state": ""},
-				]
-			},
-			{
-				'module': 'verifikasi', 'group': "Verifikasi lembaga", "list": 
-				[
-					{"id": "verifikasi-lihat", "state": ""},
-					{"id": "verifikasi-tambah", "state": ""},
-					{"id": "verifikasi-ubah", "state": ""},
-					{"id": "verifikasi-hapus", "state": ""},
-				]
-			}
+		// dataAccess = [
+		// 	{
+		// 		'module': 'kelembagaan', 'group': "Kelembagaan", "list": 
+		// 		[
+		// 			{"id": "kelembagaan-lihat", "state": "checked='checked'"},
+		// 			{"id": "kelembagaan-tambah", "state": ""},
+		// 			{"id": "kelembagaan-ubah", "state": ""},
+		// 			{"id": "kelembagaan-hapus", "state": ""},
+		// 		]
+		// 	},
+		// 	{
+		// 		'module': 'lingkupArea', 'group': "Lingkup Area", "list": 
+		// 		[
+		// 			{"id": "lingkupArea-lihat", "state": ""},
+		// 			{"id": "lingkupArea-tambah", "state": ""},
+		// 			{"id": "lingkupArea-ubah", "state": ""},
+		// 			{"id": "lingkupArea-hapus", "state": ""},
+		// 		]
+		// 	},
+		// 	{
+		// 		'module': 'pengaturanKelembagaan', 'group': "Pengaturan kelembagaan", "list": 
+		// 		[
+		// 			{"id": "pengaturanKelembagaan-lihat", "state": ""},
+		// 			{"id": "pengaturanKelembagaan-tambah", "state": ""},
+		// 			{"id": "pengaturanKelembagaan-ubah", "state": ""},
+		// 			{"id": "pengaturanKelembagaan-hapus", "state": ""},
+		// 		]
+		// 	},
+		// 	{
+		// 		'module': 'pengaturanVerifikasi', 'group': "Pengaturan verifikasi", "list": 
+		// 		[
+		// 			{"id": "pengaturanVerifikasi-lihat", "state": ""},
+		// 			{"id": "pengaturanVerifikasi-tambah", "state": ""},
+		// 			{"id": "pengaturanVerifikasi-ubah", "state": ""},
+		// 			{"id": "pengaturanVerifikasi-hapus", "state": ""},
+		// 		]
+		// 	},
+		// 	{
+		// 		'module': 'berita', 'group': "Berita", "list": 
+		// 		[
+		// 			{"id": "berita-lihat", "state": ""},
+		// 			{"id": "berita-tambah", "state": ""},
+		// 			{"id": "berita-ubah", "state": ""},
+		// 			{"id": "berita-hapus", "state": ""},
+		// 		]
+		// 	},
+		// 	{
+		// 		'module': 'konfigurasi', 'group': "Konfigurasi & pemeliharaan aplikasi", "list": 
+		// 		[
+		// 			{"id": "konfigurasi-lihat", "state": ""},
+		// 			{"id": "konfigurasi-tambah", "state": ""},
+		// 			{"id": "konfigurasi-ubah", "state": ""},
+		// 			{"id": "konfigurasi-hapus", "state": ""},
+		// 		]
+		// 	},
+		// 	{
+		// 		'module': 'verifikasi', 'group': "Verifikasi lembaga", "list": 
+		// 		[
+		// 			{"id": "verifikasi-lihat", "state": ""},
+		// 			{"id": "verifikasi-tambah", "state": ""},
+		// 			{"id": "verifikasi-ubah", "state": ""},
+		// 			{"id": "verifikasi-hapus", "state": ""},
+		// 		]
+		// 	}
 
-		];
+		// ];
 
 		//Cookie set
 		if(packet == undefined || packet == "" || packet == null || packet == "start"){
@@ -480,7 +480,7 @@ function r_f3FormUser(packet) {
 						'<div class="empty-box flush"></div>' +
 					'</div>' +
 				'</div>' +
-			'</div>' +
+			'</div>' ;/*+
 			'<div class="cards">' +
 				'<div class="row default">' +
 					'<div class="col-md-4">' +
@@ -535,7 +535,7 @@ function r_f3FormUser(packet) {
 			body = body + 		
 				'</div>' +
 			'</div>';
-		}
+		}*/
 
 		body	= body + '</form></div></div></div>';
 		content = '<section id="">' + head + body + '</section>';
@@ -580,24 +580,24 @@ function r_f3FormUser(packet) {
 			});
 		});
 
-		$('#selectAll').click(function(event) {
-		  	if($(this).html() == "Pilih semua"){
-			     // Iterate each checkbox
-			     $(':checkbox').each(function() {
-			          this.checked = true;
-			     });
+		// $('#selectAll').click(function(event) {
+		//   	if($(this).html() == "Pilih semua"){
+		// 	     // Iterate each checkbox
+		// 	     $(':checkbox').each(function() {
+		// 	          this.checked = true;
+		// 	     });
 
-			     $(this).html("Bersihkan");
-		  	}
-		  	else {
-			    $(':checkbox').each(function() {
-			          this.checked = false;
-			     });
-			    $(this).html("Pilih semua");
-		  	}
-		});
+		// 	     $(this).html("Bersihkan");
+		//   	}
+		//   	else {
+		// 	    $(':checkbox').each(function() {
+		// 	          this.checked = false;
+		// 	     });
+		// 	    $(this).html("Pilih semua");
+		//   	}
+		// });
 
-		dataTemp  	= p_getData('f4', 'f402', '');
+		dataTemp  	= p_getData('f4', 'f40', '');
 		sData 	    = dataTemp.feedData;
 		sDetailData = dataTemp.feedDataDetail;
 
@@ -607,9 +607,12 @@ function r_f3FormUser(packet) {
 				var temp  = sData;
 				var tempD = sDetailData;
 				
-				if 	   ($(this).val() == '3') { temp = sData.provinsi; 	tempD = sDetailData.provinsi; }
-				else if($(this).val() == '2') { temp = sData.wilayah; 	tempD = sDetailData.wilayah; }
-				else if($(this).val() == '1') { temp = sData.kecamatan; tempD = sDetailData.kecamatan; }
+				// if 	   ($(this).val() == '3') { temp = sData.provinsi; 	tempD = sDetailData.provinsi; }
+				// else if($(this).val() == '2') { temp = sData.wilayah; 	tempD = sDetailData.wilayah; }
+				// else if($(this).val() == '1') { temp = sData.kecamatan; tempD = sDetailData.kecamatan; }
+				if 	   ($(this).val() == '3') { temp = sData.provinsi; }
+				else if($(this).val() == '2') { temp = sData.wilayah; }
+				else if($(this).val() == '1') { temp = sData.kecamatan; }
 				autoCompleteActivator("batasArea", temp, tempD, "batasArea");
 			}else{
 				$("#batasArea").autocomplete("destroy");
@@ -622,6 +625,7 @@ function r_f3FormUser(packet) {
 
 		//autocomplete
 		autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
+		console.log(sourcesData);
 		// autoCompleteActivator("batasWilayah", sourcesWilayah, sourcesWilayahDetail, "batasWilayah");
 		
 		//form reactor
@@ -677,15 +681,15 @@ function r_f3FormUserDataGenerator(packet){
 
 	$(':checkbox').each(function() { this.checked = false; });
 
-	var state = 0;
-	for(loop=0; loop<data.access.length; loop++){
-		if(data.access[loop].lihat == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-lihat]').prop('checked', true);}
-		if(data.access[loop].tambah == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-tambah]').prop('checked', true);}
-		if(data.access[loop].ubah == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-ubah]').prop('checked', true);}
-		if(data.access[loop].hapus == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-hapus]').prop('checked', true);}
-	}
+	// var state = 0;
+	// for(loop=0; loop<data.access.length; loop++){
+	// 	if(data.access[loop].lihat == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-lihat]').prop('checked', true);}
+	// 	if(data.access[loop].tambah == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-tambah]').prop('checked', true);}
+	// 	if(data.access[loop].ubah == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-ubah]').prop('checked', true);}
+	// 	if(data.access[loop].hapus == '1'){state++; $('#f-user-create [name=' + data.access[loop].module + '-hapus]').prop('checked', true);}
+	// }
 
-	if(state > 0) {$('#selectAll').html("Bersihkan");}
+	// if(state > 0) {$('#selectAll').html("Bersihkan");}
 
 	//form reactor
 	p_formHandler("f-user-create" , "updateData");
