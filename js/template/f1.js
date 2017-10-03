@@ -8,8 +8,8 @@ function r_f1DaftarProposalAwal(){
 		body  	= '';
 		part 	= ['',''];
 		content = '';
-		data    =  p_getData('f1', 'f');
-		data 	= ((typeof data.feedData != "undefined" && (data.feedData instanceof Array) && data.feedData.length > 0 ? data.feedData : null));
+		data    =  p_getData('f1', 'f111', '', 'single');
+		data 	= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
 
 		//--start
 		body	= '<div class="row no-head"><div class="container">';
@@ -28,12 +28,15 @@ function r_f1DaftarProposalAwal(){
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(3, 'Proposal awal'));
+		headPage.html(r_headPageHtml(4, 'Proposal awal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+		footPage.html(r_footPageHtml('add'));
+
 		$("#preload").remove();
 		
 		//--command reactor
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		detailBoxActivator();
 		searchBoxActivator();
 		r_navbarReactor();
 	});
@@ -198,7 +201,7 @@ function r_f1DaftarRiwayatPencairan(){
 function r_f1ProposalGenerator(data = null){
 	var genHtml 	= "";
 	var expandHtml 	= "";
-	var breakHtml 	= "";
+	var breakHtml 	= ""; console.log(data);
 	if(data != null){
 		for(var loop = 0; loop < data.length; loop++){	
 			if(loop > 0){ breakHtml = "plus"; }
@@ -206,22 +209,22 @@ function r_f1ProposalGenerator(data = null){
 
 			//--group
 			genHtml = genHtml +
-			'<div class="cards-label ' + expandHtml + '">' +
+			'<div class="cards-label ' + breakHtml + '">' +
 				'<p>' +
-					'<strong> ()</strong>' +
+					'<strong> Proposal (' + data.length + ')</strong>' +
 					expandHtml +
 				'</p>' +
 			'</div>';
 
 			genHtml  = genHtml +
-			'<div id="" class="cards clear">' +
+			'<div id="' + data[loop].idData + '" class="cards clear">' +
 				'<div class="description-box">' +
 					'<div class="click-frame">' +
 						'<img class="icon-set" src=""/>' +
-						'<p class="title-set"></p>' +
+						'<p class="title-set">' + data[loop].namaLembaga + '</p>' +
 						'<div class="text-set">' +
-							'<span class="id-set"></span>' +
-							'<span class="desc-text"></span>' +
+							'<span class="id-set">' + data[loop].noRegistrasi + '</span>' +
+							'<span class="desc-text">' + data[loop].nominal + '</span>' +
 						'</div>' +
 					'</div>' +
 					'<button type="button" class="click-option btn-set" ' + 
@@ -233,21 +236,35 @@ function r_f1ProposalGenerator(data = null){
 					'<span class="fa fa-ellipsis-v"></span></button>' +
 				'</div>' +
 				'<div class="detail-box">' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-lock"></span></div>' +
-						'<p class="list-text"></p>' +
-					'</div>' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
-						'<p class="list-text"></p>' +
-					'</div>' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
-						'<p class="list-text"></p>' +
-					'</div>' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
-						'<p class="list-text"></p>' +
+					'<div class="row">' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
+								'<p class="list-text"></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
+								'<p class="list-text"></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
+								'<p class="list-text"></p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-flag"></span></div>' +
+								'<p class="list-text"></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-tag"></span></div>' +
+								'<p class="list-text"></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-money"></span></div>' +
+								'<p class="list-text"></p>' +
+							'</div>' +
+						'</div>' +
 					'</div>' +
 					'<div class="list-box foot">' +
 						'<button type="button" class="clear list-text btn-link detail-click" p-id="">Lihat selengkapnya</button>' +

@@ -1317,7 +1317,7 @@ footer.parent .author-box img { height: 30px; float: right }
 }
 
 /*#kelembagaan*/ .detail-box .list-box p { min-height: 30px }
-/*#kelembagaan*/ .detail-box .list-box.foot button.btn-link { margin-left: 25px }
+/*#kelembagaan*/ .detail-box .list-box.foot button.btn-link { margin-left: 5px }
 
 /*-*/
 /*#kelembagaan*/ .filter-box { color: #FFF; border-bottom: 2px solid #4B4B4D; }
