@@ -273,6 +273,7 @@
 									"noRegistrasi" 	=> $row['noRegistrasi'],
 									"namaLembaga" 	=> $dataResult[$counter]->nama,
 									"noTelp" 		=> $dataResult[$counter]->noTelp,
+									"alamat" 		=> $dataResult[$counter]->alamat,
 									"email" 		=> $dataResult[$counter]->email,
 									"tujuan" 		=> $row['tujuan'],
 									"latarBelakang" => $row['latarBelakang'],

@@ -9,7 +9,11 @@ function r_f1DaftarProposalAwal(){
 		part 	= ['',''];
 		content = '';
 		data    =  p_getData('f1', 'f111', '', 'single');
-		data 	= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
+		
+		//-- set option list on a session
+		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
+		data 		= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
+		
 
 		//--start
 		body	= '<div class="row no-head"><div class="container">';
@@ -201,7 +205,7 @@ function r_f1DaftarRiwayatPencairan(){
 function r_f1ProposalGenerator(data = null){
 	var genHtml 	= "";
 	var expandHtml 	= "";
-	var breakHtml 	= ""; console.log(data);
+	var breakHtml 	= "";
 	if(data != null){
 		for(var loop = 0; loop < data.length; loop++){	
 			if(loop > 0){ breakHtml = "plus"; }
@@ -217,7 +221,7 @@ function r_f1ProposalGenerator(data = null){
 			'</div>';
 
 			genHtml  = genHtml +
-			'<div id="' + data[loop].idData + '" class="cards clear">' +
+			'<div id="proposal-' + data[loop].idData + '" class="cards clear">' +
 				'<div class="description-box">' +
 					'<div class="click-frame">' +
 						'<div class="icon-set bg-sky"><span class="fa fa-file-text-o"></span></div>' +
@@ -228,11 +232,11 @@ function r_f1ProposalGenerator(data = null){
 						'</div>' +
 					'</div>' +
 					'<button type="button" class="click-option btn-set" ' + 
-						'p-label		=""' + 
-						'p-id			=""' +
+						'p-label		="' + data[loop].namaLembaga + '"' + 
+						'p-id			="' + data[loop].idData + '"' +
 						'p-group		="f1"' + 
 						'p-target		="f111"' +
-						'p-container	="">' +
+						'p-container	="proposal-' + data[loop].idData + '">' +
 					'<span class="fa fa-ellipsis-v"></span></button>' +
 				'</div>' +
 				'<div class="detail-box">' +
@@ -248,7 +252,7 @@ function r_f1ProposalGenerator(data = null){
 							'</div>' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
-								'<p class="list-text"></p>' +
+								'<p class="list-text">' + data[loop].alamat + '</p>' +
 							'</div>' +
 						'</div>' +
 						'<div class="col-md-6">' +
@@ -281,7 +285,44 @@ function r_f1ProposalGenerator(data = null){
 		'</div>';
 	}
 
+	r_f1ProposalEventActivator();
+
 	return genHtml;
+}
+
+function r_f1ProposalEventActivator(){
+	$("body").on("click", ".click-option", function(){ 
+		//packet session
+		clearPacket();
+		pGroup 			= $(this).attr('p-group');
+		pTarget			= $(this).attr('p-target');
+		pId				= $(this).attr('p-id');
+		pLabel			= $(this).attr('p-label');
+		pContainer		= $(this).attr('p-container');
+		pReferences		= $(this).attr('p-references');
+		pReferencesKey	= $(this).attr('p-referencesKey');
+		showOptionList(); 
+		//-- popup
+		// $("#view-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(12, pId); });
+		// $("#verification-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(13, pId); });
+		// $("#edit-card").unbind().on("click", function(){ hideOptionList(); r_tabSet(1); r_navigateTo(15, pId); });
+		// $("#delete-card").unbind().on("click", function(){ 
+		// 	hideOptionList(); 
+		// 	showOptionConfirm('delete');
+		// 	$(".option-yes").unbind().on("click", function(){ 
+		// 		hideOptionList(); 
+		// 		if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
+		// 			$('#' + pContainer).remove(); 
+		// 			lembagaCounter = lembagaCounter - 1;
+		// 			if(lembagaCounter <= 0){
+		// 				$(".cards-label").remove();
+		// 				//$("#lembaga-list").append(r_f1LembagaGenerator([{"lembaga" : null}]));
+		// 			}
+		// 			clearPacket();
+		// 		}; 
+		// 	});
+		// });
+	});
 }
 
 function r_f1FilterForm(type){
