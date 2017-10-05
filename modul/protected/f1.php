@@ -301,8 +301,8 @@
 							
 							array_push($options, array("selector" => "view-card", "icon" => "search", "label" => "Lihat selengkapnya"));
 							array_push($options, array("selector" => "verification-card", "icon" => "check", "label" => "Verifikasi"));
-							array_push($options, array("selector" => "edit-card", "icon" => "pencil", "label" => "Ubah data"));
-							array_push($options, array("selector" => "delete-card", "icon" => "trash", "label" => "Hapus data"));
+							// array_push($options, array("selector" => "edit-card", "icon" => "pencil", "label" => "Ubah"));
+							// array_push($options, array("selector" => "delete-card", "icon" => "trash", "label" => "Hapus"));
 							
 							$package = array(
 								"data" => $package,

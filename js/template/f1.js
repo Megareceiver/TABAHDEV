@@ -13,7 +13,6 @@ function r_f1DaftarProposalAwal(){
 		//-- set option list on a session
 		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
 		data 		= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
-		
 
 		//--start
 		body	= '<div class="row no-head"><div class="container">';
@@ -34,7 +33,6 @@ function r_f1DaftarProposalAwal(){
 		//--gen
 		headPage.html(r_headPageHtml(4, 'Proposal awal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-		footPage.html(r_footPageHtml('add'));
 
 		$("#preload").remove();
 		
@@ -269,6 +267,13 @@ function r_f1ProposalGenerator(data = null){
 								'<p class="list-text">' + data[loop].nominal + '</p>' +
 							'</div>' +
 						'</div>' +
+						'<div class="clearfix"></div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple">Belum ada berkas</p>' +
+							'</div>' +
+						'</div>' +
 					'</div>' +
 					'<div class="list-box foot">' +
 						'<button type="button" class="clear list-text btn-link detail-click" p-id="">Lihat selengkapnya</button>' +
@@ -344,25 +349,25 @@ function r_f1FilterForm(type){
 					'<div class="select-box">' +
 						'<select id="filter-provinsi">' +
 							'<option value="" selected>Provinsi</option>' +
-							//r_optionDHtml('provinsi') +
+							r_optionDHtml('provinsi') +
 						'</select>' +
 					'</div>' +
 					'<div class="select-box">' +
 						'<select id="filter-wilayah">' +
 							'<option value="" selected>Wilayah</option>' +
-							// r_optionDHtml('wilayah') +
+							r_optionDHtml('wilayah') +
 						'</select>' +
 					'</div>' +
 					'<div class="select-box">' +
 						'<select id="filter-kecamatan">' +
 							'<option value="" selected>Kecamatan</option>' +
-							// r_optionDHtml('kecamatan') +
+							r_optionDHtml('kecamatan') +
 						'</select>' +
 					'</div>' +
 					'<div class="select-box">' +
 						'<select id="filter-kelurahan">' +
 							'<option value="" selected>Kelurahan</option>' +
-							// r_optionDHtml('kelurahan') +
+							r_optionDHtml('kelurahan') +
 						'</select>' +
 					'</div>' +
 					'<div class="space-box"></div>' +
@@ -374,327 +379,330 @@ function r_f1FilterForm(type){
 	return html;
 }
 
-//F1 DAFTAR LEMBAGA
-//=====================================
-function r_f1DaftarProposal(packet) {
-	
-	//-- get direct load
-	var kodeBentukLembagaState = null;
-	var namaBentukLembagaState = null;
-	var dumbBentukLembagaState = null;
-	
-	if(Array.isArray(packet) == true){
-		kodeBentukLembagaState = packet[0];
-		namaBentukLembagaState = packet[1];
-	}
-	
-	if(kodeBentukLembagaState == "" || kodeBentukLembagaState == null || kodeBentukLembagaState == "start"){
-		dumbBentukLembagaState = r_bentukLembagaReader();
-		kodeBentukLembagaState = dumbBentukLembagaState[0];
-		namaBentukLembagaState = dumbBentukLembagaState[1];
-	}
-	
-	r_bentukLembagaSet([kodeBentukLembagaState,namaBentukLembagaState]);
-	
+function r_f1FormProposal(packet){
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
-		head  	= '';
-		body  	= '';
-		part	= ['',''];
-		content = '';
-		data = p_getData('f1', 'f1110', "", 'single,'+ kodeBentukLembagaState);
-		data = data.feedData; 
-		
-		//-- set option list on a session
-		optionBatch = (data != null) ? data.option : [];
-		
+		head  		= '';
+		body  		= '';
+		part		= ['',''];
+		content 	= '';
+		data 		= [];
+		selectItems = [];
+		dataHead	= [
+			{'idFilter': '1', 'form':'Tujuan'},
+			{'idFilter': '2', 'form':'RAB'},
+			{'idFilter': '3', 'form':'Persyaratan'},
+		];
+
+		//Cookie set
+		if(packet == undefined || packet == "" || packet == null || packet == "start"){
+			packet = profile_look_reader();
+		}
+
+		profile_look_set(packet);
+	
+		dataGrup = [];
+		dataTemp = [];
+		dataAllLembaga = [];
+		dataLegalitas = [];
+		kodeBentukLembaga = "";
+
+		//-- get kode bentuk lembaga for legalitas
+		var bentukLembaga = r_bentukLembagaReader();
+		dataLegalitas = p_getData('f1','f1114','',bentukLembaga[0]);
+		if(dataLegalitas != null){ 
+			dataLegalitas = dataLegalitas.feedData;
+		}else{
+			dataLegalitas.feedData = null;
+		}
+		//-- get data koleksi
+		dataKoleksi = p_getData('f1', 'f117','');
+
+		//option list 
+		optionBatch = [
+			{'selector': 'edit-card', 			'icon': 'pencil', 'label': 'Ubah data'},
+			{'selector': 'delete-card', 		'icon': 'trash',  'label': 'Hapus data'},
+		]; 
+
 		//--open
-		head	= '';
-		body	= '<div class="row no-head"><div class="container">';
-		part[0] = '<div class="col-md-3">';
-		part[1] = '<div class="col-md-8" id="lembaga-list">';
+		head	= 
+		'<div class="row head">' +
+			'<div class="container">' +
+				'<div class="col-md-8 col-md-offset-2">' +
+					'<div class="tab-header">' +
+						'<ul>';
 		
-		//--left
-		part[0] = part[0] +
-		'<form id="f-filter-select">' +
-			'<div class="cards">' +
+		for(var loop = 0; loop < dataHead.length; loop++){
+			head = head + '<li class="tab-navigator" tab-headIndex="' + dataHead[loop].idFilter + '">' + dataHead[loop].form + '</li>';
+			state = "";
+		}
+		
+		head = head +
+						'</ul>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+		
+		//open
+		body =  '<div class="row no-head"><div class="container">';
+		
+		// KELEMBAGAAN =======================================================================
+		//=======================================================================
+		//=======================================================================
+		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="1">';
+		body = body + 
+		'<form id="f-proposal-create" f-group = "f1" f-target = "f111">' +
+			'<div class="cards title">' +
 				'<div class="cards-header">' +
-					'<p class="fixed offset">Filter lembaga</p>' +
+					'<h4>Proposal</h4>' +
+					'<p class="offset">Keperluan sistem untuk mengelola proposal.</p>' +
+					'<p class="offset"><small>(*) <i>Mandatory atau kolom yang wajib diisi.</i>.</small></p>' +
 					'<div class="btn-collapse right">' +
 						'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-						'<button class="clear" type="submit"><span class="fa fa-filter text-yellow"></span></button>' +
+						'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
 			'<div class="cards flush">' +
-				'<div class="select-box">' +
-					'<select id="filter-provinsi">' +
-						'<option value="" selected>Provinsi</option>' +
-						r_optionDHtml('provinsi') +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select id="filter-wilayah">' +
-						'<option value="" selected>Wilayah</option>' +
-						r_optionDHtml('wilayah') +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select id="filter-kecamatan">' +
-						'<option value="" selected>Kecamatan</option>' +
-						r_optionDHtml('kecamatan') +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select id="filter-kelurahan">' +
-						'<option value="" selected>Kelurahan</option>' +
-						r_optionDHtml('kelurahan') +
-					'</select>' +
-				'</div>' +
-				'<div class="space-box"></div>' +
-			'</div>' +
-		'</form>';
-			
-		//--render data
-		var tempP = "";
-		var tempB = ""; 
-
-		part[1] = part[1] + r_f1LembagaGenerator(data);
+				'<div class="row default">';
 		
-		part[0] = part[0] + '</div>';
-		part[1] = part[1] + '</div>';
-		body	= body 	  + part[0] + part[1] + '</div></div>';
-		content = '<section id="kelembagaan">' + head + body + '</section>';
+		//left
+		body = body + 
+		'<div class="col-md-12">' +
+			'<div class="input-box">' +
+				'<input name="tujuan" placeholder="Tujuan (*)" tabindex="1" type="text" value="" />' +
+			'</div>' +
+			'<div class="input-box rows-2">' +
+				'<textarea name="alamat" placeholder="Latar belakang pengajuan (*)" tabindex="1" class="rows-2"></textarea>' +
+			'</div>' +
+		'</div>' +
+
+		'<div class="col-md-6">' +
+			'<div class="input-box">' +
+				'<input name="nominal" terbilang-name="nominal_terbilang" placeholder="Nominal pengajuan (*)" tabindex="2" type="text" value="" />' +
+			'</div>' +
+		'</div>' +
+		'<div class="col-md-12">' +
+			'<div class="input-box">' +
+				'<p><i name="nominal_terbilang"></i></p>' +
+			'</div>' +
+		'</div>' +
+		'<div class="col-md-12">' +
+			'<div class="input-box">' +
+				'<div class="icon-box both">' +
+					'<label class="browser-box" id="v-proposal">' +
+						'<p class="placeholder" name="imageName">berkas belum diunggah...</p>' +
+						'<input preview-id="v-proposal" name="imageUrl" type="file" accept="application/pdf" tabindex="5" />' +
+						'<input browser-state="fileState" name="fileState" type="hidden" tabindex="1" value="add" />' +
+					'</label>' +
+					'<button type="button" browser-id="v-proposal" class="browser-clear clear"><i class="fa fa-times-circle"></i></button>' +
+					'<span class="left fa fa-paperclip text-purple"></span>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+		
+		//right
+		body = body + 
+		'</form>'+
+		'<div class="clearfix">&nbsp;</div>';
+		body = body + '</div></div></div>';
+		body = body + '<div class="clearfix tab-container" tab-contentIndex="1">&nbsp;</div>';
+		
+		
+		// LEGALITAS =======================================================================
+		//=======================================================================
+		//=======================================================================
+		body = body + 
+		'<!--div class="col-md-12 tab-container" tab-contentIndex="3">' +
+			'<div class="cards-label">' +
+				'<p><strong>Legalitas (3)</strong></p>' +
+			'</div>' +
+		'</div-->';
+		
+		//render
+		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="3" id="legalitas-frame"><div class="row default">';
+
+		body = body + '</div></div>';
+		body = body + '<div class="clearfix tab-container"  tab-contentIndex="3">&nbsp;</div>';
+		
+		// SEJARAH =======================================================================
+		//=======================================================================
+		//=======================================================================
+		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="2">';
+		body = body +
+		'<form id="f-sejarah-create" f-group = "f1" f-target = "f112">'+
+			'<div class="cards">' +
+				'<div class="cards-header">' +
+					'<h4>RAB</h4>' +
+					'<p class="offset">Detail anggaran rencana untuk diajukan (Rp).</p>' +
+					'<div class="btn-collapse right">' +
+						'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
+						'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+			'<div class="cards">' +
+				'<div class="cards-header">' +
+					'<h4>Total anggaran</h4>' +
+					'<h3>1.000.000</h3>' +
+				'</div>' +
+				'<div class="summary-box">' +
+					'<div class="caption">' + 
+						'<span>terbilang</span>' +
+					'</div>' +
+					'<div class="counter-block"><i>Satu juta rupiah</i></div>' + 
+				'</div>' +
+			'</div>' +
+			'<div class="cards flush">' +
+				'<div class="row default">' +
+					'<div class="col-md-6">' +
+						'<div class="input-box">' +
+							'<input name="noreg" tabindex="1" type="hidden" value="" />' +
+							'<input name="uraian" placeholder="Uraian (*)" tabindex="1" type="text" value="" />' +
+						'</div>' +
+						'<div class="input-box">' +
+							'<input name="satuan" placeholder="Satuan (*)" tabindex="1" type="text" value="" />' +
+						'</div>' +
+					'</div>' +
+					'<div class="col-md-6">' +
+						'<div class="input-box">' +
+							'<input name="volume" placeholder="Volume (*)" tabindex="1" type="text" value="" />' +
+						'</div>' +
+						'<div class="input-box">' +
+							'<input name="harga" placeholder="Harga satuan (*)" tabindex="1" type="text" value="" />' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>';
+			
+		//right
+		body = body +
+		'</form>'+
+		'<div class="clearfix">&nbsp;</div>';
+
+		body = body + '</div>';
+		
+
+		body = body + '<div id="section-bantuan">';
+		body = body + '</div></div>';
+		body = body + '<div class="clearfix tab-container" tab-contentIndex="2">&nbsp;</div>';
+
+		//--
+		// CLOSING
+		//=====================================================================================
+		body	= body + '</div></div>';
+		content = '<section id="">' + head + body + '</section>';
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(4, namaBentukLembagaState));
+		var temp = 3;
+		if(String(r_getCookie('TABAH_userLevel')) == '1'){ temp = 2; }
+		headPage.html(r_headPageHtml(temp, 'Form proposal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-		
-		var ul = r_getCookie('TABAH_kelembagaanTambah');
-		if(ul == '1') footPage.html(r_footPageHtml('add'));
+		r_f1legaitasGenerator(dataLegalitas); //generate legalitas form
 		$("#preload").remove();
 		
 		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(1); });
-		$("#add-button").unbind().on('click', function(){ profile_look_set(""); r_tabSet(1);  r_navigateTo(15); });
+		navito = ((String(r_getCookie('TABAH_userLevel')) == '1') ? 12 : 1);
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(navito); });
 		
-		//navbar
+		// $(".reset").unbind().on('click', function(){ clearTargetForm('f-kelembagaan-create'); });
+		/*tab reader*/
+		if(r_tabReader() == null){
+			r_tabSet(1);
+			$('[tab-headIndex = "1"]').addClass('active');
+			$('[tab-contentIndex = "1"]').addClass('active');
+		}else{
+			$('[tab-headIndex = "' + r_tabReader() + '"]').addClass('active');
+			$('[tab-contentIndex = "' + r_tabReader() + '"]').addClass('active');
+		}
+
+		tabActivator();
+		datePickerActivator();
+		fileBrowserActivator();
+		imagePreviewActivator();
 		r_navbarReactor();
+		autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
+		autoCompleteActivator("f114_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
+		autoCompleteActivator("hirarkiLembaga", dataAllLembaga[0], dataAllLembaga, "hirarkiLembaga");
 
-		//search-box
-		searchBoxActivator();
-		$(".search-input").on('keyup', function(){ 
-			var dumbBentukLembagaState = r_bentukLembagaReader();
-			var kodeBentukLembagaState = dumbBentukLembagaState[0];
-			var dataKey = p_getData('f1', 'f1110', $(this).val(), 
-						'multipart,' + kodeBentukLembagaState + ',' +
-						$('#f-filter-select #filter-provinsi').val()  + ',' + 
-						$('#f-filter-select #filter-wilayah').val()   + ',' + 
-						$('#f-filter-select #filter-kecamatan').val() + ',' + 
-						$('#f-filter-select #filter-kelurahan').val());
-				dataKey = dataKey.feedData;
-			$("#lembaga-list").html(r_f1LembagaGenerator(dataKey));
-			r_f1LembagaEventctivator();
-		});
+		//form reactor
+		p_formHandler("f-kelembagaan-create" , "addData");
+		p_formHandler("f-sejarah-create" , "addData");
+		p_formHandler("f-bantuan-create" , "addData");
+		p_formHandler("f-kepengurusan-create" , "addData");
+		p_formHandler("f-kegiatanUsaha-create" , "addData");
+		p_formHandler("f-koleksi-create" , "addData");
+		p_formHandler("f-prestasi-create" , "addData");
+		p_formHandler("f-hirarki-create" , "addData");
 
-		//filter activation
-		$('#f-filter-select').unbind().on('submit', function(e) {
-			e.preventDefault();
-			var dumbBentukLembagaState = r_bentukLembagaReader();
-			var kodeBentukLembagaState = dumbBentukLembagaState[0];
-			var dataKey = p_getData('f1', 'f1110', $(".search-input").val(), 
-						'multipart,' + kodeBentukLembagaState + ',' +
-						$('#f-filter-select #filter-provinsi').val()  + ',' + 
-						$('#f-filter-select #filter-wilayah').val()   + ',' + 
-						$('#f-filter-select #filter-kecamatan').val() + ',' + 
-						$('#f-filter-select #filter-kelurahan').val());
-				dataKey = dataKey.feedData;
-			$("#lembaga-list").html(r_f1LembagaGenerator(dataKey));
-			r_f1LembagaEventctivator();
-		});
+		for(loop=0; loop<maxForm; loop++){
+			p_formHandler("f-sarana-create-" + loop , "addData");
+			p_formHandler("f-usaha-create-" + loop , "addData");
 
-		//event on list activator
-		r_f1LembagaEventctivator();
-	});
-}
-
-function r_f1LembagaEventctivator(){
-	$(".detail-click").unbind().on('click', function(){ r_navigateTo(12, $(this).attr('p-id')); });
-	$(".click-option").unbind().on("click", function(){ 
-		//packet session
-		clearPacket();
-		pGroup 			= $(this).attr('p-group');
-		pTarget			= $(this).attr('p-target');
-		pId				= $(this).attr('p-id');
-		pLabel			= $(this).attr('p-label');
-		pContainer		= $(this).attr('p-container');
-		pReferences		= $(this).attr('p-references');
-		pReferencesKey	= $(this).attr('p-referencesKey');
-		showOptionList(); 
-		//-- popup
-		$("#view-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(12, pId); });
-		$("#verification-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(13, pId); });
-		$("#edit-card").unbind().on("click", function(){ hideOptionList(); r_tabSet(1); r_navigateTo(15, pId); });
-		$("#delete-card").unbind().on("click", function(){ 
-			hideOptionList(); 
-			showOptionConfirm('delete');
-			$(".option-yes").unbind().on("click", function(){ 
-				hideOptionList(); 
-				if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
-					$('#' + pContainer).remove(); 
-					lembagaCounter = lembagaCounter - 1;
-					if(lembagaCounter <= 0){
-						$(".cards-label").remove();
-						//$("#lembaga-list").append(r_f1LembagaGenerator([{"lembaga" : null}]));
-					}
+			$('#f-sarana-create-' + loop + " [type=reset]").unbind().on("click", function(e){
+				e.preventDefault(); 
+				if($("#" + $(this).attr('p-container') + " [name=p-id]").val() != ""){
+					showOptionConfirm('delete');
 					clearPacket();
-				}; 
+					pContainer		= $(this).attr('p-container');
+					pGroup 			= $(this).attr('p-group');
+					pTarget			= $(this).attr('p-target')
+					pId				= $("#" + pContainer + " [name=p-id]").val();
+					pLabel			= $(this).attr('p-label');
+					pReferencesKey	= $("#" + pContainer + " [name=noreg]").val();
+					$(".option-yes").unbind().on("click", function(){ 
+						hideOptionList(); 
+						if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
+							$("#" + pContainer + " [browser-id=v-sarana" + pLabel + "]").css('display', 'none'); 
+							$("#" + pContainer + " [viewer-id=v-sarana" + pLabel + "]").removeClass('changed');
+							$("#" + pContainer + " [viewer-id=v-sarana" + pLabel + "]").attr('src', "img/sources/picture.png");
+							$("#" + pContainer + " [name=imageName]").html("berkas belum diunggah...");
+							p_formHandler(pContainer , "addData");
+							clearTargetFormNoreg(pContainer, $('#' + pContainer + ' [name="noreg"]').val());
+							clearPacket();
+						}; 
+					});
+				}
 			});
-		});
+
+			$('#f-usaha-create-' + loop + " [type=reset]").unbind().on("click", function(e){
+				e.preventDefault(); 
+				if($("#" + $(this).attr('p-container') + " [name=p-id]").val() != ""){
+					showOptionConfirm('delete');
+					clearPacket();
+					pContainer		= $(this).attr('p-container');
+					pGroup 			= $(this).attr('p-group');
+					pTarget			= $(this).attr('p-target')
+					pId				= $("#" + pContainer + " [name=p-id]").val();
+					pLabel			= $(this).attr('p-label');
+					pReferencesKey	= $("#" + pContainer + " [name=noreg]").val();
+					$(".option-yes").unbind().on("click", function(){ 
+						hideOptionList(); 
+						if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
+							$("#" + pContainer + " [browser-id=v-usaha" + pLabel + "]").css('display', 'none'); 
+							$("#" + pContainer + " [viewer-id=v-usaha" + pLabel + "]").removeClass('changed');
+							$("#" + pContainer + " [viewer-id=v-usaha" + pLabel + "]").attr('src', "img/sources/picture.png");
+							$("#" + pContainer + " [name=imageName]").html("berkas belum diunggah...");
+							p_formHandler(pContainer , "addData");
+							clearTargetFormNoreg(pContainer, $('#' + pContainer + ' [name="noreg"]').val());
+							clearPacket();
+						}; 
+					});
+				}
+			});
+
+			currencyFormatActivator("[name=nominal]");
+		}
+		//generate data for editing
+		if(packet != "" && packet != null){ r_f1FormKelembagaanDataGenerator(packet); }		
+		// r_f1FormKelembagaanDataGenerator('00030200110');		
+		//$("input[name=noreg]").val('00030200110');
 	});
-
-	detailBoxActivator();
 }
 
-function r_f1LembagaGenerator(data){
-	var genHtml = "";
-	var tempB 	= "";
-	var tempP	= "";
-	if(data.lembaga != null){
-		lembagaCounter = data.lembaga.length;
-		for(var loop = 0; loop < data.lembaga.length; loop++){	
-			if(loop > 0){ tempP = "plus"; }
-			if(data.lembaga[loop].collapse == 'y') { tempB = '<span class="btn-collapse">Lihat semua</span>'; } else { tempB = ""; }
-
-			//--group
-			if(data.lembaga[loop].list.length > 0){
-				var group = data.lembaga[loop].group;
-				if(group == "Ajuan")	 group = "Data lembaga ajuan";
-				if(group == "Perubahan") group = "Data lembaga perubahan";
-				if(group == "Valid") 	 group = "Data lembaga sudah verifikasi";
-				genHtml = genHtml +
-				'<div class="cards-label ' + tempP + '">' +
-					'<p>' +
-						'<strong> ' + group + ' (' +  data.lembaga[loop].list.length + ')</strong>' +
-						tempB +
-					'</p>' +
-				'</div>';
-			}
-
-			var temPic = "";
-			for(var loopY = 0; loopY < data.lembaga[loop].list.length; loopY++){
-				var placeImg = data.lembaga[loop].list[loopY].noreg;
-				placeImg = placeImg.substr((placeImg.length-1), 1);
-				temPic   = (data.lembaga[loop].list[loopY].picture != "") ? 'img/logo/' + data.lembaga[loop].list[loopY].picture : 'img/logo/avatar-' + placeImg + '.jpg';
-				genHtml  = genHtml +
-				'<div id="' + data.lembaga[loop].list[loopY].id + '" class="cards clear">' +
-					'<div class="description-box">' +
-						'<div class="click-frame">' +
-							'<img class="icon-set" src="' + temPic + '"/>' +
-							'<p class="title-set">' + data.lembaga[loop].list[loopY].nama + '</p>' +
-							'<div class="text-set">' +
-								'<span class="id-set">' + data.lembaga[loop].list[loopY].noreg + '</span>' +
-								'<span class="desc-text">' + data.lembaga[loop].list[loopY].telp + ' | ' + data.lembaga[loop].list[loopY].email + '</span>' +
-							'</div>' +
-						'</div>' +
-						'<button type="button" class="click-option btn-set" ' + 
-							'p-label		="' + data.lembaga[loop].list[loopY].nama + '"' + 
-							'p-id			="' + data.lembaga[loop].list[loopY].id + '"' +
-							'p-group		="f1"' + 
-							'p-target		="f111"' +
-							'p-container	="' + data.lembaga[loop].list[loopY].id + '">' +
-						'<span class="fa fa-ellipsis-v"></span></button>' +
-					'</div>' +
-					'<div class="detail-box">' +
-						'<div class="list-box">' +
-							'<div class="list-icon"><span class="fa fa-lock"></span></div>' +
-							'<p class="list-text">' + data.lembaga[loop].list[loopY].username + '</p>' +
-						'</div>' +
-						'<div class="list-box">' +
-							'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
-							'<p class="list-text">' + data.lembaga[loop].list[loopY].telp + '</p>' +
-						'</div>' +
-						'<div class="list-box">' +
-							'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
-							'<p class="list-text">' + data.lembaga[loop].list[loopY].email + '</p>' +
-						'</div>' +
-						'<div class="list-box">' +
-							'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
-							'<p class="list-text">' + data.lembaga[loop].list[loopY].alamat + '</p>' +
-						'</div>' +
-						'<div class="list-box foot">' +
-							'<button type="button" class="clear list-text btn-link detail-click" p-id="' + data.lembaga[loop].list[loopY].id + '">Lihat selengkapnya</button>' +
-						'</div>' +
-					'</div>' +
-				'</div>';
-			}
-		}
-	}else{
-		genHtml = genHtml +
-		'<div class="cards">' +
-			'<div class="cards-header">' +
-				'<p class="fixed offset text-black">Data tidak ditemukan.</p>' +
-			'</div>' +
-		'</div>';
-	}
-
-	return genHtml;
-}
-
-function r_f1LembagaSelectionGenerator(data){
-	var genHtml = "";
-	var tempB 	= "";
-	var tempP	= "";
-	if(data.lembaga != null){
-		lembagaCounter = data.lembaga.length;
-		for(var loop = 0; loop < data.lembaga.length; loop++){	
-			if(loop > 0){ tempP = "plus"; }
-			if(data.lembaga[loop].collapse == 'y') { tempB = '<span class="btn-collapse">Lihat semua</span>'; } else { tempB = ""; }
-
-			//--right
-			genHtml = genHtml +
-			'<div class="cards-label ' + tempP + '">' +
-				'<p>' +
-					'<strong>' + data.lembaga[loop].group + ' (' +  data.lembaga[loop].list.length + ')</strong>' +
-					tempB +
-				'</p>' +
-			'</div>';
-			var temPic = "";
-			for(var loopY = 0; loopY < data.lembaga[loop].list.length; loopY++){
-				var placeImg = data.lembaga[loop].list[loopY].noreg;
-				placeImg = placeImg.substr((placeImg.length-1), 1);
-				temPic   = (data.lembaga[loop].list[loopY].picture != "") ? 'img/logo/' + data.lembaga[loop].list[loopY].picture : 'img/logo/avatar-' + placeImg + '.jpg';
-				genHtml  = genHtml +
-				'<div id="' + data.lembaga[loop].list[loopY].id + '" class="cards clear">' +
-					'<div class="description-box">' +
-						'<div class="">' +
-							'<img class="icon-set" src="' + temPic + '"/>' +
-							'<p class="title-set">' + data.lembaga[loop].list[loopY].nb + ' ' + data.lembaga[loop].list[loopY].nama + '</p>' +
-							'<div class="text-set">' +
-								'<span class="pos">' + data.lembaga[loop].list[loopY].nk + ' / ' + data.lembaga[loop].list[loopY].nc + ' / ' + data.lembaga[loop].list[loopY].nw + ' / ' + data.lembaga[loop].list[loopY].np + '</span>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-					'<div class="check-box fixed-position right-block">' +
-					  	'<input id="get' + data.lembaga[loop].list[loopY].noreg + '" p-id="' + data.lembaga[loop].list[loopY].noreg + '" class="select-button" type="checkbox">' +
-					 	 '<label for="get' + data.lembaga[loop].list[loopY].noreg + '"><span class="inner"></span><span class="icon"></span></label>' +
-					'</div>' +
-				'</div>';
-			}
-		}
-	}else{
-		genHtml = genHtml +
-		'<div class="cards">' +
-			'<div class="cards-header">' +
-				'<p class="fixed offset text-black">Data tidak ditemukan.</p>' +
-			'</div>' +
-		'</div>';
-	}
-
-	return genHtml;
-}
 
 //F1 DETAIL LEMBAGA
 //=====================================
@@ -941,330 +949,7 @@ function r_f1DetailLembaga(packet) {
 }
 
 //F1 FORM KELEMBAGAAN
-function r_f1FormProposal(packet){
-	$("body").prepend(preload);
-	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
-		mainPage.html('');
-		head  		= '';
-		body  		= '';
-		part		= ['',''];
-		content 	= '';
-		data 		= [];
-		selectItems = [];
-		dataHead	= [
-			{'idFilter': '1', 'form':'Tujuan'},
-			{'idFilter': '2', 'form':'RAB'},
-			{'idFilter': '3', 'form':'Persyaratan'},
-		];
 
-		//Cookie set
-		if(packet == undefined || packet == "" || packet == null || packet == "start"){
-			packet = profile_look_reader();
-		}
-
-		profile_look_set(packet);
-	
-		dataGrup = [];
-		dataTemp = [];
-		dataAllLembaga = [];
-		dataLegalitas = [];
-		kodeBentukLembaga = "";
-		
-		//-- get data bentuk lembaga
-		dataGrup = p_getData('f4', 'f431', '');
-		dataGrup = dataGrup.feedData;
-		selectItems['bentukLembaga'] = selectHtmlConverter(dataGrup);
-		
-		//-- get data bidang gerak
-		dataGrup = p_getData('f4', 'f433', '');
-		dataGrup = dataGrup.feedData;
-		selectItems['bidangGerak'] = selectHtmlConverter(dataGrup);
-		
-		//-- get data lingkup area
-		dataTemp 		  = p_getData('f4', 'f401', '');
-		sourcesData 	  = (dataTemp.feedData != null) ? dataTemp.feedData[0] : null;
-		sourcesDetailData = (dataTemp.feedDataDetail != null) ? dataTemp.feedDataDetail : null;
-
-		//-- get kode bentuk lembaga for legalitas
-		var bentukLembaga = r_bentukLembagaReader();
-		dataLegalitas = p_getData('f1','f1114','',bentukLembaga[0]);
-		if(dataLegalitas != null){ 
-			dataLegalitas = dataLegalitas.feedData;
-		}else{
-			dataLegalitas.feedData = null;
-		}
-		//-- get data koleksi
-		dataKoleksi = p_getData('f1', 'f117','');
-
-		//option list 
-		optionBatch = [
-			//{'selector': 'edit-card', 			'icon': 'pencil', 'label': 'Ubah data'},
-			{'selector': 'delete-card', 		'icon': 'trash',  'label': 'Hapus data'},
-		]; 
-
-		//get list all list lembaga { WARNING:: it might be make it slower}
-		// dataAllLembaga	= p_getData('f1','f11101');
-		// dataAllLembaga	= lembagaFetchArray(dataAllLembaga.feedData);
-		//--open
-		head	= 
-		'<div class="row head">' +
-			'<div class="container">' +
-				'<div class="col-md-8 col-md-offset-2">' +
-					'<div class="tab-header">' +
-						'<ul>';
-		
-		for(var loop = 0; loop < dataHead.length; loop++){
-			head = head + '<li class="tab-navigator" tab-headIndex="' + dataHead[loop].idFilter + '">' + dataHead[loop].form + '</li>';
-			state = "";
-		}
-		
-		head = head +
-						'</ul>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-		'</div>';
-		
-		//open
-		body =  '<div class="row no-head"><div class="container">';
-		
-		// KELEMBAGAAN =======================================================================
-		//=======================================================================
-		//=======================================================================
-		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="1">';
-		body = body + 
-		'<form id="f-kelembagaan-create" f-group = "f1" f-target = "f111">' +
-			'<div class="cards title">' +
-				'<div class="cards-header">' +
-					'<h4>Kelembagaan</h4>' +
-					'<p class="offset">kelengkapan data dapat ditambahkan secara berkala.</p>' +
-					'<p class="offset"><small>(*) <i>Mandatory atau kolom yang wajib diisi.</i>.</small></p>' +
-					'<div class="btn-collapse right">' +
-						// '<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-						'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-			'<div class="cards flush">' +
-				'<div class="row default">';
-		
-		//left
-		body = body + 
-		'<div class="col-md-12">' +
-			'<div class="input-box">' +
-				'<input name="tujuan" placeholder="Tujuan (*)" tabindex="1" type="text" value="" />' +
-			'</div>' +
-			'<div class="input-box rows-2">' +
-				'<textarea name="alamat" placeholder="Latar belakang pengajuan (*)" tabindex="1" class="rows-2"></textarea>' +
-			'</div>' +
-		'</div>' +
-
-		'<div class="col-md-6">' +
-			'<div class="input-box">' +
-				'<input name="nominal" placeholder="Nominal pengajuan (*)" tabindex="2" type="text" value="" />' +
-			'</div>' +
-		'</div>';
-		
-		//right
-		body = body + 
-		'</form>'+
-		'<div class="clearfix">&nbsp;</div>';
-		body = body + '</div></div></div>';
-		body = body + '<div class="clearfix tab-container" tab-contentIndex="1">&nbsp;</div>';
-		
-		
-		// LEGALITAS =======================================================================
-		//=======================================================================
-		//=======================================================================
-		body = body + 
-		'<!--div class="col-md-12 tab-container" tab-contentIndex="3">' +
-			'<div class="cards-label">' +
-				'<p><strong>Legalitas (3)</strong></p>' +
-			'</div>' +
-		'</div-->';
-		
-		//render
-		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="3" id="legalitas-frame"><div class="row default">';
-
-		body = body + '</div></div>';
-		body = body + '<div class="clearfix tab-container"  tab-contentIndex="3">&nbsp;</div>';
-		
-		// SEJARAH =======================================================================
-		//=======================================================================
-		//=======================================================================
-		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="2">';
-		body = body +
-		'<form id="f-sejarah-create" f-group = "f1" f-target = "f112">'+
-			'<div class="cards">' +
-				'<div class="cards-header">' +
-					'<h4>RAB</h4>' +
-					'<p class="offset">Detail anggaran rencana untuk diajukan (Rp).</p>' +
-					'<div class="btn-collapse right">' +
-						'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-						'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-			'<div class="cards">' +
-				'<div class="cards-header">' +
-					'<h4>Total anggaran</h4>' +
-					'<h3>1.000.000</h3>' +
-				'</div>' +
-				'<div class="summary-box">' +
-					'<div class="caption">' + 
-						'<span>terbilang</span>' +
-					'</div>' +
-					'<div class="counter-block"><i>Satu juta rupiah</i></div>' + 
-				'</div>' +
-			'</div>' +
-			'<div class="cards flush">' +
-				'<div class="row default">' +
-					'<div class="col-md-6">' +
-						'<div class="input-box">' +
-							'<input name="noreg" tabindex="1" type="hidden" value="" />' +
-							'<input name="uraian" placeholder="Uraian (*)" tabindex="1" type="text" value="" />' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<input name="satuan" placeholder="Satuan (*)" tabindex="1" type="text" value="" />' +
-						'</div>' +
-					'</div>' +
-					'<div class="col-md-6">' +
-						'<div class="input-box">' +
-							'<input name="volume" placeholder="Volume (*)" tabindex="1" type="text" value="" />' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<input name="harga" placeholder="Harga satuan (*)" tabindex="1" type="text" value="" />' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>';
-			
-		//right
-		body = body +
-		'</form>'+
-		'<div class="clearfix">&nbsp;</div>';
-
-		body = body + '</div>';
-		
-
-		body = body + '<div id="section-bantuan">';
-		body = body + '</div></div>';
-		body = body + '<div class="clearfix tab-container" tab-contentIndex="2">&nbsp;</div>';
-
-		//--
-		// CLOSING
-		//=====================================================================================
-		body	= body + '</div></div>';
-		content = '<section id="">' + head + body + '</section>';
-		//--close
-		
-		//--gen
-		var temp = 3;
-		if(String(r_getCookie('TABAH_userLevel')) == '1'){ temp = 2; }
-		headPage.html(r_headPageHtml(temp, 'Form proposal'));
-		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-		r_f1legaitasGenerator(dataLegalitas); //generate legalitas form
-		$("#preload").remove();
-		
-		//--command reactor
-		navito = ((String(r_getCookie('TABAH_userLevel')) == '1') ? 12 : 1);
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(navito); });
-		
-		// $(".reset").unbind().on('click', function(){ clearTargetForm('f-kelembagaan-create'); });
-		/*tab reader*/
-		if(r_tabReader() == null){
-			r_tabSet(1);
-			$('[tab-headIndex = "1"]').addClass('active');
-			$('[tab-contentIndex = "1"]').addClass('active');
-		}else{
-			$('[tab-headIndex = "' + r_tabReader() + '"]').addClass('active');
-			$('[tab-contentIndex = "' + r_tabReader() + '"]').addClass('active');
-		}
-
-		tabActivator();
-		datePickerActivator();
-		fileBrowserActivator();
-		imagePreviewActivator();
-		r_navbarReactor();
-		autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
-		autoCompleteActivator("f114_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
-		autoCompleteActivator("hirarkiLembaga", dataAllLembaga[0], dataAllLembaga, "hirarkiLembaga");
-
-		//form reactor
-		p_formHandler("f-kelembagaan-create" , "addData");
-		p_formHandler("f-sejarah-create" , "addData");
-		p_formHandler("f-bantuan-create" , "addData");
-		p_formHandler("f-kepengurusan-create" , "addData");
-		p_formHandler("f-kegiatanUsaha-create" , "addData");
-		p_formHandler("f-koleksi-create" , "addData");
-		p_formHandler("f-prestasi-create" , "addData");
-		p_formHandler("f-hirarki-create" , "addData");
-
-		for(loop=0; loop<maxForm; loop++){
-			p_formHandler("f-sarana-create-" + loop , "addData");
-			p_formHandler("f-usaha-create-" + loop , "addData");
-
-			$('#f-sarana-create-' + loop + " [type=reset]").unbind().on("click", function(e){
-				e.preventDefault(); 
-				if($("#" + $(this).attr('p-container') + " [name=p-id]").val() != ""){
-					showOptionConfirm('delete');
-					clearPacket();
-					pContainer		= $(this).attr('p-container');
-					pGroup 			= $(this).attr('p-group');
-					pTarget			= $(this).attr('p-target')
-					pId				= $("#" + pContainer + " [name=p-id]").val();
-					pLabel			= $(this).attr('p-label');
-					pReferencesKey	= $("#" + pContainer + " [name=noreg]").val();
-					$(".option-yes").unbind().on("click", function(){ 
-						hideOptionList(); 
-						if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
-							$("#" + pContainer + " [browser-id=v-sarana" + pLabel + "]").css('display', 'none'); 
-							$("#" + pContainer + " [viewer-id=v-sarana" + pLabel + "]").removeClass('changed');
-							$("#" + pContainer + " [viewer-id=v-sarana" + pLabel + "]").attr('src', "img/sources/picture.png");
-							$("#" + pContainer + " [name=imageName]").html("berkas belum diunggah...");
-							p_formHandler(pContainer , "addData");
-							clearTargetFormNoreg(pContainer, $('#' + pContainer + ' [name="noreg"]').val());
-							clearPacket();
-						}; 
-					});
-				}
-			});
-
-			$('#f-usaha-create-' + loop + " [type=reset]").unbind().on("click", function(e){
-				e.preventDefault(); 
-				if($("#" + $(this).attr('p-container') + " [name=p-id]").val() != ""){
-					showOptionConfirm('delete');
-					clearPacket();
-					pContainer		= $(this).attr('p-container');
-					pGroup 			= $(this).attr('p-group');
-					pTarget			= $(this).attr('p-target')
-					pId				= $("#" + pContainer + " [name=p-id]").val();
-					pLabel			= $(this).attr('p-label');
-					pReferencesKey	= $("#" + pContainer + " [name=noreg]").val();
-					$(".option-yes").unbind().on("click", function(){ 
-						hideOptionList(); 
-						if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
-							$("#" + pContainer + " [browser-id=v-usaha" + pLabel + "]").css('display', 'none'); 
-							$("#" + pContainer + " [viewer-id=v-usaha" + pLabel + "]").removeClass('changed');
-							$("#" + pContainer + " [viewer-id=v-usaha" + pLabel + "]").attr('src', "img/sources/picture.png");
-							$("#" + pContainer + " [name=imageName]").html("berkas belum diunggah...");
-							p_formHandler(pContainer , "addData");
-							clearTargetFormNoreg(pContainer, $('#' + pContainer + ' [name="noreg"]').val());
-							clearPacket();
-						}; 
-					});
-				}
-			});
-
-
-			numberOnlyActivator("[name=telp], [name=rt], [name=rw]");
-		}
-		//generate data for editing
-		if(packet != "" && packet != null){ r_f1FormKelembagaanDataGenerator(packet); }		
-		// r_f1FormKelembagaanDataGenerator('00030200110');		
-		//$("input[name=noreg]").val('00030200110');
-	});
-}
 
 function r_f1FormKelembagaanDataGenerator(packet){
 	

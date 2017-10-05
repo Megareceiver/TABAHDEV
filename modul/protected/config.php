@@ -16,6 +16,6 @@
 	}
 
 	function getApiUrl(){
-		return 'http://dev.dplega.yanbangsos.jabarprov.go.id/api/router.php/';
+		return 'http://172.16.11.76/DPLEGA/api/router.php/';
 	}
 ?>

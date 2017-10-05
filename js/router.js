@@ -42,9 +42,9 @@ $(function(){
 	//r_navigateTo(0, 'start');
 	// r_pageSet(0);
 	// keeping data provinsi, wilayah, kecamatan, kelurahan to global variable
-	optionD = p_getData('f4', 'f40', '');
+	optionD = p_getData('f4', 'f40', ''); console.log(optionD);
 	optionD = optionD.feedData;
-
+	
 	/*temp*/
 	if(String(r_getCookie("TABAH_userLevel")) != "1"){
 		$("#navigation .user-frame img").attr('src', 'img/avatar/' +String(r_getCookie("TABAH_avatar")));
@@ -564,30 +564,30 @@ function r_optionDHtml(group){
 	
 	switch(group){
 		case "provinsi": 
-			if(optionD != null && optionD[0].provinsi != undefined){
-				for(var loop=0; loop<optionD[0].provinsi.length; loop++){
-					optionHtml = optionHtml + '<option value="' + optionD[0].provinsi[loop].idData + '">' + optionD[0].provinsi[loop].caption + '</option>';
+			if(optionD != null && optionD.provinsi != undefined){
+				for(var loop=0; loop<optionD.provinsi.length; loop++){
+					optionHtml = optionHtml + '<option value="' + optionD.provinsi[loop].idData + '">' + optionD.provinsi[loop].name + '</option>';
 				}
 			}
 		break;
 		case "wilayah": 
-			if(optionD != null && optionD[0].wilayah != undefined){
-				for(var loop=0; loop<optionD[0].wilayah.length; loop++){
-					optionHtml = optionHtml + '<option value="' + optionD[0].wilayah[loop].idData + '">' + optionD[0].wilayah[loop].caption + '</option>';
+			if(optionD != null && optionD.wilayah != undefined){
+				for(var loop=0; loop<optionD.wilayah.length; loop++){
+					optionHtml = optionHtml + '<option value="' + optionD.wilayah[loop].idData + '">' + optionD.wilayah[loop].name + '</option>';
 				}
 			}
 		break;
 		case "kecamatan": 
-			if(optionD != null && optionD[0].kecamatan != undefined){
-				for(var loop=0; loop<optionD[0].kecamatan.length; loop++){
-					optionHtml = optionHtml + '<option value="' + optionD[0].kecamatan[loop].idData + '">' + optionD[0].kecamatan[loop].caption + '</option>';
+			if(optionD != null && optionD.kecamatan != undefined){
+				for(var loop=0; loop<optionD.kecamatan.length; loop++){
+					optionHtml = optionHtml + '<option value="' + optionD.kecamatan[loop].idData + '">' + optionD.kecamatan[loop].name + '</option>';
 				}
 			}
 		break;
 		case "kelurahan": 
-			if(optionD != null && optionD[0].kelurahan != undefined){
-				for(var loop=0; loop<optionD[0].kelurahan.length; loop++){
-					optionHtml = optionHtml + '<option value="' + optionD[0].kelurahan[loop].idData + '">' + optionD[0].kelurahan[loop].caption + '</option>';
+			if(optionD != null && optionD.kelurahan != undefined){
+				for(var loop=0; loop<optionD.kelurahan.length; loop++){
+					optionHtml = optionHtml + '<option value="' + optionD.kelurahan[loop].idData + '">' + optionD.kelurahan[loop].name + '</option>';
 				}
 			}
 		break;

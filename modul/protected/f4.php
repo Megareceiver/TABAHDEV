@@ -17,7 +17,7 @@
 		/* refferences */
 		
 		switch($target){
-			case "f40" : $resultList = requestDataDplega('f4', 'f40'); break;
+			case "f40" : $resultList = getLingkupAreaSection(); break;
 			case "f401": $resultList = requestDataDplega('f4', 'f401'); break;
 			case "f402": $resultList = getBatasAreaListSection(); break;
 			case "f412": $resultList = getWilayahOnlyListSection($data); break;
@@ -61,6 +61,25 @@
 
 		$response=json_decode($response);
 		return $response;
+	}
+
+	function getLingkupAreaSection(){
+		$rest = requestDataDplega('f4', 'f40');
+		$dumb['provinsi'] = array();
+		$dumb['wilayah'] = array();
+		$dumb['kecamatan'] = array();
+		$dumb['kelurahan'] = array();
+		foreach ($rest->feedData as $row) {
+			array_push($dumb[$row->group], $row);
+		}
+
+		$rest->feedData = array(
+			'provinsi' => $dumb['provinsi'],
+			'wilayah' => $dumb['wilayah'],
+			'kecamatan' => $dumb['kecamatan'],
+			'kelurahan' => $dumb['kelurahan'],
+		);
+		return $rest;
 	}
 	
 	function getTimWilayahListSection(){
