@@ -1,0 +1,17 @@
+
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+DocumentRoot "C:/xampp/htdocs"
+ServerName localhost
+</VirtualHost>
+
+<VirtualHost *:80>
+DocumentRoot "C:/xampp/htdocs/uniq365dev"
+ServerName uniq.dev
+ServerAlias uniq.dev
+<Directory "c:/xampp/htdocs/uniq365dev">
+Order allow,deny
+Allow from all
+</Directory>
+</VirtualHost>
