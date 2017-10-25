@@ -1,5 +1,35 @@
-//F1 KELEMBAGAAN :: LIST BENTUK LEMBAGA
+//F1
 //=====================================
+function r_f1Pemberkasan(){
+	$("body").prepend(preload);
+	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
+		mainPage.html('');
+		head  	= '';
+		body  	= '';
+		content = '';
+		data    = [];
+		
+		//--start
+		body	= '<div class="row no-head"><div class="container">';
+
+		body	= body + '</div></div>';
+		content = '<section id="pemberkasan">' + head + body + '</section>';
+		//--close
+		
+		//--gen
+		headPage.html(r_headPageHtml(4, 'pemberkasan'));
+		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+
+		$("#preload").remove();
+		
+		//--command reactor
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		detailBoxActivator();
+		searchBoxActivator();
+		r_navbarReactor();
+	});
+}
+
 function r_f1DaftarProposalAwal(){
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
@@ -8,7 +38,7 @@ function r_f1DaftarProposalAwal(){
 		body  	= '';
 		part 	= ['',''];
 		content = '';
-		data    =  p_getData('f1', 'f111', '', 'single');
+		data    =  p_getData('f1', 'ft111', '', 'single');
 		
 		//-- set option list on a session
 		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
