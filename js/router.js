@@ -42,7 +42,7 @@ $(function(){
 	//r_navigateTo(0, 'start');
 	// r_pageSet(0);
 	// keeping data provinsi, wilayah, kecamatan, kelurahan to global variable
-	optionD = p_getData('f4', 'f40', ''); console.log(optionD);
+	optionD = p_getData('f4', 'f40', '');
 	optionD = optionD.feedData;
 	
 	/*temp*/
@@ -63,7 +63,11 @@ function r_navigateTo(index, packet, access) {
 			case 0  : r_f0Dashboard(); 					break;
 			case 0.1: r_f0Bantuan(); 					break;
 			
+<<<<<<< HEAD
 			case 1 	 : r_f1Perberkasan(); 					break;
+=======
+			case 1 	 : r_f1Pemberkasan(); 					break;
+>>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 			case 111 : r_f1DaftarProposalAwal(packet); 		break;
 			case 112 : r_f1DaftarProposalPencairan(packet); break;
 			case 113 : r_f1DaftarLaporan(packet); 			break;
@@ -1554,8 +1558,12 @@ function r_navbarReactor(){
 	
 	$("#option.syncnav .dashboard")  .unbind().on("click", function(){ r_navigateTo(0); });
 	$("#option.syncnav .pemberkasan").unbind().on("click", function(){ r_navigateTo(1); });
+<<<<<<< HEAD
 	$("#option.syncnav .daftarLolosVerifikasi").unbind().on("click", function(){ r_navigateTo(21); });
 	$("#option.syncnav .daftarPencairan").unbind().on("click", function(){ r_navigateTo(22); });
+=======
+	$("#option.syncnav .pencairan").unbind().on("click", function(){ r_navigateTo(2); });
+>>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 	$("#option.syncnav .pengaturan") .unbind().on("click", function(){ r_navigateTo(4); });
 	// $("#option.syncnav .bantuan") 	 .unbind().on("click", function(){ r_navigateTo(0.1); });
 	$("#option.syncnav .log-off")	 .unbind().on("click", function(){ p_logout(); r_navigateTo(); });

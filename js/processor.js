@@ -130,7 +130,6 @@ function p_formHandler(formId, type){
 			processData:false,        // To send DOMDocument or non processed data file it is set to false
 			success: function(data)   // A function to be called if request succeeds
 			{ 
-				console.log(data);
 				showNotification(data.feedType, '0', data.feedMessage);
 				if(data.feedStatus == "success" || data.feedStatus == "warning"){
 					if(data.feedPId == undefined){ data.feedPId = null }

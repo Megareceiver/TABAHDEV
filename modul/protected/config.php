@@ -16,6 +16,6 @@
 	}
 
 	function getApiUrl(){
-		return 'http://172.16.11.76/DPLEGA/api/router.php/';
+		return 'http://localhost/DPLEGA/api/router.php/';
 	}
 ?>

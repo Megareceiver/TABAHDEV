@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 //F1 PROPOSAL
 //=====================================
 function r_f1Perberkasan(){
+=======
+//F1
+//=====================================
+function r_f1Pemberkasan(){
+>>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
 		head  	= '';
 		body  	= '';
+<<<<<<< HEAD
 		part 	= ['',''];
 		content = '';
 
@@ -30,10 +37,30 @@ function r_f1Perberkasan(){
 		//--gen
 		headPage.html(r_headPageHtml(3, 'Proposal pencairan'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+=======
+		content = '';
+		data    = [];
+		
+		//--start
+		body	= '<div class="row no-head"><div class="container">';
+
+		body	= body + '</div></div>';
+		content = '<section id="pemberkasan">' + head + body + '</section>';
+		//--close
+		
+		//--gen
+		headPage.html(r_headPageHtml(4, 'pemberkasan'));
+		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+
+>>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 		$("#preload").remove();
 		
 		//--command reactor
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+<<<<<<< HEAD
+=======
+		detailBoxActivator();
+>>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 		searchBoxActivator();
 		r_navbarReactor();
 	});
@@ -47,7 +74,7 @@ function r_f1DaftarProposalAwal(){
 		body  	= '';
 		part 	= ['',''];
 		content = '';
-		data    =  p_getData('f1', 'f111', '', 'single');
+		data    =  p_getData('f1', 'ft111', '', 'single');
 		
 		//-- set option list on a session
 		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
