@@ -1,5 +1,44 @@
-//F1 KELEMBAGAAN :: LIST BENTUK LEMBAGA
+//F1 PROPOSAL
 //=====================================
+function r_f1Perberkasan(){
+	$("body").prepend(preload);
+	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
+		mainPage.html('');
+		head  	= '';
+		body  	= '';
+		part 	= ['',''];
+		content = '';
+
+		//--start
+		body	= '<div class="row no-head"><div class="container">';
+		part[0] = '<div class="col-md-6">';
+		part[1] = '<div class="col-md-6" id="proposal-group">';
+		
+		part[0] = part[0] + 
+		'<div class="">' +
+			'<div></div>' +
+		'</div>';
+
+		//--left
+		part[0] = part[0] + '</div>';
+		part[1] = part[1] + '</div>';
+
+		body	= body 	  + part[0] + part[1] + '</div></div>';
+		content = '<section id="proposal">' + head + body + '</section>';
+		//--close
+		
+		//--gen
+		headPage.html(r_headPageHtml(3, 'Proposal pencairan'));
+		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+		$("#preload").remove();
+		
+		//--command reactor
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		searchBoxActivator();
+		r_navbarReactor();
+	});
+}
+
 function r_f1DaftarProposalAwal(){
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){

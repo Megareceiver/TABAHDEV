@@ -63,6 +63,7 @@ function r_navigateTo(index, packet, access) {
 			case 0  : r_f0Dashboard(); 					break;
 			case 0.1: r_f0Bantuan(); 					break;
 			
+			case 1 	 : r_f1Perberkasan(); 					break;
 			case 111 : r_f1DaftarProposalAwal(packet); 		break;
 			case 112 : r_f1DaftarProposalPencairan(packet); break;
 			case 113 : r_f1DaftarLaporan(packet); 			break;
@@ -72,7 +73,10 @@ function r_navigateTo(index, packet, access) {
 			case 12 : r_f1DetailLembaga(packet); 		break;
 			case 13 : r_f1VerifikasiLembaga(packet);	break;
 			case 15 : r_f1FormProposal(packet);			break;
-			
+
+			case 21  : r_f2DaftarLolosVerifikasi(packet); break;
+			case 22	 : r_f2DaftarPencairan(packet); 	  break;
+
 			case 3  : r_f3Anggota(); 					break;
 			case 31 : r_f3FormUser(packet);				break;
 			
@@ -1549,11 +1553,9 @@ function r_navbarReactor(){
 	/*--syncnav menubar*/ syncnavReactor();
 	
 	$("#option.syncnav .dashboard")  .unbind().on("click", function(){ r_navigateTo(0); });
-	$("#option.syncnav .proposalAwal").unbind().on("click", function(){ r_navigateTo(111); });
-	$("#option.syncnav .proposalPencairan").unbind().on("click", function(){ r_navigateTo(112); });
-	$("#option.syncnav .berkasLaporan").unbind().on("click", function(){ r_navigateTo(113); });
-	$("#option.syncnav .riwayatPengajuan").unbind().on("click", function(){ r_navigateTo(114); });
-	$("#option.syncnav .riwayatPencairan").unbind().on("click", function(){ r_navigateTo(115); });
+	$("#option.syncnav .pemberkasan").unbind().on("click", function(){ r_navigateTo(1); });
+	$("#option.syncnav .daftarLolosVerifikasi").unbind().on("click", function(){ r_navigateTo(21); });
+	$("#option.syncnav .daftarPencairan").unbind().on("click", function(){ r_navigateTo(22); });
 	$("#option.syncnav .pengaturan") .unbind().on("click", function(){ r_navigateTo(4); });
 	// $("#option.syncnav .bantuan") 	 .unbind().on("click", function(){ r_navigateTo(0.1); });
 	$("#option.syncnav .log-off")	 .unbind().on("click", function(){ p_logout(); r_navigateTo(); });
