@@ -1,18 +1,12 @@
-<<<<<<< HEAD
-//F1 PROPOSAL
-//=====================================
-function r_f1Perberkasan(){
-=======
 //F1
 //=====================================
 function r_f1Pemberkasan(){
->>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
 		head  	= '';
 		body  	= '';
-<<<<<<< HEAD
+
 		part 	= ['',''];
 		content = '';
 
@@ -37,7 +31,6 @@ function r_f1Pemberkasan(){
 		//--gen
 		headPage.html(r_headPageHtml(3, 'Proposal pencairan'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-=======
 		content = '';
 		data    = [];
 		
@@ -52,15 +45,10 @@ function r_f1Pemberkasan(){
 		headPage.html(r_headPageHtml(4, 'pemberkasan'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 
->>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
-		$("#preload").remove();
-		
 		//--command reactor
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
-<<<<<<< HEAD
-=======
+
 		detailBoxActivator();
->>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
 		searchBoxActivator();
 		r_navbarReactor();
 	});

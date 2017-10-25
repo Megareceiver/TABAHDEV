@@ -63,31 +63,24 @@ function r_navigateTo(index, packet, access) {
 			case 0  : r_f0Dashboard(); 					break;
 			case 0.1: r_f0Bantuan(); 					break;
 			
-<<<<<<< HEAD
-			case 1 	 : r_f1Perberkasan(); 					break;
-=======
-			case 1 	 : r_f1Pemberkasan(); 					break;
->>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
-			case 111 : r_f1DaftarProposalAwal(packet); 		break;
-			case 112 : r_f1DaftarProposalPencairan(packet); break;
-			case 113 : r_f1DaftarLaporan(packet); 			break;
-			case 114 : r_f1DaftarRiwayatPengajuan(packet); 	break;
-			case 115 : r_f1DaftarRiwayatPencairan(packet); 	break;
+			case 1 	: r_f1Pemberkasan(); 				break;
+			case 11 : r_f1permohonanAwal(packet); 		break;
+			case 12 : r_f1permohonanPencairan(packet);  break;
 			
-			case 12 : r_f1DetailLembaga(packet); 		break;
-			case 13 : r_f1VerifikasiLembaga(packet);	break;
-			case 15 : r_f1FormProposal(packet);			break;
+			// case 12 : r_f1DetailLembaga(packet); 		break;
+			// case 13 : r_f1VerifikasiLembaga(packet);	break;
+			// case 15 : r_f1FormProposal(packet);			break;
 
 			case 21  : r_f2DaftarLolosVerifikasi(packet); break;
 			case 22	 : r_f2DaftarPencairan(packet); 	  break;
 
-			case 3  : r_f3Anggota(); 					break;
-			case 31 : r_f3FormUser(packet);				break;
 			
 			case 4  : r_f4Pengaturan();					break;
 			case 41 : r_f4TimWilayah();					break;
 			case 410: r_f4AnggotaTimWilayah(packet);	break;
 			case 411: r_f4TransferLembaga();			break;
+			case 412 : r_f3Anggota(); 					break;
+			case 413 : r_f3FormUser(packet);			break;
 			
 			case 42 : r_f4DaftarPersyaratan();			break;
 			case 421: r_f4GrupPersyaratan();			break;
@@ -760,35 +753,81 @@ function r_fHome() {
 		//--open
 		head	= 
 		'<div class="row no-head jumbotron-ground">' +
-			'<div class="col-md-3 bg-black-mirror banner-black">' +
-				'<div class="button-box">' +
-					'<h5 class="theme-color text-bold">NAVIGASI</h5>' +
-					'<button type="button" class="clear text-white" id="go-websiteResmi">WEBSITE RESMI</button>' +
-					'<button type="button" class="clear text-white" id="go-beritaTerkini">BERITA TERKINI</button>' +
-					'<button type="button" class="clear text-white" id="go-kontak">KONTAK</button>' +
+			'<div id="slider-background">' +
+				'<div class="col-md-3 bg-black-mirror banner-black">' +
+					'<div class="button-box">' +
+						'<h5 class="theme-color text-bold">NAVIGASI</h5>' +
+						'<button type="button" class="clear text-white" id="go-websiteResmi">WEBSITE RESMI</button>' +
+						'<button type="button" class="clear text-white" id="go-beritaTerkini">BERITA TERKINI</button>' +
+						'<button type="button" class="clear text-white" id="go-kontak">KONTAK</button>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-9 jumbotron-content bg-black-mirror">' +
+					'<div class="jumbotron-bg text-shadow">' +
+						'<div class="logo-container"><img class="logo-user" src="img/logo_jabar.png"></div>' +
+						'<h1>TATA KELOLA BANTUAN HIBAH LEMBAGA KEAGAMAAN DI JAWA BARAT</h1>' +
+						'<h5>BIRO PELAYANAN DAN PENGEMBANGAN SOSIAL</h5>' +
+						'<p>' +
+							'Halo pengunjung ! <br/>' +
+							'Kami ucapkan selamat datang, akhirnya kami dapat kembali meningkatkan pelayanan kepada anda, dan tiada ' +
+							'hentinya kami terus melakukan perbaikan agar menjadi lebih baik lagi.<br/><br/>TABAH adalah layanan berbasis online kepada ' +
+							'masyarakat untuk mengelola permohonan bantuan hibah dari lembaga dan tindak lanjutnya untuk memudahkan lembaga untuk melalui prosesnya ' +
+						'</p>' +
+					'</div>' +
 				'</div>' +
 			'</div>' +
-			'<div class="col-md-9 jumbotron-content bg-black-mirror">' +
-				'<div class="jumbotron-bg text-shadow">' +
-					'<div class="logo-container"><img class="logo-user" src="img/logo_jabar.png"></div>' +
-					'<h1>PUSAT DATA POTENSI LEMBAGA KEAGAMAAN DI JAWA BARAT</h1>' +
-					'<h5>BIRO PELAYANAN DAN PENGEMBANGAN SOSIAL</h5>' +
-					'<p>' +
-						'Halo pengunjung ! <br/>' +
-						'Kami ucapkan selamat datang, akhirnya kami dapat kembali meningkatkan pelayanan kepada anda, dan tiada ' +
-						'hentinya kami terus melakukan perbaikan agar menjadi lebih baik lagi.<br/><br/>Dplega adalah layanan berbasis online kepada ' +
-						'masyarakat untuk menyediakan data kelembagaan yang telah tercatat secara legal serta telah melewati proses ' +
-						'verifikasi sehingga dinyatakan sah sebagai suatu kelembagaan.' +
-					'</p>' +
-				'</div>' +
-			'</div>' +
-			'<div class="clearfix"></div>' +
 			'<div class="jumbotron-button">' +
 				'<div class="col-md-12">' +
 					'<button type="button" class="btn-link text-white go-scroll"><i class="fa fa-angle-double-down fa-3x"></i></button>' +
 				'</div>' +
 			'</div>' +
+			'<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">' +
+			  '<!-- Indicators -->' +
+			  '<ol class="carousel-indicators">' +
+			    '<li data-target="#myCarousel" data-slide-to="0" class="active"></li>' +
+			    '<li data-target="#myCarousel" data-slide-to="1"></li>' +
+			    '<li data-target="#myCarousel" data-slide-to="2"></li>' +
+			  '</ol>' +
+
+			  '<!-- Wrapper for slides -->' +
+			  '<div class="carousel-inner">' +
+			    '<div class="item active">' +
+			      '<img src="img/bg-1.jpg" alt="DPLEGA 2.0">' +
+			      '<!--div class="carousel-caption">' +
+			        '<h3>Los Angeles</h3>' +
+			        '<p>LA is always so much fun!</p>' +
+			     '</div-->' +
+			    '</div>' +
+
+			    '<div class="item">' +
+			      '<img src="img/bg-2.jpg" alt="DPLEGA 2.0">' +
+			      '<!--div class="carousel-caption">' +
+			        '<h3>Chicago</h3>' +
+			        '<p>Thank you, Chicago!</p>' +
+			      '</div-->' +
+			    '</div>' +
+
+			    '<div class="item">' +
+			      '<img src="img/bg-3.jpg" alt="DPLEGA 2.0">' +
+			      '<!--div class="carousel-caption">' +
+			        '<h3>New York</h3>' +
+			        '<p>We love the Big Apple!</p>' +
+			      '</div-->' +
+			    '</div>' +
+			  '</div>' +
+
+			  '<!-- Left and right controls -->' +
+			  '<!--a class="left carousel-control" href="#myCarousel" data-slide="prev">' +
+			    '<span class="glyphicon glyphicon-chevron-left"></span>' +
+			    '<span class="sr-only">Previous</span>' +
+			  '</a>' +
+			  '<a class="right carousel-control" href="#myCarousel" data-slide="next">' +
+			    '<span class="glyphicon glyphicon-chevron-right"></span>' +
+			    '<span class="sr-only">Next</span>' +
+			  '</a-->' +
+			'</div>' +
 		'</div>';
+
 		body	= '<div id="website-section" class="row"><div class="col-md-12">';
 		//--license detail
 		body	= body + 
@@ -850,6 +889,16 @@ function r_fHome() {
 		
 		body	= body + '</div></div></div>';
 		
+		//--more news detail
+		body	= body + 
+		'<!--div class="cards clear">' +
+			'<div class="article-box">' +
+				'<div class="single">' +
+					'<button type="button" class="clear btn-link more-click">Lihat selengkapnya</button>' +
+				'</div>' +
+			'</div>' +
+		'</div-->';
+
 		/*--static footer*/
 		body	= body + 
 		'<div id="kontak-section" class="row foot">' +
@@ -897,21 +946,27 @@ function r_fHome() {
 		var sec1 = $(window).innerHeight();
 		var sec2 = $('#website-section').innerHeight();
 		var sec3 = $('#berita-section').innerHeight();
-		var sec4 = $('#kontak-section').innerHeight();
+		var sec4 = $('#kelembagaan-section').innerHeight();
+		var sec5 = $('#kontak-section').innerHeight();
 		
 		$(".go-scroll").unbind().on('click', function(){ scrollPage(sec1); });
 		$("#go-websiteResmi").unbind().on('click', function(){ scrollPage(sec1); });
 		$("#go-beritaTerkini").unbind().on('click', function(){ scrollPage(sec1 + sec2); });
-		$("#go-kontak").unbind().on('click', function(){ scrollPage(sec1 + sec2 + sec3); });
+		$("#go-kelembagaan").unbind().on('click', function(){ scrollPage(sec1 + sec2 + sec3); });
+		$("#go-kontak").unbind().on('click', function(){ scrollPage(sec1 + sec2 + sec3 + sec4); });
 		$(".scroll-up").unbind().on('click', function(){ backToTop(); });
 	
 		
 		//--css mod
 		if(sec1 >= 600) $(".jumbotron-ground").css('height', ($(window).innerHeight()*1));
 		else $(".jumbotron-ground").css('height', 694);
+
+		$('#myCarousel').carousel({
+		  interval: 3000,
+		  cycle: true
+		}); 
 	});
 }
-
 function r_fLogin() {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
@@ -1081,17 +1136,12 @@ function r_f0Dashboard() {
 		body  	= '';
 		part	= ['',''];
 		content = '';
-		data 	= [{
-			'summary':[
-				{'caption':'Total data ajuan', 'counter': '0', 'id': 'ajuan'},
-				{'caption':'Total data sudah verfikasi', 'counter': '0', 'id': 'verifikasi'},
-				{'caption':'Total data akun (lembaga)', 'counter': '0', 'id': 'akun'},
-			]
-			
-		}];
 
-		dataT 	= p_getData('f4', 'f431', '', ''); 
-		dataT 	= dataT.feedData; 
+		dataBentukLembaga 	= p_getData('f4', 'f431', '', ''); 
+		dataBentukLembaga 	= dataBentukLembaga.feedData;
+
+		dataWilayah 		= p_getData('f4', 'f403', '', ''); 
+		dataWilayah 		= dataWilayah.feedData;
 		
 		var counta = 0;
 		var countv = 0;
@@ -1121,19 +1171,19 @@ function r_f0Dashboard() {
 			'</div>' +
 		'</div>';
 		
-		if(dataT != null){
-			for(var loop = 0; loop < dataT.length; loop++){
-				flush = ((loop == (dataT.length-1)) ? 'flush' : '');
+		if(dataBentukLembaga != null){
+			for(var loop = 0; loop < dataBentukLembaga.length; loop++){
+				flush = ((loop == (dataBentukLembaga.length-1)) ? 'flush' : '');
 				part[0] = part[0] +
 				'<div class="cards ' + flush + '">' +
 					'<div class="row default">' +
 						'<div class="col-md-12">' +
 							'<div class="summary-box">' +
 								'<div class="caption">' +
-									'<span>' + dataT[loop].caption + '</span>' +
+									'<span>' + dataBentukLembaga[loop].namaBentukLembaga + '</span>' +
 								'</div>' +
 								'<div class="counter-block">' +
-									'0101' +
+									'0' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
@@ -1156,7 +1206,7 @@ function r_f0Dashboard() {
 				'<p class="caption"></p>' +
 			'</div-->' +
 			'<div class="summary-sbody fleed">' +
-				'<p class="counter" id="">1.9 TRILIUN</p>' +
+				'<p class="counter" id="">0</p>' +
 			'</div>' +
 			'<!--div class="summary-sfoot">' +
 				'<button class="btn-link click" type="button">Lihat data <img class="btn-icon-set" src="img/sources/arrow-right-black.png" /></button>' +
@@ -1173,28 +1223,31 @@ function r_f0Dashboard() {
 				'</div>' +
 			'</div>' +
 		'</div>';
+
 		
-		if(dataT != null){
-			for(var loop = 0; loop < dataT.length; loop++){
-				counta = counta + parseInt(dataT[loop].ajuan);
-				countv = countv + parseInt(dataT[loop].valid);
-				part[1] = part[1] +
+		
+		if(dataWilayah != null){
+			part[1] = part[1] +
 				'<div class="cards">' +
-					'<div class="row default">' +
-						'<div class="col-md-12">' +
-							'<div class="summary-box">' +
-								'<div class="caption">' +
-									'<span>' + dataT[loop].caption + '</span>' +
-								'</div>' +
-								'<div class="counter-block">' +
-									'0101' +
-								'</div>' +
-							'</div>' +
+					'<div class="row default">';
+			for(var loop = 0; loop < dataWilayah.length; loop++){
+				part[1] = part[1] +
+				'<div class="col-md-6">' +
+					'<div class="summary-box">' +
+						'<div class="caption">' +
+							'<span><i>' + dataWilayah[loop].namaWilayah + '</i></span>' +
+						'</div>' +
+						'<div class="counter-block">' +
+							'<b>0</b>' +
 						'</div>' +
 					'</div>' +
-					'<div class="clearfix"></div>' +
 				'</div>';
 			}
+
+			part[1] = part[1] +
+			'</div>' +
+				'<div class="clearfix"></div>' +
+			'</div>';
 		}
 		
 		part[0] = part[0] + '</div>';
@@ -1208,45 +1261,65 @@ function r_f0Dashboard() {
 		'</div>' +
 		'<div class="col-md-4">' +
 			'<div class="row default">' +
-				'<div class="cards go-proposal">' +
+				'<div class="cards go-permohonanAwal">' +
 					'<div class="navigation-box icon-add">' +
 						'<span class="fa fa-files-o icon-set theme-color"></span>' +
 						'<div class="caption">' +
-							'<span>Proposal</span>' +
+							'<span>Permohonan Awal</span>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
 			'<div class="row default">' +
-				'<div class="cards go-riwayat">' +
+				'<div class="cards go-permohonanPencairan">' +
 					'<div class="navigation-box icon-add">' +
-						'<span class="fa fa-history icon-set text-red"></span>' +
+						'<span class="fa fa-files-o icon-set theme-color"></span>' +
 						'<div class="caption">' +
-							'<span>Riwayat pengajuan</span>' +
+							'<span>Permohonan Pencairan</span>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
 		'</div>' +
 		'<div class="col-md-4">' +
+			'<div class="row default">' +
+				'<div class="cards go-lolosVerifikasi">' +
+					'<div class="navigation-box icon-add">' +
+						'<span class="fa fa-check icon-set text-green"></span>' +
+						'<div class="caption">' +
+							'<span>Daftar lolos verifikasi</span>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+			'<div class="row default">' +
+				'<div class="cards go-pencairan">' +
+					'<div class="navigation-box icon-add">' +
+						'<span class="fa fa-legal icon-set text-yellow"></span>' +
+						'<div class="caption">' +
+							'<span>Daftar pencairan</span>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>' +
+		'<div class="col-md-4">' +
+			'<div class="row default">' +
+				'<div class="cards go-notaPencairan">' +
+					'<div class="navigation-box icon-add">' +
+						'<span class="fa fa-list icon-set text-red"></span>' +
+						'<div class="caption">' +
+							'<span>Nota Pencairan</span>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
 			'<div class="row default">' +
 				'<div class="cards go-pengaturan">' +
 					'<div class="navigation-box icon-add">' +
 						'<span class="fa fa-gear icon-set text-purple"></span>' +
 						'<div class="caption">' +
 							'<span>Pengaturan</span>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-		'</div>' +
-		'<div class="col-md-4">' +
-			'<div class="row default">' +
-				'<div class="cards go-keluar">' +
-					'<div class="navigation-box icon-add">' +
-						'<span class="fa fa-power-off icon-set text-red"></span>' +
-						'<div class="caption">' +
-							'<span>Keluar</span>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -1264,10 +1337,11 @@ function r_f0Dashboard() {
 		$("#preload").remove();
 		
 		//--command reactor
-		$(".go-proposal").unbind().on('click', function(){ r_navigateTo(1); });
-		$(".go-koleksi").unbind().on('click', function(){ r_navigateTo(14); });
-		$(".go-autentikasi").unbind().on('click', function(){ r_navigateTo(3); });
-		$(".go-prestasi").unbind().on('click', function(){ r_navigateTo(16); });
+		$(".go-permohonanAwal").unbind().on('click', function(){ r_navigateTo(11); });
+		$(".go-permohonanPencairan").unbind().on('click', function(){ r_navigateTo(12); });
+		$(".go-lolosVerifikasi").unbind().on('click', function(){ r_navigateTo(21); });
+		$(".go-pencairan").unbind().on('click', function(){ r_navigateTo(31); });
+		$(".go-notaPencairan").unbind().on('click', function(){ r_navigateTo(32); });
 		$(".go-pengaturan").unbind().on('click', function(){ r_navigateTo(4); });
 		$(".go-keluar").unbind().on('click', function(){ r_navigateTo(); });
 		
@@ -1309,206 +1383,6 @@ function r_f0Bantuan(){
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
 		r_navbarReactor();
 	});
-}
-
-//F DAFTAR LEMBAGA PUBLIC
-//=====================================
-function r_fDaftarLembagaPublic(packet) {
-	
-	//-- get direct load
-	var kodeBentukLembagaState = null;
-	var namaBentukLembagaState = null;
-	var dumbBentukLembagaState = null;
-	
-	if(Array.isArray(packet) == true){
-		kodeBentukLembagaState = packet[0];
-		namaBentukLembagaState = packet[1];
-	}
-	
-	if(kodeBentukLembagaState == "" || kodeBentukLembagaState == null || kodeBentukLembagaState == "start"){
-		dumbBentukLembagaState = r_bentukLembagaReader();
-		kodeBentukLembagaState = dumbBentukLembagaState[0];
-		namaBentukLembagaState = dumbBentukLembagaState[1];
-	}
-	
-	r_bentukLembagaSet([kodeBentukLembagaState,namaBentukLembagaState]);
-	
-	$("body").prepend(preload);
-	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
-		mainPage.html('');
-		head  	= '';
-		body  	= '';
-		part	= ['',''];
-		content = '';
-		data = p_getData('support', 'f91', "", 'single,'+ kodeBentukLembagaState);
-		data = data.feedData; 
-		
-		//--open
-		head	= '';
-		body	= '<div class="row no-head"><div class="container">';
-		part[0] = '<div class="col-md-3">';
-		part[1] = '<div class="col-md-8" id="lembaga-list">';
-		
-		//--left
-		part[0] = part[0] +
-		'<form id="f-filter-select">' +
-			'<div class="cards">' +
-				'<div class="cards-header">' +
-					'<p class="fixed offset">Filter lembaga</p>' +
-					'<div class="btn-collapse right">' +
-						'<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
-						'<button class="clear" type="submit"><span class="fa fa-filter text-yellow"></span></button>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-			'<div class="cards flush">' +
-				'<div class="select-box">' +
-					'<select id="filter-provinsi">' +
-						'<option value="" selected>Provinsi</option>' +
-						r_optionDHtml('provinsi') +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select id="filter-wilayah">' +
-						'<option value="" selected>Wilayah</option>' +
-						r_optionDHtml('wilayah') +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select id="filter-kecamatan">' +
-						'<option value="" selected>Kecamatan</option>' +
-						r_optionDHtml('kecamatan') +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select id="filter-kelurahan">' +
-						'<option value="" selected>Kelurahan</option>' +
-						r_optionDHtml('kelurahan') +
-					'</select>' +
-				'</div>' +
-				'<div class="space-box"></div>' +
-			'</div>' +
-		'</form>';
-			
-		//--render data
-		var tempP = "";
-		var tempB = ""; 
-
-		part[1] = part[1] + r_fLembagaGenerator(data);
-		
-		part[0] = part[0] + '</div>';
-		part[1] = part[1] + '</div>';
-		body	= body 	  + part[0] + part[1] + '</div></div>';
-		content = '<section id="kelembagaan">' + head + body + '</section>';
-		//--close
-		
-		//--gen
-		headPage.html(r_headPageHtml(5, namaBentukLembagaState));
-		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-		
-		var ul = r_getCookie('TABAH_kelembagaanTambah');
-		if(ul == '1') footPage.html(r_footPageHtml('add'));
-		$("#preload").remove();
-		
-		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(); });
-		
-		//navbar
-		r_navbarReactor();
-
-		//search-box
-		searchBoxActivator();
-		$(".search-input").on('keyup', function(){ 
-			var dumbBentukLembagaState = r_bentukLembagaReader();
-			var kodeBentukLembagaState = dumbBentukLembagaState[0];
-			var dataKey = p_getData('support', 'f91', $(this).val(), 
-						'multipart,' + kodeBentukLembagaState + ',' +
-						$('#f-filter-select #filter-provinsi').val()  + ',' + 
-						$('#f-filter-select #filter-wilayah').val()   + ',' + 
-						$('#f-filter-select #filter-kecamatan').val() + ',' + 
-						$('#f-filter-select #filter-kelurahan').val());
-				dataKey = dataKey.feedData;
-			$("#lembaga-list").html(r_fLembagaGenerator(dataKey));
-			r_fLembagaEventctivator();
-		});
-
-		//filter activation
-		$('#f-filter-select').unbind().on('submit', function(e) {
-			e.preventDefault();
-			var dumbBentukLembagaState = r_bentukLembagaReader();
-			var kodeBentukLembagaState = dumbBentukLembagaState[0];
-			var dataKey = p_getData('support', 'f91', $(".search-input").val(), 
-						'multipart,' + kodeBentukLembagaState + ',' +
-						$('#f-filter-select #filter-provinsi').val()  + ',' + 
-						$('#f-filter-select #filter-wilayah').val()   + ',' + 
-						$('#f-filter-select #filter-kecamatan').val() + ',' + 
-						$('#f-filter-select #filter-kelurahan').val());
-				dataKey = dataKey.feedData;
-			$("#lembaga-list").html(r_fLembagaGenerator(dataKey));
-			r_fLembagaEventctivator();
-		});
-
-		//event on list activator
-		r_fLembagaEventctivator();
-	});
-}
-
-function r_fLembagaEventctivator(){
-	//$(".detail-click").unbind().on('click', function(){ r_navigateTo(12, $(this).attr('p-id')); });
-	detailBoxActivator();
-}
-
-function r_fLembagaGenerator(data){
-	var genHtml = "";
-	var tempB 	= "";
-	var tempP	= "";
-	if(data.lembaga != null){
-		lembagaCounter = data.lembaga.length;
-		for(var loop = 0; loop < data.lembaga.length; loop++){	
-			var placeImg = data.lembaga[loop].noreg;
-			placeImg = placeImg.substr((placeImg.length-1), 1);
-			temPic   = (data.lembaga[loop].picture != "") ? 'img/logo/' + data.lembaga[loop].picture : 'img/logo/avatar-' + placeImg + '.jpg';
-			genHtml  = genHtml +
-			'<div id="' + data.lembaga[loop].id + '" class="cards clear">' +
-				'<div class="description-box">' +
-					'<div class="click-frame">' +
-						'<img class="icon-set" src="' + temPic + '"/>' +
-						'<p class="title-set">' + data.lembaga[loop].nama + '</p>' +
-						'<div class="text-set">' +
-							'<span class="id-set">' + data.lembaga[loop].nama + '</span>' +
-							'<span class="desc-text">' + data.lembaga[loop].telp + ' | ' + data.lembaga[loop].email + '</span>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-				'<div class="detail-box">' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
-						'<p class="list-text">' + data.lembaga[loop].telp + '</p>' +
-					'</div>' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
-						'<p class="list-text">' + data.lembaga[loop].email + '</p>' +
-					'</div>' +
-					'<div class="list-box">' +
-						'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
-						'<p class="list-text">' + data.lembaga[loop].alamat + '</p>' +
-					'</div>' +
-					'<!--div class="list-box foot">' +
-						'<button type="button" class="clear list-text btn-link detail-click" p-id="' + data.lembaga[loop].id + '">Lihat selengkapnya</button>' +
-					'</div-->' +
-				'</div>' +
-			'</div>';
-		}
-	}else{
-		genHtml = genHtml +
-		'<div class="cards">' +
-			'<div class="cards-header">' +
-				'<p class="fixed offset text-black">Data tidak ditemukan.</p>' +
-			'</div>' +
-		'</div>';
-	}
-
-	return genHtml;
 }
 
 /* maintance */
@@ -1557,13 +1431,11 @@ function r_navbarReactor(){
 	/*--syncnav menubar*/ syncnavReactor();
 	
 	$("#option.syncnav .dashboard")  .unbind().on("click", function(){ r_navigateTo(0); });
-	$("#option.syncnav .pemberkasan").unbind().on("click", function(){ r_navigateTo(1); });
-<<<<<<< HEAD
-	$("#option.syncnav .daftarLolosVerifikasi").unbind().on("click", function(){ r_navigateTo(21); });
-	$("#option.syncnav .daftarPencairan").unbind().on("click", function(){ r_navigateTo(22); });
-=======
-	$("#option.syncnav .pencairan").unbind().on("click", function(){ r_navigateTo(2); });
->>>>>>> 822f2b187eb42984aa144f63fb57b54c2e0be5b4
+	$("#option.syncnav .permohonanAwal").unbind().on("click", function(){ r_navigateTo(11); });
+	$("#option.syncnav .permohonanPencairan").unbind().on("click", function(){ r_navigateTo(12); });
+	$("#option.syncnav .lolosVerifikasi").unbind().on("click", function(){ r_navigateTo(21); });
+	$("#option.syncnav .daftarPencairan").unbind().on("click", function(){ r_navigateTo(31); });
+	$("#option.syncnav .notaPencairan").unbind().on("click", function(){ r_navigateTo(32); });
 	$("#option.syncnav .pengaturan") .unbind().on("click", function(){ r_navigateTo(4); });
 	// $("#option.syncnav .bantuan") 	 .unbind().on("click", function(){ r_navigateTo(0.1); });
 	$("#option.syncnav .log-off")	 .unbind().on("click", function(){ p_logout(); r_navigateTo(); });

@@ -20,12 +20,14 @@
 			case "f40" : $resultList = getLingkupAreaSection(); break;
 			case "f401": $resultList = requestDataDplega('f4', 'f401'); break;
 			case "f402": $resultList = getBatasAreaListSection(); break;
+			case "f403": $resultList = requestDataDplega('f4', 'f403'); break;
 			case "f412": $resultList = getWilayahOnlyListSection($data); break;
 
 			case "f421": $resultList = getGrupVerifikasi(); break;
 			case "f422": $resultList = getVerifikasi(); break;
 			
-			case "f431": $resultList = getKelembagaanSection($target); break;
+			case "f431": $resultList = requestDataDplega('f4', $target); break;
+			// case "f431": $resultList = getKelembagaanSection($target); break;
 			case "f432": $resultList = getKelembagaanSection($target); break;
 			case "f433": $resultList = getKelembagaanSection($target); break;
 

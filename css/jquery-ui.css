@@ -358,24 +358,30 @@ button.ui-button::-moz-focus-inner {
 	margin-top: -8px;
 }
 .ui-datepicker .ui-datepicker-title {
-	line-height: 1.8em;
+	/*line-height: 1.8em;*/
 	text-align: center;
 	padding: 30px 0 20px 0;
 	border-top: 25px solid #C2185B;
 }
 
 /* syncard custom add */
-.ui-datepicker .ui-datepicker-title .ui-datepicker-month {
-	display: block;
-    font-size: 30px;
-    font-weight: normal;
-	margin-bottom: 0;
-}
-
+.ui-datepicker .ui-datepicker-title .ui-datepicker-month,
 .ui-datepicker .ui-datepicker-title .ui-datepicker-year {
-	display: block;
+	display: inline-block;
     font-size: 25px;
     font-weight: normal;
+    /* width: 100%; */
+    /* text-align: center; */
+    color: #FFF;
+    border: none;
+    height: 50px; 
+    width: auto;
+}
+
+.ui-datepicker .ui-datepicker-title .ui-datepicker-month option,
+.ui-datepicker .ui-datepicker-title .ui-datepicker-year option {
+	color: #000;
+	font-size: 16px;
 }
 
 .ui-datepicker .ui-datepicker-title select {
