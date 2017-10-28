@@ -1,338 +1,586 @@
 <?php
-	if (session_status() == PHP_SESSION_NONE) {session_start();} // session start
-	require_once('protected/config.php');
-	function requestDataDplega($group, $target, $data){
-		// URL API
-		$urlApi = getApiUrl().'requestData/'.$group.'/'.$target;
-		$client = curl_init();
-		//$data 	= json_encode($data);
-
-		$options = array(
-		    CURLOPT_URL				=> $urlApi, // Set URL of API
-		    CURLOPT_CUSTOMREQUEST 	=> "POST", // Set request method
-		    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
-		    CURLOPT_POSTFIELDS 		=> $data, // Send the data in HTTP POST
-		);
-		
-		curl_setopt_array($client, $options);
-
-		// Execute and Get the response
-		$response = curl_exec($client);
-		// Get HTTP Code response
-		$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
-		// Close cURL session
-		curl_close($client);
-
-		$response=json_decode($response);
-		return $response;
-	}
-
-	function requestDataGetDplega($group, $target){
-		// URL API
-		$urlApi = getApiUrl().'requestData/'.$group.'/'.$target;
-		$client = curl_init();
-		$options = array(
-		    CURLOPT_URL				=> $urlApi, // Set URL of API
-		    CURLOPT_CUSTOMREQUEST 	=> "GET", // Set request method
-		    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
-	    );
-		
-		curl_setopt_array($client, $options);
-
-		// Execute and Get the response
-		$response = curl_exec($client);
-		// Get HTTP Code response
-		$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
-		// Close cURL session
-		curl_close($client);
-
-		$response=json_decode($response);
-		return $response;
-	}
-	
-	function getData($data, $target){
-		/* initial condition */
-		$resultList = array();
-		$table 		= "";
-		$field 		= array();
-		$rows		= 0;
-		$condition 	= "";
-		$orderBy	= "";
-		$error		= 0;
-		$errorType  = "";
-		$errorMsg	= "";
-	
-		/* refferences */
-		switch($target){
-			case "f001"  : $resultList = getSummaryBentukLembaga($data); break;
-			case "f111"	 : $resultList = getProposalAwal($data); break;
-			case "f1111" : $dataPost   = json_encode(array("refferences" => $data['refferences']));
-						   $resultList = requestDataDplega('f1', $target, $dataPost); break;
-			
-			default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Terjadi kesalahan fatal, proses dibatalkan!", "feedData" => array()); break;
+	Class F1 {
+		public function __construct(){
+			if (session_status() == PHP_SESSION_NONE) {session_start();} // session start
+			require_once('protected/config.php');
+			$this->db = openGate();
 		}
-		
-		/* result fetch */
-		$json = $resultList;
-		
-		return $json;
-	}
 
-	function createData($data, $target){
-		/* initial condition */
-		$resultList = array();
-		$table 		= "";
-		$field 		= array();
-		$rows		= 0;
-		$condition 	= "";
-		$orderBy	= "";
-		$error		= 0;
-		$errorType  = "";
-		$errorMsg	= "";
+		public function requestData($post, $target){
+			switch($target){
+				case "profile" 		: 
+					$resultbox = $this->requestDataDplega("f1", "fetchLembaga", $post); 
+					$profile = $resultbox['feedData'];
+					$feedData['profile'] = $profile;
+					$feedData['option'] = array(
+						array("selector" => "add-card", "icon" => "pencil", "label" => "Permohonan baru"),
+						array("selector" => "logout-card", "icon" => "power-off", "label" => "Keluar")
+					);
 
-		/* refferences */
-		
-		switch($target){
-			
-			default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Terjadi kesalahan fatal, proses dibatalkan!"); break;
-		}
-		
-		/* result fetch */
-		$json = $resultList;
-		
-		return $json;
-	}
+					$resultList = array( "feedStatus" => "success", "feedType" => "success", "feedMessage" => "collected", "feedData" => $feedData);
+				break;
 
-	function changeData($data, $target){
-		/* initial condition */
-		$resultList = array();
-		$table 		= "";
-		$field 		= array();
-		$rows		= 0;
-		$condition 	= "";
-		$orderBy	= "";
-		$error		= 0;
-		$errorType  = "";
-		$errorMsg	= "";
-		/* refferences */
-		
-		switch($target){
-		
-			default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Terjadi kesalahan fatal, proses dibatalkan!"); break;
-		}
-		
-		/* result fetch */
-		$json = $resultList;
-		
-		return $json;
-	}
-	
-	function deleteData($data, $target){
-		/* initial condition */
-		$resultList = array();
-		$table 		= "";
-		$field 		= array();
-		$rows		= 0;
-		$condition 	= "";
-		$orderBy	= "";
-		$error		= 0;
-		$errorType  = "";
-		$errorMsg	= "";
-	
-		/* refferences */
-		
-		switch($target){
-			
-			default	  : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Terjadi kesalahan fatal, proses dibatalkan!"); break;
-		}
-		
-		/* result fetch */
-		$json = $resultList;
-		
-		return $json;
-	}
-
-	function getProposalAwal($data){
-		/* initial condition */
-		$resultList = array();
-		$table 		= "";
-		$field 		= array();
-		$rows		= 0;
-		$condition 	= "";
-		$orderBy	= "";
-		$error		= 0;
-		$errorType  = "";
-		$errorMsg	= "";
-		$dumb		= "";
-		$dumbQuery['keyword'] 		= ""; 
-		$dumbQuery['refferences'] 	= ""; 
-		$dumbQuery['provinsi'] 	= ""; 
-		$dumbQuery['wilayah'] 	= ""; 
-		$dumbQuery['kecamatan'] = ""; 
-		$dumbQuery['kelurahan'] = ""; 
-		$dumbFieldS	= "";
-		$dumbQueryS	= "";
-
-		//Validation 
-		/* open connection */ 
-		$gate = openGate();
-		if($gate){		
-			// connection = true
-			if(isset($data['refferences']) && $data['refferences'] != 'single'){
-				$dumb = explode(',', $data['refferences']);
-				if(isset($dumb[0]) && $dumb[0] != "") { $dumbQuery['provinsi' ]	= "AND l.kodeProvinsi  = '".$dumb[0]."'"; }
-				if(isset($dumb[1]) && $dumb[1] != "") { $dumbQuery['wilayah'  ]	= "AND l.kodeWilayah   = '".$dumb[1]."'"; }
-				if(isset($dumb[2]) && $dumb[2] != "") { $dumbQuery['kecamatan']	= "AND l.kodeKecamatan = '".$dumb[2]."'"; }
-				if(isset($dumb[3]) && $dumb[3] != "") { $dumbQuery['kelurahan']	= "AND l.kodeKelurahan = '".$dumb[3]."'"; }
+				default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Something went wrong, failed to collect data!", "feedData" => array()); break;
 			}
 
-			/* AUTHENTICATION */
-			// if(
-			// 	   isset($_SESSION['login']) && $_SESSION['login'] == "yes" 
-			// 	&& isset($_SESSION['userLevel']) && $_SESSION['userLevel'] != "7"){
-			// 	switch ($_SESSION['lingkupArea']) {
-			// 		case '3': 
-			// 			$dumbFieldS = "l.kodeProvinsi"; 
-			// 			$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
-			// 			$dumbQuery['provinsi' ] = $dumbQueryS;
-			// 		break;
-			// 		case '2': 
-			// 			$dumbFieldS = "l.kodeWilayah"; 
-			// 			$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
-			// 			$dumbQuery['wilayah' ] = $dumbQueryS;
-			// 		break;
-			// 		case '1': 
-			// 			$dumbFieldS = "l.kodeKecamatan"; 
-			// 			$dumbQueryS = ($dumbFieldS != "") ? "AND ".$dumbFieldS." = '".$_SESSION['idBatasArea']."'" : '';
-			// 			$dumbQuery['kecamatan' ] = $dumbQueryS;
-			// 		break;
-			// 		default: break;
-			// 	}
+			/* result fetch */
+			$json = $resultList;
+		
+	        return $json;
+		}
 
-				
-			// }
-			/* AUTHENTICATION END */
+		public function requestDataDplega($group, $target, $data){
+			// URL API
+			$urlApi = getApiUrl().'requestData/'.$group.'/'.$target;
+			$client = curl_init();
+			$data 	= json_encode($data);
 
-			if(isset($data['keyword']) && $data['keyword'] != ""){	
-				$dumbQuery['keyword'] = "
-				AND
-					( 	
-						tujuan		  LIKE '%".$data['keyword']."%' OR 
-						latarBelakang LIKE '%".$data['keyword']."%' OR
-						nominal 	  LIKE '%".$data['keyword']."%'
-					)
-				";
-			}
+			$options = array(
+			    CURLOPT_URL				=> $urlApi, // Set URL of API
+			    CURLOPT_CUSTOMREQUEST 	=> "POST", // Set request method
+			    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
+			    CURLOPT_POSTFIELDS 		=> $data, // Send the data in HTTP POST
+			);
+			
+			curl_setopt_array($client, $options);
 
-			$sql = "SELECT noRegistrasi FROM tabah_000_proposalawal WHERE status = '0' ".$dumbQuery['keyword']." ORDER BY createdDate DESC";
+			// Execute and Get the response
+			$response = curl_exec($client);
+			// Get HTTP Code response
+			$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
+			// Close cURL session
+			curl_close($client);
 
-			$result = mysqli_query($gate, $sql);
-			if($result){
-				$countrow = mysqli_num_rows($result);
-				if($countrow > 0) {
-					$dataPost = "";
-					$countrow = 0;
-					while($row = mysqli_fetch_assoc($result)) {
-						if($countrow == 0) 
-							 $dataPost = $dataPost."'".$row['noRegistrasi']."'";
-						else $dataPost = $dataPost.",'".$row['noRegistrasi']."'";
-						$countrow++;
+			$response=json_decode($response, true);
+			return $response;
+		}
+
+		public function requestDataGetDplega($group, $target){
+			// URL API
+			$urlApi = getApiUrl().'requestData/'.$group.'/'.$target;
+			$client = curl_init();
+			$options = array(
+			    CURLOPT_URL				=> $urlApi, // Set URL of API
+			    CURLOPT_CUSTOMREQUEST 	=> "GET", // Set request method
+			    CURLOPT_RETURNTRANSFER	=> true, // true, to return the transfer as a string
+		    );
+			
+			curl_setopt_array($client, $options);
+
+			// Execute and Get the response
+			$response = curl_exec($client);
+			// Get HTTP Code response
+			$httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
+			// Close cURL session
+			curl_close($client);
+
+			$response=json_decode($response);
+			return $response;
+		}
+		
+		public function fetchAllRecord($table, $fields, $conditions = "", $orderBy = ""){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
 					}
 
-					$dataPost   = json_encode(array("noRegistrasi" => $dataPost));
-					$dataResult = requestDataDplega('f1', 'ft111', $dataPost)->feedData;
+					$fields = $temp;
+					$temp   = "";
+				}
 
-					$sql = 	
-					"
-						SELECT  
-							idData,
-							noRegistrasi,
-							tujuan,
-							latarBelakang,
-							nominal,
-							createdDate as sort
-						FROM 
-							tabah_000_proposalawal
-						WHERE 
-						status = '0'
-						".$dumbQuery['keyword']."
-						 ORDER BY sort DESC
-					";
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						$temp = $temp." ".$value;
+					}
 
-					$result = mysqli_query($gate, $sql);
-					if($result){
-						$package    = array(); 
-						$fetch 	    = array(); 
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$conditions = ($conditions != "") ? "WHERE ".$conditions : "";
+
+
+				$sql = "SELECT ".$fields." FROM ".$table." ".$conditions." ".$orderBy." ";
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData = $result->fetchAll(PDO::FETCH_ASSOC);
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+		}
+
+		public function fetchAllRequest($table, $fields, $conditions = "", $orderBy = "", $paging = "1"){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						$temp = $temp." ".$value;
+					}
+
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$conditions = ($conditions != "") ? "WHERE ".$conditions : "";
+
+
+				$temp = intval($paging);
+				$temp = ($temp - 1) * 20;
+
+				$paging = "LIMIT ".$temp.",20";
+
+				$sql = "SELECT ".$fields." FROM ".$table." ".$conditions." ".$orderBy." ".$paging;
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData = $result->fetchAll(PDO::FETCH_ASSOC);
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+		}
+
+		public function fetchSingleRequest($table, $fields, $conditions = ""){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						$temp = $temp." ".$value;
+					}
+
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$conditions = ($conditions != "") ? "WHERE ".$conditions : "";
+
+				$sql = "SELECT ".$fields." FROM ".$table." ".$conditions;
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData = $result->fetch(PDO::FETCH_ASSOC);
+				}	
+
+					$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+		}
+
+		// DELETE DATA
+		public function deleteById($table, $conditions, $image){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
+					}
+
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$sql = "DELETE FROM ".$table." WHERE idData IN (".$conditions.")";
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData   = $conditions;
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+		}
+
+
+		//INSERT DATA
+		public function insert($table, $fields, $values){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+			$feedId		= "";
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $item) {
+						if($temp  == "") $temp = $item;
+						else $temp = $temp.",".$item;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($values)) {
+					foreach ($values as $item) {
+						if($temp  == "") $temp = "'".$item."'";
+						else $temp = $temp.",'".$item."'";
+					}
+
+					$values = $temp;
+					$temp   = "";
+				}
+
+				$sql = "INSERT INTO ".$table."(".$fields.", createdBy, createdDate) VALUES (".$values.", 'SESSION_TEST',NOW())";
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedId 	= $this->db->lastInsertId();
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData, "feedId" => $feedId);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
 					
-						if(mysqli_num_rows($result) > 0) {
-							// output data of each row 
-							$counter = 0;
-							while($row = mysqli_fetch_assoc($result)) {
-								$fetch = array(
-									"idData"   		=> $row['idData'],
-									"noRegistrasi" 	=> $row['noRegistrasi'],
-									"namaLembaga" 	=> $dataResult[$counter]->nama,
-									"noTelp" 		=> $dataResult[$counter]->noTelp,
-									"alamat" 		=> $dataResult[$counter]->alamat,
-									"email" 		=> $dataResult[$counter]->email,
-									"tujuan" 		=> $row['tujuan'],
-									"latarBelakang" => $row['latarBelakang'],
-									"nominal" 		=> 'Rp. '.number_format($row['nominal']),
-								);
+		}
 
-								$counter++;
-								
-								array_push($package, $fetch); 
-								unset($fetch); $fetch = array();
+		//UPDATE DATA
+		public function update($table, $values, $id){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+			$feedId		= "";
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($values)) {
+					foreach ($values as $item) {
+						if($temp  == "") $temp = $item;
+						else $temp = $temp.",".$item;
+					}
+
+					$values = $temp;
+					$temp   = "";
+				}
+
+				$sql = "UPDATE ".$table." SET ".$values.", changedBy = 'SESSION_TEST', changedDate = NOW() WHERE idData = '".$id."'";
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+					
+		}
+
+		//UPLOAD IMAGE
+		public function uploadSingleImage($image, $dir, $table, $field, $id){
+			error_reporting(E_ALL);
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to upload data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				/*upload image*/
+				if(isset($image)){
+
+					$file_name = $image['name'];
+				    $file_size = $image['size'];
+				    $file_tmp  = $image['tmp_name'];
+				    $file_type = $image['type'];
+
+					$Validextensions = array("jpeg", "JPEG", "jpg", "JPG", "png", "PNG", "gif", "GIF");
+					$temporary 		 = explode(".", $file_name);
+					$fileExtension   = end($temporary);
+					$newFileName 	 = $dir."_".$id.".".$fileExtension;
+					$saveAs 		 = "../assets/".$dir."/".$newFileName;
+
+					if (in_array($fileExtension, $Validextensions)) {
+						if(move_uploaded_file($file_tmp, $saveAs)){ 
+							$sql = "UPDATE ".$table." SET ".$field."='".$newFileName."' WHERE idData ='".$id."'";
+									
+							$result = $this->db->query($sql);
+							if($result){
+								$feedStatus	= "success";
+								$feedType   = "success".is_dir($saveAs);
+								$feedMessage= "The process has been successful";
+							}
+						}							
+					}
+				}
+				/*upload end*/
+
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+					
+		}
+
+		public function uploadMultiImage($image, $dir, $table, $field, $id){
+			error_reporting(E_ALL);
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to upload data!";
+			$feedData	= array();
+
+			$temp		= "";
+			$counter	= 0;
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				/*upload image*/
+				if(isset($image)){
+
+					foreach($image['tmp_name'] as $key => $tmp_name ){
+						$counter++;
+					    $file_name = $key.$image['name'][$key];
+					    $file_size = $image['size'][$key];
+					    $file_tmp  = $image['tmp_name'][$key];
+					    $file_type = $image['type'][$key];
+
+						$Validextensions = array("jpeg", "JPEG", "jpg", "JPG", "png", "PNG", "gif", "GIF");
+						$temporary 		 = explode(".", $file_name);
+						$fileExtension   = end($temporary);
+						$newFileName 	 = $dir."_".$id."(".$counter.")".".".$fileExtension;
+						$saveAs 		 = "../assets/".$dir."/".$newFileName;
+
+						if (in_array($fileExtension, $Validextensions)) {
+							if(move_uploaded_file($file_tmp, $saveAs)){ 
+								$temp = ($temp == "") ? $newFileName : $temp.",".$newFileName;
 							}
 
-							
+							if($temp != ""){
+								$newFileName = $temp;
 
-							/*session fetch*/
-							// $access1  = sessionFecth('kelembagaan');
-							// $access2  = sessionFecth('verifikasi');
-							$options = array();
-
-							// if($access1['lihat']  == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "view-card", "icon" => "search", "label" => "Lihat selengkapnya"));
-							// // if($access1['lihat']  == '1') array_push($options, array("selector" => "download-card", "icon" => "download", "label" => "Unduh (.pdf)"));
-							// if($access2['tambah'] == '1' || $access2['ubah']   == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "verification-card", "icon" => "check", "label" => "Verifikasi"));
-							// if($access1['ubah']   == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "edit-card", "icon" => "pencil", "label" => "Ubah profil"));
-							// if($access1['hapus']  == '1' || $_SESSION['userLevel'] == '7') array_push($options, array("selector" => "delete-card", "icon" => "trash", "label" => "Hapus lembaga"));
-							
-							array_push($options, array("selector" => "view-card", "icon" => "search", "label" => "Lihat selengkapnya"));
-							array_push($options, array("selector" => "verification-card", "icon" => "check", "label" => "Verifikasi"));
-							// array_push($options, array("selector" => "edit-card", "icon" => "pencil", "label" => "Ubah"));
-							// array_push($options, array("selector" => "delete-card", "icon" => "trash", "label" => "Hapus"));
-							
-							$package = array(
-								"data" => $package,
-								"option" => $options
-							);
-							
-							$resultList = array( "feedStatus" => "success", "feedMessage" => "Data ditemukan!", "feedData" => $package);
-						}else {
-							$resultList = array( "feedStatus" => "success", "feedMessage" => "Data tidak ditemukan!", "feedData" => array());
+								$sql = "UPDATE ".$table." SET ".$field."='".$newFileName."' WHERE idData ='".$id."'";
+								$result = $this->db->query($sql);
+								if($result){
+									$feedStatus	= "success";
+									$feedType   = "success";
+									$feedMessage= "The process has been successful";
+								}						
+							}			
 						}
-					}			
-				}			
-			}			
-				
-			closeGate($gate);
-		}else {
-			//error state
-			$error		= 1;
-			$errorType  = "danger";
-			$errorMsg	= "Terjadi kesalahan, tidak dapat terhubung ke server!";
+
+					}
+
+				}
+				/*upload end*/
+
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+					
 		}
-		
-		if($error == 1){
-			//error state
-			$resultList = array( "feedStatus" => "failed", "feedType" => $errorType, "feedMessage" => $errorMsg);
+
+		//IMAGE VIDEO
+		public function uploadSingleVideo($image, $dir, $table, $field, $id){
+			error_reporting(E_ALL);
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to upload data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				/*upload image*/
+				if(isset($image)){
+
+					$file_name = $image['name'];
+				    $file_size = $image['size'];
+				    $file_tmp  = $image['tmp_name'];
+				    $file_type = $image['type'];
+
+					$Validextensions = array("mp4", "MP4", "3gpp", "3GPP", "flv", "FLV");
+					$temporary 		 = explode(".", $file_name);
+					$fileExtension   = end($temporary);
+					$newFileName 	 = $dir."_".$id.".".$fileExtension;
+					$saveAs 		 = "../assets/".$dir."/".$newFileName;
+
+					if (in_array($fileExtension, $Validextensions)) {
+						if(move_uploaded_file($file_tmp, $saveAs)){ 
+							$sql = "UPDATE ".$table." SET ".$field."='".$newFileName."', fileSize='".$file_size."' WHERE idData ='".$id."'";
+									
+							$result = $this->db->query($sql);
+							if($result){
+								$feedStatus	= "success";
+								$feedType   = "success".is_dir($saveAs);
+								$feedMessage= "The process has been successful";
+							}
+						}							
+					}
+				}
+				/*upload end*/
+
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+					
 		}
-		
-		/* result fetch */
-		$json = $resultList;
-		
-		return $json;
 	}
 ?>

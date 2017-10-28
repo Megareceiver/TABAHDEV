@@ -42,8 +42,8 @@ $(function(){
 	//r_navigateTo(0, 'start');
 	// r_pageSet(0);
 	// keeping data provinsi, wilayah, kecamatan, kelurahan to global variable
-	optionD = p_getData('f4', 'f40', '');
-	optionD = optionD.feedData;
+	// optionD = p_getData('f4', 'f40', '');
+	// optionD = optionD.feedData;
 	
 	/*temp*/
 	if(String(r_getCookie("TABAH_userLevel")) != "1"){
@@ -59,20 +59,23 @@ function r_navigateTo(index, packet, access) {
 	
 	if(r_auth(index) == true){
 		r_pageClear(); /*-- clear frame on page */
+	
 		switch(index){
 			case 0  : r_f0Dashboard(); 					break;
 			case 0.1: r_f0Bantuan(); 					break;
 			
-			case 1 	: r_f1Pemberkasan(); 				break;
+			// case 1 	: r_f1Pemberkasan(); 				break;
+			case 10 : r_f1DetailLembaga(packet); 		break;
 			case 11 : r_f1permohonanAwal(packet); 		break;
 			case 12 : r_f1permohonanPencairan(packet);  break;
 			
-			// case 12 : r_f1DetailLembaga(packet); 		break;
 			// case 13 : r_f1VerifikasiLembaga(packet);	break;
-			// case 15 : r_f1FormProposal(packet);			break;
+			case 15 : r_f1FormProposal(packet);			break;
 
-			case 21  : r_f2DaftarLolosVerifikasi(packet); break;
-			case 22	 : r_f2DaftarPencairan(packet); 	  break;
+			case 21  : r_f2lolosVerifikasi(packet); 	break;
+
+			case 31	 : r_f3pencairan(packet); 	  		break;
+			case 32	 : r_f3pelaporan(packet); 	  		break;
 
 			
 			case 4  : r_f4Pengaturan();					break;
@@ -210,119 +213,11 @@ function r_notifRequest(){
 	if(logoutAgent != 1) { notifId = setTimeout(function(){ r_notifRequest(); }, notifInterval); }
 }
 
-function r_customCallBack(formType, group, target, recentId, formId, pId){
+function r_customCallBack(formType, group, target, recentId, formId, feedData){
 	var dataFec = null;
 	switch(group){
 		case 'f1' : //megan
-			switch(target){
-				case 'f111' :
-					$('#f-kelembagaan-create input[name="kelurahan"]').attr('readonly','readonly');
-					$("#" + formId + " [name=imageName]").html(recentId);
-					$("[name=noreg]").val(pId);
-					profile_look_set(pId);
-					p_formHandler("f-kelembagaan-create", "updateData");
-				break;
-				case 'f112' :
-					p_formHandler("f-sejarah-create", "updateData");
-					$("#" + formId + " [name=imageName]").html(recentId);
-				break;
-				case 'f113' :
-					p_formHandler(formId, "updateData");
-					$("#" + formId + " [name=p-id]").val(pId);
-					$("#" + formId + " [name=imageName]").html(recentId);
-				break;
-				case 'f114' :
-					p_formHandler("f-kepengurusan-create", "updateData");
-				break;
-				case 'f115' :
-					p_formHandler("f-kegiatanUsaha-create", "updateData");
-				break;
-				case 'f116' :
-					p_formHandler(formId, "updateData");
-					$("#" + formId + " [name=p-id]").val(pId);
-					$("#" + formId + " [name=imageName]").html(recentId);
-				break;
-				case 'f118' :
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'noreg'	 		: $('#' + formId + ' input[name="noreg"]').val(), 
-							'judulKoleksi'	: $('#' + formId + ' input[name="judulKoleksi"]').val(), 
-							'jenisKoleksi'	: $('#' + formId + ' select[name="jenisKoleksi"]').val(),
-							'deskripsi'		: $('#' + formId + ' input[name="deskripsi"]').val(),
-					}];
-					
-					r_f1KoleksiDataGenerator(dataFec);
-					clearTargetFormNoreg(formId, $('#' + formId + ' input[name="noreg"]').val());
-				break;
-				case 'f119' :
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'noreg'	 		: $('#' + formId + ' input[name="noreg"]').val(), 
-							'deskripsi'		: $('#' + formId + ' input[name="deskripsi"]').val(),
-					}];
-					
-					r_f1PrestasiDataGenerator(dataFec);
-					clearTargetFormNoreg(formId, $('#' + formId + ' input[name="noreg"]').val());
-				break;
-				case 'f120' :
-					$("#" + formId + " [name=imageName]").html(recentId);
-				break;
-				case 'f121' :
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'noreg'	 		: $('#' + formId + ' input[name="noreg"]').val(), 
-							'bantuanDari'	: $('#' + formId + ' input[name="bantuanDari"]').val(), 
-							'deskripsi'		: $('#' + formId + ' textarea[name="deskripsi"]').val(), 
-							'tahun'			: $('#' + formId + ' input[name="tahun"]').val(),
-					}];
-					
-					r_f1SejarahBantuanDataGenerator(dataFec);
-					clearTargetFormNoreg(formId, $('#' + formId + ' input[name="noreg"]').val());
-				break;
-				case 'f122' :
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'noreg'	 		: $('#' + formId + ' input[name="noreg"]').val(), 
-							'namaLembaga'	: $('#' + formId + ' input[name="namaLembaga"]').val(), 
-							'noregTarget'	: $('#' + formId + ' input[name="noregTarget"]').val(), 
-							'hirarki'		: $('#' + formId + ' select[name="hirarki"]').val(),
-					}];
-					
-					r_f1HirarkiDataGenerator(dataFec);
-					clearTargetFormNoreg(formId, $('#' + formId + ' input[name="noreg"]').val());
-				break;
-				case 'f123' :
-					var temp = recentId.split(',');
-					var textemp = 
-						$('#f-transfer-create [name=kodeKelurahan] option:selected').text() + ' / ' +
-						$('#f-transfer-create [name=kodeKecamatan] option:selected').text() + ' / ' +
-						$('#f-transfer-create [name=kodeWilayah] option:selected').text() + ' / ' +
-						$('#f-transfer-create [name=kodeProvinsi] option:selected').text();
-					for(var loop=0; loop < temp.length; loop++){
-						$("#" + temp[loop] + " .text-set .pos").html(textemp);
-					}
-
-					$('.select-button').prop('checked', false);
-					$('#counter-select').html(0);
-					clearTargetForm(formId);
-				break;
-				case 'f151' :
-				case 'f152' :
-					$("#" + formId + ' [type=submit] span').removeClass('fa-active-success').addClass('fa-active-success');
-					$("#" + formId + ' [type=submit]').attr('type', 'reset');
-					$("#" + formId + ' [type=reset]').unbind().on('click', function(){
-						$("#" + formId + ' [type=reset]').children('span').removeClass('fa-active-success'); 
-						$("#" + formId + ' [type=reset]').attr('type', 'submit').unbind(); 
-						$("#" + formId + " .catatan").val('');
-						$("#" + formId + " input").unbind();
-						$("#" + formId + " input").on("keypress", function(event) { return event.keyCode; });
-						p_formHandler(formId,'addData');
-						return false;
-					});
-
-					$("#" + formId + " input").on("keypress", function(event) { return event.keyCode != 13; });
-				break;
-			}
+				
 		break;
 		case 'f3': //megan
 			switch(target){
@@ -338,19 +233,7 @@ function r_customCallBack(formType, group, target, recentId, formId, pId){
 			}
 		break;
 		case 'f4': //megan
-
 			switch(target){
-				case 'f401':
-
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'namaTim'		: $('#f-timWilayah-create input[name="nama"]').val(),
-					}];
-				
-					r_f4TimWilayahDataGenerator(formType, dataFec);
-					clearTargetForm('f-timWilayah-create');
-					p_formHandler("f-timWilayah-create" , "addData");
-				break;
 				case 'f412':
 					dataFec = [{ 
 							'idData' 		: recentId, 
@@ -363,106 +246,23 @@ function r_customCallBack(formType, group, target, recentId, formId, pId){
 					clearTargetForm('f-wilayah-create');
 					p_formHandler("f-wilayah-create" , "addData");
 				break;
-				case 'f413':
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'noreg'	 		: $('#f-kecamatan-create input[name="kode"]').val(), 
-							'caption'		: $('#f-kecamatan-create input[name="nama"]').val(),
-							'references'	: $('#f-kecamatan-create select[name="referensi"] option:selected').text(),
-							'referencesKey'	: $('#f-kecamatan-create select[name="referensi"]').val(),
-					}];
-					r_f4LingkupAreaDataGenerator(formType, 'kecamatan', dataFec, 'section-Kecamatan');
-					clearTargetForm('f-kecamatan-create');
-					p_formHandler("f-kecamatan-create" , "addData");
-				break;
-				case 'f414':
-					dataFec = [{ 
-							'idData' 		: recentId, 
-							'noreg'	 		: $('#f-kelurahan-create input[name="kode"]').val(), 
-							'caption'		: $('#f-kelurahan-create input[name="nama"]').val(),
-							'references'	: $('#f-kelurahan-create select[name="referensi"] option:selected').text(),
-							'referencesKey'	: $('#f-kelurahan-create select[name="referensi"]').val(),
-					}];
-					r_f4LingkupAreaDataGenerator(formType, 'kelurahan', dataFec, 'section-Kelurahan');
-					clearTargetForm('f-kelurahan-create');
-					p_formHandler("f-kelurahan-create" , "addData");
-				break;
-				case 'f421':
-					dataFec = [{ 
-							'noreg'	 		: recentId, 
-							'caption'		: $('#f-grupVerifikasi-create input[name="nama"]').val(),
-					}];
-					r_f4VerifikasiDataGenerator(formType, 'grupVerifikasi', dataFec, 'section-grupVerifikasi');
-					clearTargetForm('f-grupVerifikasi-create');
-					p_formHandler("f-grupVerifikasi-create" , "addData");
-				break;
-				case 'f422':
-					dataFec = [{ 
-							'noreg'	 		: recentId, 
-							'caption'		: $('#f-verifikasi-create input[name="nama"]').val(),
-							'references'	: $('#f-verifikasi-create select[name="referensi"] option:selected').text(),
-							'referencesKey'	: $('#f-verifikasi-create select[name="referensi"]').val(),
-					}];
-					r_f4VerifikasiDataGenerator(formType, 'verifikasi', dataFec, 'section-verifikasi');
-					clearTargetForm('f-verifikasi-create');
-					p_formHandler("f-verifikasi-create" , "addData");
-				break;
-				case 'f431':
-					dataFec = [{ 
-							'noreg'	 		: recentId, 
-							'caption'		: $('#f-bentukLembaga-create input[name="nama"]').val(),
-							'description'	: $('#f-bentukLembaga-create textarea[name="deskripsi"]').val(),
-					}];
-					r_f4KelembagaanSectionGenerator(formType, 'bentukLembaga', dataFec, 'section-bentukLembaga');
-					clearTargetForm('f-bentukLembaga-create');
-					p_formHandler("f-bentukLembaga-create" , "addData");
-				break;
-				case 'f432':
-					dataFec = [{ 
-							'noreg'	 		: recentId, 
-							'caption'		: $('#f-legalitas-create input[name="nama"]').val(),
-							'references'	: $('#f-legalitas-create select[name="referensi"] option:selected').text(),
-							'referencesKey'	: $('#f-legalitas-create select[name="referensi"]').val(),
-					}];
-					r_f4KelembagaanSectionGenerator(formType, 'legalitas', dataFec, 'section-legalitas');
-					clearTargetForm('f-legalitas-create');
-					p_formHandler("f-legalitas-create" , "addData");
-				break;
-				case 'f433':
-					dataFec = [{ 
-							'noreg'	 		: recentId, 
-							'caption'		: $('#f-bidangGerak-create input[name="nama"]').val(),
-					}];
-					r_f4KelembagaanSectionGenerator(formType, 'bidangGerak', dataFec, 'section-bidangGerak');
-					clearTargetForm('f-bidangGerak-create');
-					p_formHandler("f-bidangGerak-create" , "addData");
-				break;
-				case 'f441':
-					dataFec = [{
-							'idBerita'		: recentId,
-							'judul'			: $('#f-berita-create input[name="judul"]').val(),
-							'isiBerita'		: $('#f-berita-create textarea[name="isiBerita"]').val(),
-					}];
-					r_f4BeritaGenerator(dataFec);
-					$("#f-berita-create [name=imgName]").html("berkas belum diunggah...");
-					$("#f-berita-create [browser-id=gambar-berita] ").css('display', 'none'); 
-					clearTargetForm('f-berita-create');
-				break;
 			}
 		break;
 		case 'fLogin': //megan
-			if(recentId != null){
-				r_setCookie('TABAH_login'			, recentId.login, 		1);
-				r_setCookie('TABAH_noRegistrasi'	, recentId.noRegistrasi,1);
-				r_setCookie('TABAH_username'		, recentId.username, 	1);
-				r_setCookie('TABAH_nama'			, recentId.nama, 		1);
-				r_setCookie('TABAH_userLevel'		, recentId.userLevel, 	1);
-				r_setCookie('TABAH_avatar'		, recentId.avatar, 		1);
-				r_setCookie('TABAH_lingkupArea'	, recentId.lingkupArea, 1);
-				r_setCookie('TABAH_idBatasArea'	, recentId.idBatasArea, 1);
-				r_setCookie('TABAH_statusActive'	, recentId.statusActive,1);
+			if(feedData != null){
+				r_setCookie('TABAH_login'			, feedData.login, 		1);
+				r_setCookie('TABAH_noRegistrasi'	, feedData.noRegistrasi,1);
+				r_setCookie('TABAH_username'		, feedData.username, 	1);
+				r_setCookie('TABAH_nama'			, feedData.nama, 		1);
+				r_setCookie('TABAH_userLevel'		, feedData.userLevel, 	1);
+				r_setCookie('TABAH_avatar'		, feedData.avatar, 		1);
+				r_setCookie('TABAH_lingkupArea'	, feedData.lingkupArea, 1);
+				r_setCookie('TABAH_idBatasArea'	, feedData.idBatasArea, 1);
+				r_setCookie('TABAH_statusActive', feedData.statusActive,1);
+				r_setCookie('TABAH_accessType'	, feedData.accessType,  1);
+				r_setCookie('TABAH_avatar'	, feedData.avatar,  1);
 
-				var accessList = recentId.accessList;
+				var accessList = feedData.accessList;
 				for(var look=0; look<accessList.length; look++){
 					r_setCookie('TABAH_' + accessList[look].module + 'Lihat', accessList[look].lihat, 1);
 					r_setCookie('TABAH_' + accessList[look].module + 'Tambah',accessList[look].tambah,1);
@@ -478,18 +278,18 @@ function r_customCallBack(formType, group, target, recentId, formId, pId){
 			}
 
 			logoutAgent = 0;
-
-			if(recentId.userLevel == 1){
-				r_navigateTo(12, recentId.noRegistrasi);
-			}else if(recentId.userLevel != ""){
+			
+			if(feedData.accessType == "lembaga"){
+				r_navigateTo(10, feedData.noRegistrasi);
+			}else if(feedData.userLevel != ""){
 				r_navigateTo(0);
-				if(recentId.avatar == "" || recentId.avatar == null) { 
-					recentId.avatar = "avatar-default.jpg"; 
+				if(feedData.avatar == "" || feedData.avatar == null) { 
+					feedData.avatar = "avatar-default.jpg"; 
 				
 				}
-				$("#navigation .user-frame img").attr('src', 'img/avatar/' + recentId.avatar);
-				$("#navigation .user-frame p.caption span").html(recentId.username);
-				$("#navigation .user-frame p.caption span.big").html(recentId.nama);
+				$("#navigation .user-frame img").attr('src', 'img/avatar/' + feedData.avatar);
+				$("#navigation .user-frame p.caption span").html(feedData.username);
+				$("#navigation .user-frame p.caption span.big").html(feedData.nama);
 			}
 		break;
 	}
@@ -747,7 +547,7 @@ function r_fHome() {
 			}
 		];
 
-		dataNews = p_getData('f4','f441','');
+		dataNews = p_getData('f4','berita','');
 		dataNews = dataNews.feedData;
 		
 		//--open
@@ -856,18 +656,18 @@ function r_fHome() {
 							'<h4>BERITA TERKINI</h4>' +
 						'</div>';
 				
-		//--render data
+		//--render data 
 		for(var loop = 0; loop < dataNews.length; loop++){
 			//--content
 			body = body +
 			'<div class="article-box">' +
 				'<div class="body">' +
-					'<h4 class="title">' + dataNews[loop].judul +  '</h4>' +
+					'<h4 class="title">' + dataNews[loop].judulBerita +  '</h4>' +
 					'<p class="title">' + timeSince(new Date(Date.parse(dataNews[loop].createdDate))) +  '</p>' +
-					'<p class="content">' + dataNews[loop].isiBerita +  '</p>' +
+					'<p class="content">' + dataNews[loop].deskripsi +  '</p>' +
 				'</div>' +
 				'<div class="foot">' +
-					'<button type="button" class="clear btn-link detail-click" p-id="' + dataNews[loop].idBerita +  '">Baca lebih lanjut</button>' +
+					'<button type="button" class="clear btn-link detail-click" p-id="' + dataNews[loop].idData +  '">Baca lebih lanjut</button>' +
 				'</div>	' +
 			'</div>';
 		}
@@ -1053,8 +853,10 @@ function r_fNotification() {
 		body  	= '';
 		part	= ['','','',''];
 		content = '';
-		data	= p_getData('fNotification', 'f110', '');
-		
+		// data	= p_getData('fNotification', 'getNotification', '');
+		// console.log(data);
+		data.feedData = null;
+
 		//--open
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div class="col-md-10 col-md-offset-1">';
@@ -1137,10 +939,10 @@ function r_f0Dashboard() {
 		part	= ['',''];
 		content = '';
 
-		dataBentukLembaga 	= p_getData('f4', 'f431', '', ''); 
+		dataBentukLembaga 	= p_getData('f4', 'bentukLembaga', '', ''); 
 		dataBentukLembaga 	= dataBentukLembaga.feedData;
 
-		dataWilayah 		= p_getData('f4', 'f403', '', ''); 
+		dataWilayah 		= p_getData('f4', 'wilayah', '', ''); 
 		dataWilayah 		= dataWilayah.feedData;
 		
 		var counta = 0;
@@ -1182,7 +984,7 @@ function r_f0Dashboard() {
 								'<div class="caption">' +
 									'<span>' + dataBentukLembaga[loop].namaBentukLembaga + '</span>' +
 								'</div>' +
-								'<div class="counter-block">' +
+								'<div class="counter-block" id="counter_' + dataBentukLembaga[loop].namaBentukLembaga + '">' +
 									'0' +
 								'</div>' +
 							'</div>' +
@@ -1206,7 +1008,7 @@ function r_f0Dashboard() {
 				'<p class="caption"></p>' +
 			'</div-->' +
 			'<div class="summary-sbody fleed">' +
-				'<p class="counter" id="">0</p>' +
+				'<p class="counter" id="totalAjuan">0</p>' +
 			'</div>' +
 			'<!--div class="summary-sfoot">' +
 				'<button class="btn-link click" type="button">Lihat data <img class="btn-icon-set" src="img/sources/arrow-right-black.png" /></button>' +
@@ -1225,7 +1027,6 @@ function r_f0Dashboard() {
 		'</div>';
 
 		
-		
 		if(dataWilayah != null){
 			part[1] = part[1] +
 				'<div class="cards">' +
@@ -1238,7 +1039,7 @@ function r_f0Dashboard() {
 							'<span><i>' + dataWilayah[loop].namaWilayah + '</i></span>' +
 						'</div>' +
 						'<div class="counter-block">' +
-							'<b>0</b>' +
+							'<b id="r_counter_' + dataWilayah[loop].kodeWilayah + '">0</b>' +
 						'</div>' +
 					'</div>' +
 				'</div>';
@@ -1305,11 +1106,11 @@ function r_f0Dashboard() {
 		'</div>' +
 		'<div class="col-md-4">' +
 			'<div class="row default">' +
-				'<div class="cards go-notaPencairan">' +
+				'<div class="cards go-pelaporan">' +
 					'<div class="navigation-box icon-add">' +
-						'<span class="fa fa-list icon-set text-red"></span>' +
+						'<span class="fa fa-archive icon-set text-red"></span>' +
 						'<div class="caption">' +
-							'<span>Nota Pencairan</span>' +
+							'<span>Pelaporan</span>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -1341,7 +1142,7 @@ function r_f0Dashboard() {
 		$(".go-permohonanPencairan").unbind().on('click', function(){ r_navigateTo(12); });
 		$(".go-lolosVerifikasi").unbind().on('click', function(){ r_navigateTo(21); });
 		$(".go-pencairan").unbind().on('click', function(){ r_navigateTo(31); });
-		$(".go-notaPencairan").unbind().on('click', function(){ r_navigateTo(32); });
+		$(".go-pelaporan").unbind().on('click', function(){ r_navigateTo(32); });
 		$(".go-pengaturan").unbind().on('click', function(){ r_navigateTo(4); });
 		$(".go-keluar").unbind().on('click', function(){ r_navigateTo(); });
 		
@@ -1351,6 +1152,11 @@ function r_f0Dashboard() {
 		$("#ajuan").html(counta);
 		$("#verifikasi").html(countv);
 		$("#akun").html(parseInt(counta) + parseInt(countv));
+		$("#totalAjuan").html('53 JT');
+		$("#counter_Yayasan").html('53,000,000');
+		$("#r_counter_21").html('53,000,000');
+
+
 	});
 }
 
@@ -1435,7 +1241,7 @@ function r_navbarReactor(){
 	$("#option.syncnav .permohonanPencairan").unbind().on("click", function(){ r_navigateTo(12); });
 	$("#option.syncnav .lolosVerifikasi").unbind().on("click", function(){ r_navigateTo(21); });
 	$("#option.syncnav .daftarPencairan").unbind().on("click", function(){ r_navigateTo(31); });
-	$("#option.syncnav .notaPencairan").unbind().on("click", function(){ r_navigateTo(32); });
+	$("#option.syncnav .pelaporan").unbind().on("click", function(){ r_navigateTo(32); });
 	$("#option.syncnav .pengaturan") .unbind().on("click", function(){ r_navigateTo(4); });
 	// $("#option.syncnav .bantuan") 	 .unbind().on("click", function(){ r_navigateTo(0.1); });
 	$("#option.syncnav .log-off")	 .unbind().on("click", function(){ p_logout(); r_navigateTo(); });
@@ -1542,6 +1348,7 @@ function r_clearCookies(){
 	r_setCookie('TABAH_lingkupArea'	, '', 0.1);
 	r_setCookie('TABAH_idBatasArea'	, '', 0.1);
 	r_setCookie('TABAH_statusActive'	, '', 0.1);
+	r_setCookie('TABAH_accessType'	, '', 0.1);
 
 	for(var look=0; look<moduleCounter; look++){
 		r_setCookie('TABAH_' + moduleActive[look].module + 'Lihat', '', 0.1);

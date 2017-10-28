@@ -42,7 +42,7 @@ function p_getData(group, target, keyword, refferences){
 		async: false,
 		data: { keyword : keyword, refferences: refferences },
 		success: function(result){
-			data = result; 
+			data = result; console.log(data);
 		},
 		complete: function(xhr,status) { hideNotification('waiting'); },
 		error: function(xhr,status,error) { console.log(xhr); showNotification('danger', 'failure', 'Terjadi kesalahan, tidak ada respon dari server!'); }
@@ -130,10 +130,10 @@ function p_formHandler(formId, type){
 			processData:false,        // To send DOMDocument or non processed data file it is set to false
 			success: function(data)   // A function to be called if request succeeds
 			{ 
+				console.log(data);
 				showNotification(data.feedType, '0', data.feedMessage);
 				if(data.feedStatus == "success" || data.feedStatus == "warning"){
-					if(data.feedPId == undefined){ data.feedPId = null }
-					r_customCallBack(type, $("#" + formId).attr('f-group'), $("#" + formId).attr('f-target'), data.feedId, formId, data.feedPId);
+					r_customCallBack(type, $("#" + formId).attr('f-group'), $("#" + formId).attr('f-target'), data.feedId, formId, data.feedData);
 				}
 			},
 			complete: function(xhr,status) { hideNotification('waiting'); },

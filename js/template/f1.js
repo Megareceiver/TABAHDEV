@@ -1,60 +1,6 @@
 //F1
 //=====================================
-function r_f1Pemberkasan(){
-	$("body").prepend(preload);
-	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
-		mainPage.html('');
-		head  	= '';
-		body  	= '';
-
-		part 	= ['',''];
-		content = '';
-
-		//--start
-		body	= '<div class="row no-head"><div class="container">';
-		part[0] = '<div class="col-md-6">';
-		part[1] = '<div class="col-md-6" id="proposal-group">';
-		
-		part[0] = part[0] + 
-		'<div class="">' +
-			'<div></div>' +
-		'</div>';
-
-		//--left
-		part[0] = part[0] + '</div>';
-		part[1] = part[1] + '</div>';
-
-		body	= body 	  + part[0] + part[1] + '</div></div>';
-		content = '<section id="proposal">' + head + body + '</section>';
-		//--close
-		
-		//--gen
-		headPage.html(r_headPageHtml(3, 'Proposal pencairan'));
-		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-		content = '';
-		data    = [];
-		
-		//--start
-		body	= '<div class="row no-head"><div class="container">';
-
-		body	= body + '</div></div>';
-		content = '<section id="pemberkasan">' + head + body + '</section>';
-		//--close
-		
-		//--gen
-		headPage.html(r_headPageHtml(4, 'pemberkasan'));
-		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
-
-		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
-
-		detailBoxActivator();
-		searchBoxActivator();
-		r_navbarReactor();
-	});
-}
-
-function r_f1DaftarProposalAwal(){
+function r_f1permohonanAwal(){
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
@@ -62,11 +8,18 @@ function r_f1DaftarProposalAwal(){
 		body  	= '';
 		part 	= ['',''];
 		content = '';
-		data    =  p_getData('f1', 'ft111', '', 'single');
+		data    =  p_getData('f1', 'ft111', '', 'single'); 
 		
 		//-- set option list on a session
 		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
-		data 		= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
+		data 		= ((typeof data.feedData != "undefined" && (data.feedData instanceof Array) && data.feedData.length > 0 ? data.feedData : null));
+
+		//option list 
+		optionBatch = [
+			{'selector': 'view-card', 			'icon': 'search', 'label': 'Lihat selengkapnya'},
+			{'selector': 'edit-card', 			'icon': 'pencil', 'label': 'Ubah data'},
+			{'selector': 'delete-card', 		'icon': 'trash',  'label': 'Hapus data'},
+		]; 
 
 		//--start
 		body	= '<div class="row no-head"><div class="container">';
@@ -85,7 +38,7 @@ function r_f1DaftarProposalAwal(){
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(4, 'Proposal awal'));
+		headPage.html(r_headPageHtml(4, 'Permohonan awal'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 
 		$("#preload").remove();
@@ -98,7 +51,7 @@ function r_f1DaftarProposalAwal(){
 	});
 }
 
-function r_f1DaftarProposalPencairan(){
+function r_f1permohonanPencairan(){
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
@@ -106,7 +59,7 @@ function r_f1DaftarProposalPencairan(){
 		body  	= '';
 		part 	= ['',''];
 		content = '';
-		data    =  p_getData('f1', 'f');
+		data    =  p_getData('f1', 'ft111', '', 'single'); 
 		data 	= ((typeof data.feedData != "undefined" && (data.feedData instanceof Array) && data.feedData.length > 0 ? data.feedData : null));
 
 		//--start
@@ -126,7 +79,7 @@ function r_f1DaftarProposalPencairan(){
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(3, 'Proposal pencairan'));
+		headPage.html(r_headPageHtml(3, 'Permohonan pencairan'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
 		
@@ -260,8 +213,13 @@ function r_f1ProposalGenerator(data = null){
 	var breakHtml 	= "";
 	if(data != null){
 		for(var loop = 0; loop < data.length; loop++){	
-			if(loop > 0){ breakHtml = "plus"; }
-			expandHtml = '<span class="btn-collapse">Lihat semua</span>'; 
+			//hack
+			data[loop].nominal = 'Rp. 53,000,000';
+			data[loop].tujuan = 'Renovasi Masjid';
+			data[loop].latarBelakang = 'Masjid ialah tempat ibadah bagi kaum muslim, tempat yang nyaman dapat meningkatkan ke kushuan secara psikologi. namun pada kenyataannya saat ini masjid Al-xxx tengah mengalami beberapa kerusakan sehingga tidak dapat menampung jemaah';
+
+			// if(loop > 0){ breakHtml = "plus"; }
+			// expandHtml = '<span class="btn-collapse">Lihat semua</span>'; 
 
 			//--group
 			genHtml = genHtml +
@@ -277,14 +235,14 @@ function r_f1ProposalGenerator(data = null){
 				'<div class="description-box">' +
 					'<div class="click-frame">' +
 						'<div class="icon-set bg-sky"><span class="fa fa-file-text-o"></span></div>' +
-						'<p class="title-set">' + data[loop].namaLembaga + '</p>' +
+						'<p class="title-set">' + data[loop].nama + '</p>' +
 						'<div class="text-set">' +
 							'<span class="id-set">' + data[loop].noRegistrasi + '</span>' +
 							'<span class="desc-text">' + data[loop].nominal + '</span>' +
 						'</div>' +
 					'</div>' +
 					'<button type="button" class="click-option btn-set" ' + 
-						'p-label		="' + data[loop].namaLembaga + '"' + 
+						'p-label		="' + data[loop].nama + '"' + 
 						'p-id			="' + data[loop].idData + '"' +
 						'p-group		="f1"' + 
 						'p-target		="f111"' +
@@ -325,7 +283,7 @@ function r_f1ProposalGenerator(data = null){
 						'<div class="col-md-6">' +
 							'<div class="list-box">' +
 								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
-								'<p class="list-text text-purple">Belum ada berkas</p>' +
+								'<p class="list-text text-purple"><a href="upload/proposalAwal/' + data[loop].noRegistrasi + '_proposalAwal.pdf" download>' + data[loop].noRegistrasi + '_proposalAwal.pdf</a></p>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
@@ -774,17 +732,9 @@ function r_f1DetailLembaga(packet) {
 		}
 
 		profile_look_set(packet);
-		
-		//data = p_getData('f1', 'f1111', '', '12121300001');
-		data = p_getData('f1', 'f1111', '', packet);
+		data = p_getData('f1', 'profile', "noRegistrasi = '" + packet + "'");
 		data = data.feedData;
-		
-		//-- set option list on a session
-		if(data != null && data.option != undefined){
-			optionBatch = data.option;
-		}else{
-			r_navigateTo(99); return false;
-		}
+		optionBatch = data.option;
 		
 		//--open
 		head	= '';
@@ -793,52 +743,63 @@ function r_f1DetailLembaga(packet) {
 		part[1] = '<div class="col-md-9">';
 		
 		//--left
-		if(data.profile[0] != null){
-			var temPic = "";
-			temPic = (data.profile[0].avatar != "") ? 'img/logo/' + data.profile[0].avatar : 'img/logo/avatar-5.jpg';
+		if(data.profile != null){
+			var temPic = r_getCookie('TABAH_avatar');
 			part[0] = part[0] +
 			'<div class="cards clear">' +
 				'<div class="cards-banner-blank long smalltron-ground">' +
 					'<div class="user-frame">' +
 						'<img src="' + temPic + '">' +
 						'<p class="caption">' +
-							'<span class="big">' + data.profile[0].nama + '</span>' +
-							'<span>Yayasan</span>' +
+							'<span class="big">' + data.profile.nama + '</span>' +
+							'<span>' + data.profile.namaBentukLembaga + '</span>' +
 						'</p>' +
 						'<button class="btn-option btn-default click-option" ' + 
 							'p-group		="f1"' + 
 							'p-target		="f111"' +
-							'p-id="' + data.profile[0].noreg + '" p-label="' + data.profile[0].nama + '"><i class="fa fa-ellipsis-h"></i></button>' +
+							'p-id="' + data.profile.noRegistrasi + '" p-label="' + data.profile.namaBentukLembaga + " " + data.profile.nama + '"><i class="fa fa-ellipsis-h"></i></button>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
 			'<div class="cards flush">' +
 				'<div class="desc-frame">' +
 					'<div class="desc-box flush">' +
-						'<p class="text-set">' + data.profile[0].catatan + '</p>' +
+						'<p class="text-set">' + data.profile.catatanLain + '</p>' +
 					'</div>' +
 					'<div class="desc-box i-left">' +
 						'<div class="icon-set"><span class="fa fa-phone"></span></div>' +
-						'<p class="text-set">' + data.profile[0].telp + '</p>' +
+						'<p class="text-set">' + data.profile.noTelp + '</p>' +
 					'</div>' +
 					'<div class="desc-box i-left">' +
 						'<div class="icon-set"><span class="fa fa-envelope"></span></div>' +
-						'<p class="text-set">' + data.profile[0].email + '</p>' +
+						'<p class="text-set">' + data.profile.email + '</p>' +
 					'</div>' +
 					'<div class="desc-box i-left">' +
 						'<div class="icon-set"><span class="fa fa-globe"></span></div>' +
-						'<p class="text-set">' + data.profile[0].sosialMedia + '</p>' +
+						'<p class="text-set">' + data.profile.mediaSosial + '</p>' +
 					'</div>' +
 					'<div class="desc-box i-left">' +
 						'<div class="icon-set"><span class="fa fa-map-marker"></span></div>' +
-						'<p class="text-set">' + data.profile[0].alamat + '</p>' +
+						'<p class="text-set">' + data.profile.alamat + '</p>' +
 					'</div>' +
 					'<div class="desc-box i-left">' +
-						'<p class="text-set"><span class="text-cyan click" id="go-maps" m-lng="' + data.profile[0].langitude + '" m-lat="' + data.profile[0].latitude + '">Lihat maps</span></p>' +
+						'<p class="text-set"><span class="text-cyan click" id="go-maps" m-lng="' + data.profile.langitude + '" m-lat="' + data.profile.latitude + '">Lihat maps</span></p>' +
 					'</div>' +
 				'</div>' +
 			'</div>';
-				
+
+		}
+
+		if(data.detail == undefined){
+			part[1] = part[1] + 
+			'<div class="cards">' +
+				'<div class="cards-header">' +
+					'<p class="fixed offset text-black">Belum ada riwayat data, silahkan untuk melakukan permohonan bantuan dengan klik link berikut.</p>' +
+					'<button type="button" class="btn btn-warning"><span class="fa fa-pencil"></span> &nbsp; Permohonan Awal</button>' +
+					'<p>&nbsp;</p>' +
+				'</div>' +
+			'</div>';
+		}else{
 			//--render data
 			for(var loop = 0; loop < data.detail.length; loop++){
 				//--right
@@ -941,14 +902,6 @@ function r_f1DetailLembaga(packet) {
 					part[1] = part[1] + '</div>';
 				}	
 			}
-
-		}else{
-			part[1] = part[1] + 
-			'<div class="cards">' +
-				'<div class="cards-header">' +
-					'<p class="fixed offset text-black">Data tidak ditemukan.</p>' +
-				'</div>' +
-			'</div>';
 		}
 		
 		part[0] = part[0] + '</div>';
@@ -958,9 +911,7 @@ function r_f1DetailLembaga(packet) {
 		//--close
 		
 		//--gen
-		var temp = 3;
-		if(String(r_getCookie('TABAH_userLevel')) == '1'){ temp = 0; }
-		headPage.html(r_headPageHtml(temp, 'Profil lembaga'));
+		headPage.html(r_headPageHtml(0, 'Profil lembaga'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
 		

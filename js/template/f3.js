@@ -8,80 +8,13 @@ function r_f3Anggota() {
 		body  	= '';
 		part	= ['',''];
 		content = '';
-		data = p_getData('f3', 'f31', '', '');
-		data = data.feedData;
-
-		//--filter render data
-		var provinsiHtml  = '';
-		var wilayahHtml   = '';
-		var kecamatanHtml = '';
-		var kelurahanHtml = '';
-		var look = 0;
-		
-		if(optionD[0] != null){
-			for(look = 0; look < optionD[0].provinsi.length; look++){
-				provinsiHtml = provinsiHtml + '<option value="' + optionD[0].provinsi[look].id + '">' + optionD[0].provinsi[look].caption + '</option>';
-			}
-			
-			for(look = 0; look < optionD[0].wilayah.length; look++){
-				wilayahHtml = wilayahHtml + '<option value="' + optionD[0].wilayah[look].id + '">' + optionD[0].wilayah[look].caption + '</option>';
-			}
-			
-			for(look = 0; look < optionD[0].kecamatan.length; look++){
-				kecamatanHtml = kecamatanHtml + '<option value="' + optionD[0].kecamatan[look].id + '">' + optionD[0].kecamatan[look].caption + '</option>';
-			}
-			
-			for(look = 0; look < optionD[0].kelurahan.length; look++){
-				kelurahanHtml = kelurahanHtml + '<option value="' + optionD[0].kelurahan[look].id + '">' + optionD[0].kelurahan[look].caption + '</option>';
-			}
-		}
+		// data = p_getData('f3', 'f31', '', '');
+		// data = data.feedData;
 		
 		//--open
 		head	= '';
 		body	= '<div class="row no-head"><div class="container">';
-		part[0] = '<!--div class="col-md-3 col-md-offset-1">';
 		part[1] = '<div class="col-md-8 col-md-offset-2">';
-		
-		//--left
-		part[0] = part[0] +
-		'<div class="cards">' +
-			'<div class="cards-header">' +
-				'<p class="fixed offset">Filter lembaga</p>' +
-				'<div class="btn-collapse right">' +
-					'<button class="clear" type="button"><span class="fa fa-refresh"></span></button>' +
-					'<button class="clear" type="button"><span class="fa fa-filter"></span></button>' +
-				'</div>' +
-			'</div>' +
-		'</div>' +
-		'<div class="cards flush">' +
-			'<form id="f-filter-select">' +
-				'<div class="select-box">' +
-					'<select>' +
-						'<option value="" selected>Provinsi</option>' +
-						provinsiHtml +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select>' +
-						'<option value="" selected>Wilayah</option>' +
-						wilayahHtml +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select>' +
-						'<option value="" selected>Kecamatan</option>' +
-						kecamatanHtml +
-					'</select>' +
-				'</div>' +
-				'<div class="select-box">' +
-					'<select>' +
-						'<option value="" selected>Kelurahan</option>' +
-						kelurahanHtml +
-					'</select>' +
-				'</div>' +
-				'<div class="space-box"></div>' +
-			'</form>' +
-		'</div>';
 		
 		//--render data
 		var tempP 	= "";
@@ -89,7 +22,7 @@ function r_f3Anggota() {
 		var tempL 	= "";
 		var tempH 	= "";
 		var placeImg= "";
-		console.log(data);
+	
 		if(data!= null && data.length != 0){
 			for(var loop = 0; loop < data.length; loop++){	
 				placeImg 	= (data[loop].noreg != "") ? data[loop].noreg : data[loop].id;
@@ -131,7 +64,6 @@ function r_f3Anggota() {
 			'</div>';
 		}
 		
-		part[0] = part[0] + '</div-->';
 		part[1] = part[1] + '</div>';
 		body	= body 	  + part[0] + part[1] + '</div></div>';
 		content = '<section id="">' + head + body + '</section>';
@@ -141,8 +73,8 @@ function r_f3Anggota() {
 		headPage.html(r_headPageHtml(4, 'Anggota'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		
-		var ul = r_getCookie('TABAH_userLevel');
-		if(ul == '3' || ul == '7') footPage.html(r_footPageHtml('add'));
+		var uac = r_getCookie('TABAH_userLevel');
+		if(uac == '3' || uac == '7') footPage.html(r_footPageHtml('add'));
 		$("#preload").remove();
 		
 		//--command reactor
@@ -487,4 +419,92 @@ function r_f3FormUserDataGenerator(packet){
 
 	//form reactor
 	p_formHandler("f-user-create" , "updateData");
+}
+
+function r_f3pencairan(){
+	$("body").prepend(preload);
+	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
+		mainPage.html('');
+		head  	= '';
+		body  	= '';
+		part 	= ['',''];
+		content = '';
+		data    =  p_getData('f1', 'ft111', '', 'single');
+		
+		//-- set option list on a session
+		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
+		data 		= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
+
+		//--start
+		body	= '<div class="row no-head"><div class="container">';
+		part[0] = '<div class="col-md-3">';
+		part[1] = '<div class="col-md-8" id="proposal-list">';
+		
+		part[1] = part[1] + r_f1ProposalGenerator(data);
+
+		//--left
+		part[0] = part[0] + r_f1FilterForm('lingkupArea');
+		part[0] = part[0] + '</div>';
+		part[1] = part[1] + '</div>';
+
+		body	= body 	  + part[0] + part[1] + '</div></div>';
+		content = '<section id="proposal">' + head + body + '</section>';
+		//--close
+		
+		//--gen
+		headPage.html(r_headPageHtml(4, 'Daftar Pencairan'));
+		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+
+		$("#preload").remove();
+		
+		//--command reactor
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		detailBoxActivator();
+		searchBoxActivator();
+		r_navbarReactor();
+	});
+}
+
+function r_f3pelaporan(){
+	$("body").prepend(preload);
+	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
+		mainPage.html('');
+		head  	= '';
+		body  	= '';
+		part 	= ['',''];
+		content = '';
+		data    =  p_getData('f1', 'ft111', '', 'single');
+		
+		//-- set option list on a session
+		optionBatch = ((typeof data.feedData.option != "undefined" && (data.feedData.option instanceof Array) && data.feedData.option.length > 0 ? data.feedData.option : null));
+		data 		= ((typeof data.feedData.data != "undefined" && (data.feedData.data instanceof Array) && data.feedData.data.length > 0 ? data.feedData.data : null));
+
+		//--start
+		body	= '<div class="row no-head"><div class="container">';
+		part[0] = '<div class="col-md-3">';
+		part[1] = '<div class="col-md-8" id="proposal-list">';
+		
+		part[1] = part[1] + r_f1ProposalGenerator(data);
+
+		//--left
+		part[0] = part[0] + r_f1FilterForm('lingkupArea');
+		part[0] = part[0] + '</div>';
+		part[1] = part[1] + '</div>';
+
+		body	= body 	  + part[0] + part[1] + '</div></div>';
+		content = '<section id="proposal">' + head + body + '</section>';
+		//--close
+		
+		//--gen
+		headPage.html(r_headPageHtml(4, 'Pelaporan'));
+		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
+
+		$("#preload").remove();
+		
+		//--command reactor
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		detailBoxActivator();
+		searchBoxActivator();
+		r_navbarReactor();
+	});
 }

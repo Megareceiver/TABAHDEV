@@ -5,14 +5,21 @@
 	define('db_name', "tabah_dumb");
 	
 	function openGate(){
-		
-		// Create connection
-		$gate = mysqli_connect(db_host, db_user, db_pass, db_name);
+		$gate = new PDO("mysql:host=".db_host.";dbname=".db_name, db_user, db_pass); 
+		$gate->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		return $gate;
 	} 
 	
 	function closeGate($gate){
 		mysqli_close($gate);
+	}
+
+	function basePath(){
+		return $_SERVER['SERVER_NAME'].'/TABAHDEV/';
+	}
+
+	function getAssetUrl(){
+		return 'http://localhost/DPLEGA/img/';
 	}
 
 	function getApiUrl(){

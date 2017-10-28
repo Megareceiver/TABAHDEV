@@ -14,7 +14,7 @@ function r_f4Pengaturan() {
 		body	= '<div class="row no-head"><div class="container">';
 		part[0] = '';
 			
-		if(r_getCookie('TABAH_lingkupAreaLihat') == '1') { 
+		//if(r_getCookie('TABAH_lingkupAreaLihat') == '1') { 
 			part[0] = part[0] + 
 			'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -33,9 +33,9 @@ function r_f4Pengaturan() {
 					'</div>' +
 				'</div>' +
 			'</div>';
-		}
+		//}
 
-		if(r_getCookie('TABAH_pengaturanVerifikasiLihat') == '1') { 
+		//if(r_getCookie('TABAH_pengaturanVerifikasiLihat') == '1') { 
 			part[0] = part[0] + 
 			'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -54,9 +54,9 @@ function r_f4Pengaturan() {
 					'</div>' +
 				'</div>' +
 			'</div>';
-		}
+		//}
 
-		if(r_getCookie('TABAH_beritaLihat') == '1') { 
+		//if(r_getCookie('TABAH_beritaLihat') == '1') { 
 			part[0] = part[0] + 
 			'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -74,9 +74,9 @@ function r_f4Pengaturan() {
 					'</div>' +
 				'</div>' +
 			'</div>';
-		}
+		//}
 
-		if(r_getCookie('TABAH_konfigurasiLihat') == '1') { 
+		//if(r_getCookie('TABAH_konfigurasiLihat') == '1') { 
 			part[0] = part[0] + 
 				'<div class="col-md-4 col-sm-6">' +
 				'<div class="cards">' +
@@ -96,7 +96,7 @@ function r_f4Pengaturan() {
 					'</div>' +
 				'</div>' +
 			'</div>';
-		}
+		//}
 
 		part[0] = part[0] + 
 		'<div class="col-md-4 col-sm-6">' +
@@ -132,7 +132,7 @@ function r_f4Pengaturan() {
 		
 		//--command reactor
 		$("#pPembagianTim").unbind().on		 ('click', function(){ r_navigateTo(41); });
-		$("#pAnggota").unbind().on	 		 ('click', function(){ r_navigateTo(3); });
+		$("#pAnggota").unbind().on	 		 ('click', function(){ r_navigateTo(412); });
 		$("#pDaftarPersyaratan").unbind().on ('click', function(){ r_navigateTo(42); });
 		$("#pGrupPersyaratan").unbind().on	 ('click', function(){ r_navigateTo(421); });
 		$("#pDaftarBerita").unbind().on		 ('click', function(){ r_navigateTo(44); });
@@ -155,9 +155,12 @@ function r_f4TimWilayah() {
 		content = '';
 		counter = 0;
 
-		data = p_getData('f4', 'f401');
-		data = data.feedData;
+		// data = p_getData('f4', 'f401'); 
+		// data = data.feedData; console.log(data);
 		optionBatch = r_f4OptionList(401); 
+
+		data = p_getData('f4', 'timWilayah');
+		data = data.feedData;
 		
 		//--open
 		head = '';
@@ -322,7 +325,7 @@ function r_f4TimWilayah() {
 // 	});
 // }
 
-function r_f4AnggotaTimWilayah(packet) {
+function r_f4AnggotaTimWilayah(packet, referencesId) {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
 		mainPage.html('');
@@ -333,16 +336,23 @@ function r_f4AnggotaTimWilayah(packet) {
 		counter 	= 0;
 		anggotaHtml	= '';
 
-		if(packet[0] == undefined || packet == "" || packet == null || packet == "start"){
-			packet = tim_look_reader();
-		}
+		// if(packet[0] == undefined || packet == "" || packet == null || packet == "start"){
+		// 	packet = tim_look_reader();
+		// }
 
-		packet 		= packet.split("::");
-		packetLabel = packet[1];
-		packet 		= packet[0];
+		// packet 		= packet.split("::");
+		// packetLabel = packet[1];
+		// packet 		= packet[0];
 
-		tim_look_set(packet + "::" + packetLabel);
+		// tim_look_set(packet + "::" + packetLabel);
 		// data = p_getData('f4', 'f410', packet);
+
+		data = [
+			{nama: 'Cecep Rohendi', idData: '1' },
+		];
+		packetLabel = "asd";
+		packet 		= "123";
+
 		optionBatch = r_f4OptionList(410); 
 		
 		//--open
@@ -370,12 +380,8 @@ function r_f4AnggotaTimWilayah(packet) {
 				'<div class="cards flush">' +
 					'<div class="row default">' +
 						'<div class="col-md-12">' +
-							'<div class="select-box">' +
-								'<input name="idTim" tabindex="1" type="hidden" value="' + packet + '" />' +
-								'<select tabindex="1" name="idWilayah">' +
-									'<option value="" selected>Pilih Wilayah (*)</option>' +
-									r_optionDHtml('anggotaWilayah') +
-								'</select>' +
+							'<div class="input-box">' +
+								'<input name="idTim" tabindex="1" type="text" value="" placeholder="Nama anggota" />' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
@@ -390,10 +396,10 @@ function r_f4AnggotaTimWilayah(packet) {
 					'<div class="row default">' +
 						'<div class="col-xs-12">' +
 							'<div class="list-box">' +
-								'<div class="list-icon bg-green"><span class="fa fa-map-marker"></span></div>' +
-								'<p class="list-text">' + data[loop].namaWilayah + '</p>' +
+								'<div class="list-icon bg-green"><span class="fa fa-user"></span></div>' +
+								'<p class="list-text">' + data[loop].nama + '</p>' +
 								'<div class="list-button click-option"' + 
-									'p-label		="' + data[loop].namaWilayah + '"' + 
+									'p-label		="' + data[loop].nama + '"' + 
 									'p-id			="' + packet + '"' +
 									'p-references	="' + data[loop].idData + '"' +
 									'p-group		="f4"' + 
@@ -482,22 +488,22 @@ function r_f4BeritaGenerator(data){
 		for(var loop = 0; loop < data.length; loop++){	
 			$('.emptyList').remove();
 			genHtml = genHtml +
-			'<div class="cards clear" id = "berita-'+data[loop].idBerita+'">' +
+			'<div class="cards clear" id = "berita-'+data[loop].idData+'">' +
 				'<div class="article-box">' +
 					'<div class="body">' +
-						'<p class="title">' + data[loop].judul + '</p>	' +
-						'<p class="content">' + data[loop].isiBerita + '</p>' +
+						'<p class="title">' + data[loop].judulBerita + '</p>	' +
+						'<p class="content">' + data[loop].deskripsi + '</p>' +
 					'</div>' +
 					'<div class="foot">' +
 						'<button '+
-							'id 		= "'+data[loop].idBerita +'" '+
-							'title 		= "'+data[loop].judul +'" '+
-							'description= "'+data[loop].isiBerita+'" '+
+							'id 		= "'+data[loop].idData +'" '+
+							'title 		= "'+data[loop].judulBerita +'" '+
+							'description= "'+data[loop].deskripsi+'" '+
 						'type="button" class="clear btn-link detail-click text-cyan">Baca lebih lanjut</button>';
 
 			if(r_getCookie('TABAH_beritaHapus') == '1'){			
 				genHtml = genHtml +
-				' | <button id-button = '+data[loop].idBerita+' type="reset" class="clear btn-link text-pink">Hapus</button>';
+				' | <button id-button = '+data[loop].idData+' type="reset" class="clear btn-link text-pink">Hapus</button>';
 			}
 
 			genHtml = genHtml +
@@ -752,25 +758,25 @@ function r_f4DaftarPersyaratan() {
 		part	= ['','','',''];
 		content = '';
 		data    = [
-			{'noreg': '1', 'group': 'Verifikasi lapangan', 'caption': 'lorem dolor sit amet 2.'},
-			{'noreg': '2', 'group': 'Verifikasi lapangan', 'caption': 'lorem dolor sit amet 3.'},
-			{'noreg': '3', 'group': 'Verifikasi lapangan', 'caption': 'lorem dolor sit amet 4.'},
+			{'noreg': '1', 'group': 'Verifikasi dokumen', 'caption': 'Proposal'},
+			{'noreg': '2', 'group': 'Verifikasi dokumen', 'caption': 'RAB'},
+			{'noreg': '3', 'group': 'Verifikasi dokumen', 'caption': 'KTP Penanggung Jawab'},
 		];
 		
 		optionBatch = r_f4OptionList(421); 
 		
-		counter = 0;
-		data = p_getData('f4', 'f422', '');
-		data = data.feedData;
-		if(data != null && data.length > 0){ counter = data.length; }
+		// counter = 0;
+		// data = p_getData('f4', 'f422', '');
+		// data = data.feedData;
+		// if(data != null && data.length > 0){ counter = data.length; }
 		
-		dataGrup = p_getData('f4', 'f421', '');
-		dataGrup = dataGrup.feedData;
-		grupHtml = "";
-		for(var loop=0; loop<dataGrup.length;loop++){
-			grupHtml = grupHtml +
-			'<option value="' + dataGrup[loop].noreg + '">' + dataGrup[loop].caption + '</option>';
-		}
+		// dataGrup = p_getData('f4', 'f421', '');
+		// dataGrup = dataGrup.feedData;
+		// grupHtml = "";
+		// for(var loop=0; loop<dataGrup.length;loop++){
+		// 	grupHtml = grupHtml +
+		// 	'<option value="' + dataGrup[loop].noreg + '">' + dataGrup[loop].caption + '</option>';
+		// }
 		
 		//--open
 		head = '';
@@ -801,21 +807,16 @@ function r_f4DaftarPersyaratan() {
 							'<div class="select-box">' +
 								'<select tabindex="1" name="referensi">' +
 									'<option value="" selected>Grup persyaratan (*)</option>' +
-									grupHtml +
+									// grupHtml +
 								'</select>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
-			'</form>' +
-			'<!--div class="cards-label plus">' +
-				'<p>' +
-					'<strong>Daftar verifikasi (' + counter + ')</strong>' +
-				'</p>' +
-			'</div-->';
+			'</form>';
 		}
 			
-		if(counter > 0){
+		if(data.length > 0){
 			for(var loop = 0; loop < data.length; loop++){
 				body = body + 
 				'<div class="cards verifikasi-list" id="verifikasi-' + data[loop].noreg + '">' +
@@ -1784,8 +1785,9 @@ function r_f4DaftarBerita() {
 		part	= ['',''];
 		content = '';
 		genHtml = '';
-		data = p_getData('f4','f441','');
+		data = p_getData('f4','berita','');
 		data = data.feedData;
+
 		if(data !=null){
 			counter = data.length;
 		}
@@ -1907,7 +1909,7 @@ function r_f4DetailBerita(packet) {
 			packet = news_look_reader();
 		}
 
-		data = p_getData('f4','f441', packet);
+		data = p_getData('f4','berita', "idData = '" + packet + "'");
 		data = data.feedData;
 
 		news_look_set(packet);
@@ -1923,16 +1925,13 @@ function r_f4DetailBerita(packet) {
 			'<div class="cards clear">' +
 				'<div class="article-box">' +
 					'<div class="body full no-foot">' +
-						'<h2 class="title">' + data[loop].judul + '</h2>	' +
+						'<h2 class="title">' + data[loop].judulBerita + '</h2>	' +
 						'<p>' + timeSince(new Date(Date.parse(data[loop].createdDate))) + '</p>	';
 			
-			if(data[loop].picture != ""){
-				body = body +
-				'<img src="img/news/' + data[loop].urlGambar + '"/>';
-			}
+			if(data[loop].urlGambar != null) body = body + '<img src="img/news/' + data[loop].urlGambar + '"/>';
 			
 			body = body +
-						'<p class="content">' + data[loop].isiBerita + '</p>' +
+						'<p class="content">' + data[loop].deskripsi + '</p>' +
 					'</div>' +
 				'</div>' +
 			'</div>';
@@ -1948,7 +1947,7 @@ function r_f4DetailBerita(packet) {
 		$("#preload").remove();
 		
 		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(44); });
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(r_pagePreviousReader()); });
 		r_navbarReactor();
 	});
 }
@@ -2060,8 +2059,9 @@ function r_f4BackupRestore() {
 		body  	= '';
 		part	= ['','','',''];
 		content = '';
-		data    = p_getData('dumb', 'f451');
-		data 	= data.feedData;
+		// data    = p_getData('dumb', 'f451');
+		// data 	= data.feedData;
+		data    = [];
 
 		//--open
 		head = '';
@@ -2317,7 +2317,10 @@ function r_f4InfoPersonal() {
 			// {'date': 'Kamis, 25 Mei 2017', 'time': '10:10 AM', 'duration': '10 menit'},
 		];
 
-		dataProfile = p_getData('f3', 'f312');
+		// dataProfile = p_getData('f3', 'infoUser');
+		// dataProfile = dataProfile.feedData;
+
+		dataProfile = p_getData('f3', 'infoUser');
 		dataProfile = dataProfile.feedData;
 
 		//--open
@@ -2327,9 +2330,6 @@ function r_f4InfoPersonal() {
 			'<div class="cards-header">' +
 				'<h4>Informasi personal</h4>' +
 				'<p class="offset">pastikan informasi yang tercatat adalah benar.</p>' +
-				'<div class="btn-collapse right">' +
-					'<button class="clear" type="button" id="pEditInformasiPersonal">_<span class="fa fa-pencil"></span></button>' +
-				'</div>' +
 			'</div>' +
 		'</div>';
 		head = head + '</div></div></div>';
@@ -2385,6 +2385,7 @@ function r_f4InfoPersonal() {
 					'<div class="labels"><p class="text-set">User level</p></div>' +
 					'<div class="divider"><p class="text-set">' + ((dataProfile.userLevel) ? dataProfile.userLevel : '...') + '</p></div>' +
 				'</div>';
+
 		if(dataProfile.access != null && dataProfile.access.length > 0){
 			for(loop=0; loop<dataProfile.access.length; loop++){
 				body = body + 

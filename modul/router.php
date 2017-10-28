@@ -2,16 +2,17 @@
 	//declare 
 	$error = 0; //error init state
 	$json = array( "feedStatus" => "forbidden", "feedType" => "danger", "feedMessage" => "Akses ditolak!", "feedData" => array());
+	$route = null;
 
 	if(isset($_GET['session']) && $_GET['session'] != ""){
 		switch($_GET['group']){
-			case "f1"			: require_once('protected/f1.php');break;
-			case "f3"			: require_once('protected/f3.php'); break;
-			case "f4"			: require_once('protected/f4.php'); break;
-			case "fNotification": require_once('protected/fNotification.php'); break;
-			case "fLogin"		: require_once('protected/authentication.php'); break;
-			case "dumb"			: require_once('protected/dumb.php'); break;
-			case "support"		: require_once('protected/support.php'); break;
+			case "f1"			: require_once('protected/f1.php'); $route = new F1();break;
+			case "f3"			: require_once('protected/f3.php'); $route = new F3(); break;
+			case "f4"			: require_once('protected/f4.php'); $route = new F4(); break;
+			case "fNotification": require_once('protected/fNotification.php'); $route = new Notification(); break;
+			case "fLogin"		: require_once('protected/authentication.php'); $route = new Authentication(); break;
+			case "dumb"			: require_once('protected/dumb.php'); $route = new Dumb(); break;
+			case "settings"		: require_once('protected/settings.php'); $route = new Settings(); break;
 			default  			: $error = 1; break;
 		}
 		
@@ -19,11 +20,11 @@
 			switch($_GET['session']){
 				/* auth session */
 				case 'login':  
-					$json = login($_POST);
+					$json = $route->login($_POST);
 				break;
 				
 				case 'logout':  
-					$json = logout();
+					$json = $route->logout();
 				break;
 				/* end auth session */
 
@@ -36,21 +37,21 @@
 					if(authChecker('7') == 0) $json = restore($_POST);
 				break;
 				/* end dumb session */
-				
+
 				case 'addData':
-					if(authChecker() == 0) $json = createData($_POST, $_GET['target']);
+					/*if(authChecker() == 0)*/ $json = $route->addData($_POST, $_GET['target']);
 				break;
 				
 				case 'updateData':
-					if(authChecker() == 0) $json = changeData($_POST, $_GET['target']);
+					/*if(authChecker() == 0)*/ $json = $route->updateData($_POST, $_GET['target']);
 				break;
 				
 				case 'removeData':
-					if(authChecker() == 0) $json = deleteData($_POST, $_GET['target']);
+					/*if(authChecker() == 0)*/ $json = $route->removeData($_POST, $_GET['target']);
 				break;
 				
 				case 'requestData':
-					$json = getData($_POST, $_GET['target']);
+					$json = $route->requestData($_POST, $_GET['target']);
 				break;
 				
 				default:

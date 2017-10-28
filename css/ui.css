@@ -867,7 +867,7 @@ footer.parent .author-box img { height: 30px; float: right }
     text-align: center;
 }
 
-.cards .list-box .list-text { margin:0; display: inline-block; margin-right: 5px }
+.cards .list-box .list-text { margin:0; display: inline-block; margin-right: 5px; margin-top: 13px; }
 .cards .list-box .list-text.child { padding-left: 30px }
 .cards .list-box .list-text .prime, 
 .cards .list-box .list-text .second { display: block }
@@ -914,6 +914,8 @@ footer.parent .author-box img { height: 30px; float: right }
     color: rgba(0,0,0,0.4);
     text-align: center;
 }
+
+
 
 .cards .desc-frame .desc-box .labels { display: inline-block; width: 33.333333%; float:left; font-weight: bold; }
 .cards .desc-frame .desc-box .divider { display: inline-block; width: 66.666666%; padding-left: 15px; /*border-left: 1px solid rgba(0,0,0,0.12)*/ }
@@ -1279,6 +1281,17 @@ footer.parent .author-box img { height: 30px; float: right }
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	-ms-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.description-box div.icon-set {
+	position: absolute;
+    left: 20px;
+    top: 10px;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
     border-radius: 50%;
 }
 

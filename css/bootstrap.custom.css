@@ -48,7 +48,8 @@ input.form-control:focus, textarea.form-control:focus {
 	transition: 0.5s all;
 }
 
-.carousel, .carousel-inner, .carousel-inner>.item {
+.carousel, .carousel-inner, .carousel-inner>.item,
+.carousel-inner>.item>a>img, .carousel-inner>.item>img {
     height: 100%;
 }
 
