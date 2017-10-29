@@ -1,5 +1,10 @@
 /* setting area */
 /* =============================================================================================== */
+/*hack*/
+#proposal-list .cards .list-box .list-text{
+	margin-top: 13px;
+}
+
 /* all */
 *, *:focus, *:hover, *:active {
     outline: none !important;

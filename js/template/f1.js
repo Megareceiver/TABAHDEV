@@ -16,9 +16,7 @@ function r_f1permohonanAwal(){
 
 		//option list 
 		optionBatch = [
-			{'selector': 'view-card', 			'icon': 'search', 'label': 'Lihat selengkapnya'},
-			{'selector': 'edit-card', 			'icon': 'pencil', 'label': 'Ubah data'},
-			{'selector': 'delete-card', 		'icon': 'trash',  'label': 'Hapus data'},
+			{'selector': 'view-card', 			'icon': 'search', 'label': 'Verifikasi'},
 		]; 
 
 		//--start
@@ -26,7 +24,103 @@ function r_f1permohonanAwal(){
 		part[0] = '<div class="col-md-3">';
 		part[1] = '<div class="col-md-8" id="proposal-list">';
 		
-		part[1] = part[1] + r_f1ProposalGenerator(data);
+		// part[1] = part[1] + r_f1ProposalGenerator(data);
+		data = [
+			{ reffProposal: "PRP1201632211200001", idData: "1", nama: "Lembaga 1", noRegistrasi: "32211200001", noTelp: "085794867714", email: "megareceiver@gmail.com", alamat: "Jl. Cibangkong 51A/120 RT. 004 / RW. 012 Cibangkong Batununggal Kota Bandung Jawa Barat", nominal: "Rp. 75,000,000", tujuan: "Renovasi Masjid", latarBelakang: "Masjid ialah tempat ibadah bagi kaum muslim, tempat yang nyaman dapat meningkatkan ke kushuan secara psikologi. namun pada kenyataannya saat ini masjid Al-xxx tengah mengalami beberapa kerusakan sehingga tidak dapat menampung jemaah" },
+		];
+
+		part[1] = part[1] +
+		'<div class="cards-label">' +
+			'<p>' +
+				'<strong> Permohonan Baru (0)</strong>' +
+			'</p>' +
+		'</div>';
+
+		part[1] = part[1] +
+		'<div class="cards-label">' +
+			'<p>' +
+				'<strong> Riwayat permohonan (' + data.length + ')</strong>' +
+			'</p>' +
+		'</div>';
+
+		for(var loop = 0; loop < data.length; loop++){	
+			part[1]  = part[1] +
+			'<div id="proposal-' + data[loop].idData + '" class="cards clear">' +
+				'<div class="description-box">' +
+					'<div class="click-frame">' +
+						'<div class="icon-set bg-red"><span class="fa fa-file-text-o"></span></div>' +
+						'<p class="title-set">' + data[loop].nama + '</p>' +
+						'<div class="text-set">' +
+							'<span class="id-set">' + data[loop].noRegistrasi + '</span>' +
+							'<span class="desc-text">' + data[loop].nominal + '</span>' +
+						'</div>' +
+					'</div>' +
+					'<button type="button" class="click-option btn-set" ' + 
+						'p-label		="' + data[loop].nama + '"' + 
+						'p-id			="' + data[loop].idData + '"' +
+						'p-group		="f1"' + 
+						'p-target		="f111"' +
+						'p-container	="proposal-' + data[loop].idData + '">' +
+					'<span class="fa fa-ellipsis-v"></span></button>' +
+				'</div>' +
+				'<div class="detail-box">' +
+					'<div class="row">' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-key"></span></div>' +
+								'<p class="list-text">' + data[loop].reffProposal + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
+								'<p class="list-text">' + data[loop].noTelp + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
+								'<p class="list-text">' + data[loop].email + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
+								'<p class="list-text">' + data[loop].alamat + '</p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-flag"></span></div>' +
+								'<p class="list-text">' + data[loop].tujuan + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-tag"></span></div>' +
+								'<p class="list-text">' + data[loop].latarBelakang + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-money"></span></div>' +
+								'<p class="list-text">' + data[loop].nominal + '</p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="clearfix"></div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple"><a href="upload/proposalAwal/' + data[loop].noRegistrasi + '_proposalAwal.pdf" download>' + data[loop].noRegistrasi + '_1_proposalAwal.pdf</a></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple"><a href="upload/proposalAwal/' + data[loop].noRegistrasi + '_ktp_penanggungjawab.jpg" download>KTP penanggungJawab</a></p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple"><a href="upload/proposalAwal/' + data[loop].noRegistrasi + '_rab.pdf" download>RAB</a></p>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<!--div class="list-box foot">' +
+						'<button type="button" class="clear list-text btn-link detail-click" p-id="">Lihat selengkapnya</button>' +
+					'</div-->' +
+				'</div>' +
+			'</div>';
+		}
 
 		//--left
 		part[0] = part[0] + r_f1FilterForm('lingkupArea');
@@ -48,6 +142,8 @@ function r_f1permohonanAwal(){
 		detailBoxActivator();
 		searchBoxActivator();
 		r_navbarReactor();
+
+		r_f1ProposalEventActivator();
 	});
 }
 
@@ -62,12 +158,117 @@ function r_f1permohonanPencairan(){
 		data    =  p_getData('f1', 'ft111', '', 'single'); 
 		data 	= ((typeof data.feedData != "undefined" && (data.feedData instanceof Array) && data.feedData.length > 0 ? data.feedData : null));
 
+		//option list 
+		optionBatch = [
+			{'selector': 'view-card', 			'icon': 'search', 'label': 'Verifikasi'},
+		]; 
+
 		//--start
 		body	= '<div class="row no-head"><div class="container">';
 		part[0] = '<div class="col-md-3">';
 		part[1] = '<div class="col-md-8" id="proposal-list">';
 		
-		part[1] = part[1] + r_f1ProposalGenerator(data);
+		// part[1] = part[1] + r_f1ProposalGenerator(data);
+		data = [
+			{ reffProposal: "PRP1201632211200001", idData: "1", nama: "Lembaga 1", noRegistrasi: "32211200001", noTelp: "085794867714", email: "megareceiver@gmail.com", alamat: "Jl. Cibangkong 51A/120 RT. 004 / RW. 012 Cibangkong Batununggal Kota Bandung Jawa Barat", nominalAwal: "Rp. 75,000,000", nominal: "Rp. 53,000,000", tujuan: "Renovasi Masjid", status: "Pencairan selesai" },
+		];
+
+		part[1] = part[1] +
+		'<div class="cards-label">' +
+			'<p>' +
+				'<strong> Permohonan Pencairan Baru (0)</strong>' +
+			'</p>' +
+		'</div>';
+
+		part[1] = part[1] +
+		'<div class="cards-label">' +
+			'<p>' +
+				'<strong> Pencairan selesai (' + data.length + ')</strong>' +
+			'</p>' +
+		'</div>';
+
+		for(var loop = 0; loop < data.length; loop++){	
+			part[1]  = part[1] +
+			'<div id="proposal-' + data[loop].idData + '" class="cards clear">' +
+				'<div class="description-box">' +
+					'<div class="click-frame">' +
+						'<div class="icon-set bg-green"><span class="fa fa-file-text-o"></span></div>' +
+						'<p class="title-set">' + data[loop].nama + '</p>' +
+						'<div class="text-set">' +
+							'<span class="id-set">' + data[loop].noRegistrasi + '</span>' +
+							'<span class="desc-text">' + data[loop].nominal + '</span>' +
+						'</div>' +
+					'</div>' +
+					'<button type="button" class="click-option btn-set" ' + 
+						'p-label		="' + data[loop].nama + '"' + 
+						'p-id			="' + data[loop].idData + '"' +
+						'p-group		="f1"' + 
+						'p-target		="f111"' +
+						'p-container	="proposal-' + data[loop].idData + '">' +
+					'<span class="fa fa-ellipsis-v"></span></button>' +
+				'</div>' +
+				'<div class="detail-box">' +
+					'<div class="row">' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-key"></span></div>' +
+								'<p class="list-text">' + data[loop].reffProposal + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-phone"></span></div>' +
+								'<p class="list-text">' + data[loop].noTelp + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-envelope"></span></div>' +
+								'<p class="list-text">' + data[loop].email + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-map-marker"></span></div>' +
+								'<p class="list-text">' + data[loop].alamat + '</p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-flag"></span></div>' +
+								'<p class="list-text">' + data[loop].tujuan + '</p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-money"></span></div>' +
+								'<p class="list-text">Permohonan : <b class="text-red">' + data[loop].nominalAwal + '</b></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-money"></span></div>' +
+								'<p class="list-text">Pencairan : <b class="text-green">' + data[loop].nominal + '</b></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-check"></span></div>' +
+								'<p class="list-text">Status : ' + data[loop].status + '</p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="clearfix"></div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple"><a href="upload/proposalPencairan/' + data[loop].noRegistrasi + '_proposalPencairan.pdf" download>' + data[loop].noRegistrasi + '_1_proposalPencairan.pdf</a></p>' +
+							'</div>' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple"><a href="upload/proposalPencairan/' + data[loop].noRegistrasi + '_ktp_penanggungjawab.jpg" download>KTP penanggungJawab</a></p>' +
+							'</div>' +
+						'</div>' +
+						'<div class="col-md-6">' +
+							'<div class="list-box">' +
+								'<div class="list-icon"><span class="fa fa-files-o"></span></div>' +
+								'<p class="list-text text-purple"><a href="upload/proposalPencairan/' + data[loop].noRegistrasi + '_rab.pdf" download>RAB</a></p>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<!--div class="list-box foot">' +
+						'<button type="button" class="clear list-text btn-link detail-click" p-id="">Lihat selengkapnya</button>' +
+					'</div-->' +
+				'</div>' +
+			'</div>';
+		}
 
 		//--left
 		part[0] = part[0] + r_f1FilterForm('lingkupArea');
@@ -85,8 +286,11 @@ function r_f1permohonanPencairan(){
 		
 		//--command reactor
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		detailBoxActivator();
 		searchBoxActivator();
 		r_navbarReactor();
+
+		r_f1ProposalEventActivator();
 	});
 }
 

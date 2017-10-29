@@ -1016,6 +1016,27 @@ function r_f0Dashboard() {
 		'</div>';
 
 		part[1] = part[1] +
+		'<div class="cards flush">' +
+			'<div class="cards-header">' +
+				'<p class="fixed offset">TOTAL PENCAIRAN SAAT INI (Rp).</p>' +
+				'<p class="fixed offset">Data berdasarkan kalkulasi nominal cair.</p>' +
+				'<div class="btn-collapse right">' +
+					'<button class="clear" type="button"><span class="fa fa-refresh"></span></button>' +
+				'</div>' +
+			'</div>' +
+			'<!--div class="summary-shead">' +
+				'<p class="caption"></p>' +
+			'</div-->' +
+			'<div class="summary-sbody fleed">' +
+				'<p class="counter" id="totalPencairan">0</p>' +
+			'</div>' +
+			'<!--div class="summary-sfoot">' +
+				'<button class="btn-link click" type="button">Lihat data <img class="btn-icon-set" src="img/sources/arrow-right-black.png" /></button>' +
+			'</div-->' +
+			'<div class="space-box"></div>' +
+		'</div>';
+
+		part[1] = part[1] +
 		'<div class="cards title">' +
 			'<div class="cards-header">' +
 				'<p class="fixed">Jumlah kolektif wilayah (Rp).</p>' +
@@ -1151,7 +1172,8 @@ function r_f0Dashboard() {
 		$("#ajuan").html(counta);
 		$("#verifikasi").html(countv);
 		$("#akun").html(parseInt(counta) + parseInt(countv));
-		$("#totalAjuan").html('75 JT');
+		$("#totalAjuan").html('75 jt');
+		$("#totalPencairan").html('53 jt');
 		$("#counter_Yayasan").html('75,000,000');
 		$("#r_counter_21").html('75,000,000');
 
