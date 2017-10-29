@@ -488,7 +488,7 @@ function r_f4DaftarPersyaratan() {
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-verifikasi" class="col-md-8 col-md-offset-2">';
 
-		if(r_getCookie('TABAH_pengaturanVerifikasiTambah') == '1' || r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){
+		// if(r_getCookie('TABAH_pengaturanVerifikasiTambah') == '1' || r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){
 			body = body + 
 			'<form id="f-verifikasi-create" f-group = "f4" f-target = "f422">' +
 				'<div class="cards">' +
@@ -521,7 +521,7 @@ function r_f4DaftarPersyaratan() {
 					'</div>' +
 				'</div>' +
 			'</form>';
-		}
+		// }
 			
 		if(data.length > 0){
 			for(var loop = 0; loop < data.length; loop++){
@@ -638,7 +638,7 @@ function r_f4GrupPersyaratan() {
 		//--open
 		head = '';
 		body = '<div class="row no-head"><div class="container"><div id="section-grupVerifikasi" class="col-md-8 col-md-offset-2">';
-		if(r_getCookie('TABAH_pengaturanVerifikasiTambah') == '1' || r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){
+		// if(r_getCookie('TABAH_pengaturanVerifikasiTambah') == '1' || r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){
 			body = body + 
 			'<form id="f-grupVerifikasi-create" f-group = "f4" f-target = "f421">' +
 				'<div class="cards">' +
@@ -667,7 +667,7 @@ function r_f4GrupPersyaratan() {
 					'<strong>Daftar grup (' + counter + ')</strong>' +
 				'</p>' +
 			'</div-->';
-		}
+		// }
 		
 		if(counter > 0){
 			for(var loop = 0; loop < data.length; loop++){
@@ -901,7 +901,7 @@ function r_f4DaftarBerita() {
 		head	= '';
 		body	= '<div class="row no-head"><div class="container">';
 		body	= body + '<div class="col-md-8 col-md-offset-2">';
-		if(r_getCookie('TABAH_beritaTambah') == '1'){
+		// if(r_getCookie('TABAH_beritaTambah') == '1'){
 			body 	= body + 
 			'<form id="f-berita-create" f-group = "f4" f-target = "f441">' +
 				'<div class="cards">' +
@@ -943,7 +943,7 @@ function r_f4DaftarBerita() {
 					'</div>' +
 				'</div>' +
 			'</form>';
-		}
+		// }
 
 		//--render data
 		body = body +
@@ -1723,20 +1723,20 @@ function r_f4OptionList(target){
 	var res = [];
 	switch(target){
 		case 401 :
-			if(r_getCookie('TABAH_lingkupAreaTambah') == '1' || r_getCookie('TABAH_lingkupAreaUbah') == '1'){ res.push({'selector': 'add-card', 'icon': 'plus', 'label': 'Tambah anggota'}); }
+			res.push({'selector': 'add-card', 'icon': 'plus', 'label': 'Tambah anggota'});
 		break;
 
 		case 42 :
 		case 421: 
-			if(r_getCookie('TABAH_pengaturanVerifikasiUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
-			if(r_getCookie('TABAH_pengaturanVerifikasiHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
+			res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'});
+			res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'});
 		break;
 		
 		case 43 : 
 		case 431:
 		case 432: 
-			if(r_getCookie('TABAH_pengaturanKelembagaaUbah') == '1'){ res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'}); }
-			if(r_getCookie('TABAH_pengaturanKelembagaaHapus') == '1'){ res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'}); }
+			res.push({'selector': 'edit-card', 'icon': 'pencil', 'label': 'Ubah data'});
+			res.push({'selector': 'delete-card', 'icon': 'trash', 'label': 'Hapus data'});
 		break;
 
 		case "deleteOnly": 
