@@ -68,8 +68,7 @@ function r_navigateTo(index, packet, access) {
 			case 10 : r_f1DetailLembaga(packet); 		break;
 			case 11 : r_f1permohonanAwal(packet); 		break;
 			case 12 : r_f1permohonanPencairan(packet);  break;
-			
-			// case 13 : r_f1VerifikasiLembaga(packet);	break;
+			case 13 : r_f1VerifikasiLembaga(packet, access);	break;
 			case 15 : r_f1FormProposal(packet);			break;
 
 			case 21  : r_f2lolosVerifikasi(packet); 	break;
@@ -116,83 +115,83 @@ function r_navigateTo(index, packet, access) {
 }
 
 function r_auth(index){
-	var res = false;
+	var res = true;
 
-	switch(index){
-		case 0  : 
-		case 0.1: 
-			res = (r_getCookie('TABAH_login') == 'yes') ? true : false;
-		break;
+	// switch(index){
+	// 	case 0  : 
+	// 	case 0.1: 
+	// 		res = (r_getCookie('TABAH_login') == 'yes') ? true : false;
+	// 	break;
 
-		case 1   : 
-		case 11  : 
-		case 12  : 
-		case 13  : 
-		case 15  : 
-			res = (r_getCookie('TABAH_kelembagaanLihat') == '1' || r_getCookie('TABAH_userLevel') == '1') ? true : false;
-		break;
+	// 	case 1   : 
+	// 	case 11  : 
+	// 	case 12  : 
+	// 	case 13  : 
+	// 	case 15  : 
+	// 		res = (r_getCookie('TABAH_kelembagaanLihat') == '1' || r_getCookie('TABAH_userLevel') == '1') ? true : false;
+	// 	break;
 
-		case 14  : 
-		case 16 : 
-			res = true;
-		break;
+	// 	case 14  : 
+	// 	case 16 : 
+	// 		res = true;
+	// 	break;
 
-		case 3  : 
-			res = (r_getCookie('TABAH_userLevel') != '1') ? true : false;
-		break;
+	// 	case 3  : 
+	// 		res = (r_getCookie('TABAH_userLevel') != '1') ? true : false;
+	// 	break;
 		
-		case 4  : 			
-			res = (r_getCookie('TABAH_userLevel') != '1') ? true : false;
-		break;
+	// 	case 4  : 			
+	// 		res = (r_getCookie('TABAH_userLevel') != '1') ? true : false;
+	// 	break;
 
-		case 41 :
-		case 411: 			
-			res = (r_getCookie('TABAH_lingkupAreaLihat') == '1') ? true : false;
-		break;
+	// 	case 41 :
+	// 	case 411: 			
+	// 		res = (r_getCookie('TABAH_lingkupAreaLihat') == '1') ? true : false;
+	// 	break;
 
-		case 42 :
-		case 421: 
-			res = (r_getCookie('TABAH_pengaturanVerifikasiLihat') == '1') ? true : false;
-		break;
+	// 	case 42 :
+	// 	case 421: 
+	// 		res = (r_getCookie('TABAH_pengaturanVerifikasiLihat') == '1') ? true : false;
+	// 	break;
 		
-		case 43 : 
-		case 431:
-		case 432: 
-			res = (r_getCookie('TABAH_pengaturanKelembagaanLihat') == '1') ? true : false;
-		break;
+	// 	case 43 : 
+	// 	case 431:
+	// 	case 432: 
+	// 		res = (r_getCookie('TABAH_pengaturanKelembagaanLihat') == '1') ? true : false;
+	// 	break;
 		
-		case 44 : 
-			res = (r_getCookie('TABAH_beritaLihat') == '1') ? true : false;
-		break;
-		case 441: 
-			res = true;
-		break;
+	// 	case 44 : 
+	// 		res = (r_getCookie('TABAH_beritaLihat') == '1') ? true : false;
+	// 	break;
+	// 	case 441: 
+	// 		res = true;
+	// 	break;
 		
-		case 45 : 
-		case 451:
-		case 452:
-			res = (r_getCookie('TABAH_konfigurasiLihat') == '1') ? true : false;
-		break;
+	// 	case 45 : 
+	// 	case 451:
+	// 	case 452:
+	// 		res = (r_getCookie('TABAH_konfigurasiLihat') == '1') ? true : false;
+	// 	break;
 		
-		case 46 : 
-		case 461: 
-		case 462: 
-			res = (r_getCookie('TABAH_login') == 'yes') ? true : false;
-		break;
+	// 	case 46 : 
+	// 	case 461: 
+	// 	case 462: 
+	// 		res = (r_getCookie('TABAH_login') == 'yes') ? true : false;
+	// 	break;
 
-		case 91 : 
-		case 99 : 
-			res = true;
-		break;
+	// 	case 91 : 
+	// 	case 99 : 
+	// 		res = true;
+	// 	break;
 
-		case 999:
-			res = (r_getCookie('TABAH_userLevel') != '1') ? true : false;
-		break;
+	// 	case 999:
+	// 		res = (r_getCookie('TABAH_userLevel') != '1') ? true : false;
+	// 	break;
 
-		default : 
-			res = true;
-		break;
-	}
+	// 	default : 
+	// 		res = true;
+	// 	break;
+	// }
 
 	return res;
 }
