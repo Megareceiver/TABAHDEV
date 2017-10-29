@@ -81,7 +81,6 @@ function r_navigateTo(index, packet, access) {
 			case 4  : r_f4Pengaturan();					break;
 			case 41 : r_f4TimWilayah();					break;
 			case 410: r_f4AnggotaTimWilayah(packet);	break;
-			case 411: r_f4TransferLembaga();			break;
 			case 412 : r_f3Anggota(); 					break;
 			case 413 : r_f3FormUser(packet);			break;
 			
@@ -102,7 +101,6 @@ function r_navigateTo(index, packet, access) {
 			case 99 : r_fLogin(); 						break;
 			case 999: r_fNotification();				break;
 
-			case 91 : r_fDaftarLembagaPublic(packet); 	break;
 			default : r_fHome(); 						break;
 		}
 		

@@ -51,6 +51,7 @@ input.form-control:focus, textarea.form-control:focus {
 .carousel, .carousel-inner, .carousel-inner>.item,
 .carousel-inner>.item>a>img, .carousel-inner>.item>img {
     height: 100%;
+    width: 100%;
 }
 
 /* RESPONSIVE */

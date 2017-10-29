@@ -155,8 +155,6 @@ function r_f4TimWilayah() {
 		content = '';
 		counter = 0;
 
-		// data = p_getData('f4', 'f401'); 
-		// data = data.feedData; console.log(data);
 		optionBatch = r_f4OptionList(401); 
 
 		data = p_getData('f4', 'timWilayah');
@@ -243,88 +241,6 @@ function r_f4TimWilayah() {
 	});
 }
 
-// function r_f4TimWilayahEditor(id, label){
-// 	$("#f-timWilayah-create [name='idData']").val(id).attr('readonly','readonly');
-// 	$("#f-timWilayah-create [name='nama']").val(label);
-// 	p_formHandler("f-timWilayah-create" , "updateData");
-// } 
-
-// function r_f4TimWilayahDataGenerator(formType, data){
-// 	var genHtml = "";
-// 	if(data.length > 0){
-// 		for(var loop=0; loop<data.length; loop++){
-// 			genHtml = genHtml +
-// 			'<div class="cards timWilayah-list list-edit" id ="timWilayah-' + data[loop].idData + '">' +
-// 				'<div class="row default">' +
-// 					'<div class="col-xs-12">' +
-// 						'<div class="list-box">' +
-// 							'<div class="list-icon bg-green"><span class="fa fa-object-group"></span></div>' +
-// 							'<p class="list-text">' + data[loop].namaTim + '</p>' +
-// 							'<div class="list-button click-option"' + 
-// 								'p-label		="' + data[loop].namaTim + '"' + 
-// 								'p-id			="' + data[loop].idData + '"' +
-// 								'p-group		="f4"' + 
-// 								'p-target		="f401"' +
-// 								'p-container	="timWilayah-' + data[loop].idData + '">' +
-// 								'<span class="fa fa-ellipsis-v"></span>' +
-// 							'</div>' +
-// 						'</div>' +
-// 					'</div>' +
-// 					'<div class="clearfix"></div>' +
-// 				'</div>' +
-// 			'</div>';
-// 		}
-// 	}else{
-// 		genHtml = genHtml +
-// 		'<div class="cards emptyList">' +
-// 			'<div class="row default">' +
-// 				'<div class="col-xs-12">' +
-// 					'<div class="list-box text-center clear">' +
-// 						'<p class="list-text">Data tidak ditemukan</p>' +
-// 					'</div>' +
-// 				'</div>' +
-// 			'</div>' +
-// 		'</div>';
-// 	}
-
-// 	if(formType == "addData"){
-// 		$("#timWilayah .emptyList").remove();
-// 		$("#timWilayah").append(genHtml);
-// 	}else if (formType == "updateData"){
-// 		$("#" + pContainer).replaceWith(genHtml);
-// 	}
-	
-// 	//reactor
-// 	$(".click-option").unbind().on("click", function(){ 
-// 		//packet session
-// 		clearPacket();
-// 		pGroup 		= $(this).attr('p-group');
-// 		pTarget		= $(this).attr('p-target')
-// 		pId			= $(this).attr('p-id');
-// 		pLabel		= $(this).attr('p-label');
-// 		pContainer	= $(this).attr('p-container');
-// 		showOptionList(); 
-		
-// 		//-- option activator
-// 		$("#edit-card").unbind().on("click", function(){ 
-// 			hideOptionList(); 
-// 			r_f4TimWilayahEditor(pId, pLabel); 
-// 		});
-		
-// 		$("#delete-card").unbind().on("click", function(){ 
-// 			hideOptionList(); 
-// 			showOptionConfirm('delete');
-// 			$(".option-yes").unbind().on("click", function(){ 
-// 				hideOptionList(); 
-// 				if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
-// 					$('#' + pContainer).remove();
-// 					clearPacket();
-// 				}; 
-// 			});
-// 		});
-// 	});
-// }
-
 function r_f4AnggotaTimWilayah(packet, referencesId) {
 	$("body").prepend(preload);
 	$('main.parent').animate({'opacity': '0.6'},'fast','linear', function(){
@@ -336,22 +252,23 @@ function r_f4AnggotaTimWilayah(packet, referencesId) {
 		counter 	= 0;
 		anggotaHtml	= '';
 
-		// if(packet[0] == undefined || packet == "" || packet == null || packet == "start"){
-		// 	packet = tim_look_reader();
-		// }
+		if(packet[0] == undefined || packet == "" || packet == null || packet == "start"){
+			packet = tim_look_reader();
+		}
 
-		// packet 		= packet.split("::");
-		// packetLabel = packet[1];
-		// packet 		= packet[0];
+		packet 		= packet.split("::");
+		packetLabel = packet[1];
+		packet 		= packet[0];
+		tim_look_set(packet + "::" + packetLabel);
+		data = p_getData('f4', 'anggotaTimWilayah', "idData = '" + packet + "'");
+		console.log(data);
+		return false;
 
-		// tim_look_set(packet + "::" + packetLabel);
-		// data = p_getData('f4', 'f410', packet);
-
-		data = [
-			{nama: 'Cecep Rohendi', idData: '1' },
-		];
-		packetLabel = "asd";
-		packet 		= "123";
+		// data = [
+		// 	{nama: 'Cecep Rohendi', idData: '1' },
+		// ];
+		// packetLabel = "asd";
+		// packet 		= "123";
 
 		optionBatch = r_f4OptionList(410); 
 		

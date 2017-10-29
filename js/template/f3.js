@@ -8,8 +8,8 @@ function r_f3Anggota() {
 		body  	= '';
 		part	= ['',''];
 		content = '';
-		// data = p_getData('f3', 'f31', '', '');
-		// data = data.feedData;
+		data = p_getData('f3', 'userList');  console.log(data); //return false;
+		data = data.feedData;
 		
 		//--open
 		head	= '';
@@ -25,33 +25,56 @@ function r_f3Anggota() {
 	
 		if(data!= null && data.length != 0){
 			for(var loop = 0; loop < data.length; loop++){	
-				placeImg 	= (data[loop].noreg != "") ? data[loop].noreg : data[loop].id;
+				placeImg 	= (data[loop].noRegistrasi != "") ? data[loop].noRegistrasi : data[loop].idData;
 				placeImg 	= placeImg.substr((placeImg.length-1), 1);
 
-				tempL	 	= (data[loop].noreg != "") ? 'Lembaga :: ' : '';
-				temPic   	= (data[loop].picture != "" && data[loop].picture != null) ? 'img/avatar/' + data[loop].picture : 'img/avatar/avatar-' + placeImg + '.jpg';
+				tempL	 	= (data[loop].noRegistrasi != "") ? 'Lembaga :: ' : '';
+				temPic   	= (data[loop].urlGambar != "" && data[loop].urlGambar != null) ? 'img/avatar/' + data[loop].urlGambar : 'img/avatar/avatar-' + placeImg + '.jpg';
 				
 
 				if(tempH != data[loop].userLevel){
 					part[1] = part[1] +
 					'<div class="cards-label ' + ((loop > 0) ? 'plus' : '') + '">' +
-						'<p><strong>' + data[loop].rule + '</strong></p>' +
+						'<p><strong>Anggota Level ' + data[loop].userLevel + '</strong></p>' +
 					'</div>';
 
 					tempH = data[loop].userLevel;
 				}
 
 				part[1]  	= part[1] +
-				'<div class="cards clear" id="' + data[loop].id + '-group">' +
+				'<div class="cards clear" id="' + data[loop].idData + '-group">' +
 					'<div class="description-box">' +
 						'<div class="">' +
 							'<img class="icon-set" src="' + temPic + '"/>' +
 							'<p class="title-set">' + data[loop].nama + '</p>' +
 							'<div class="text-set">' +
-								'<span class="id-set">' + data[loop].username + '</span>' +
+								'<span class="id-set">' + data[loop].jabatan + '</span>' +
 								'<span class="desc-text">' + data[loop].email + '</span>' +
 							'</div>' +
 						'</div>' +
+						'<button class="click-option btn-set toggle-click clear" toggle-target="' + data[loop].idData + '-group" type="button"><span class="fa fa-chevron-down"></span></button>' +
+					'</div>' +
+				'</div>';
+
+				part[1] = part[1] + 
+				'<div class="cards toggle-content ' + data[loop].idData + '-group">' +
+					'<div class="list-box clear">' +
+						'<p class="list-text">';
+
+							part[1] = part[1] + 
+							'<span class="click text-cyan" id="' + data[loop].idData  + '-group-edit"' +
+								'p-referencesKey="' + data[loop].username + '"' +
+								'p-container	="' + data[loop].idData + '-group">Ubah</span> &nbsp; | &nbsp;'
+
+							part[1] = part[1] + 
+							'<span class="click text-pink"id="' + data[loop].idData  + '-group-hapus"' +
+								'p-label		="' + data[loop].nama + '"' + 
+								'p-id			="' + data[loop].username+ '"' +
+								'p-referencesKey=""' +
+								'p-group		="f3"' + 
+								'p-target		="f31"' +
+								'p-container	="' + data[loop].idData + '-group">Hapus</span>' +
+						'</p>' +
 					'</div>' +
 				'</div>';
 			}
@@ -79,7 +102,7 @@ function r_f3Anggota() {
 		
 		//--command reactor
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
-		$("#add-button").unbind().on('click', function(){ profile_look_set(""); r_navigateTo(31); });
+		$("#add-button").unbind().on('click', function(){ profile_look_set(""); r_navigateTo(413); });
 
 		for(var loop = 0; loop < data.length; loop++){	
 			$('#' + data[loop].id + '-group-edit').unbind().on("click", function(e){
@@ -175,8 +198,8 @@ function r_f3FormUser(packet) {
 		'<form id="f-user-create" f-group="f3" f-target="f31">' +
 			'<div class="cards">' +
 				'<div class="cards-header">' +
-					'<h4>Autentikasi user baru</h4>' +
-					'<p class="offset">form untuk menambahkan data user untuk akses ke aplikasi.</p>' +
+					'<h4>Form Anggota</h4>' +
+					'<p class="offset">form untuk menambahkan data anggota dan untuk akses ke aplikasi.</p>' +
 					'<div class="btn-collapse right">' +
 						// '<button class="clear" type="reset"><span class="fa fa-refresh"></span></button>' +
 						'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
@@ -196,53 +219,11 @@ function r_f3FormUser(packet) {
 							'<textarea name="alamat" placeholder="Alamat" tabindex="1" class="rows-2"></textarea>' +
 						'</div>' +
 						'<div class="input-box">' +
-							'<input name="rt" placeholder="RT" tabindex="1" class="half" type="text" value="" />' +
-							'<input name="rw" placeholder="RW" tabindex="1" class="half" type="text" value="" />' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<div class="icon-box left">' +
-								'<input id="f111_lingkupArea" name="kelurahan" placeholder="Kelurahan" tabindex="1" type="text" value="" />' +
-								'<input id="f111_lingkupArea_kode" name="kodeKelurahan" tabindex="1" type="hidden" value="" />' +
-								'<span class="fa fa-magic"></span>' +
-							'</div>' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<div class="icon-box left">' +
-								'<input id="f111_lingkupArea_2" name="kecamatan" placeholder="Kecamatan" tabindex="1" type="text" value="" readonly />' +
-								'<input id="f111_lingkupArea_kode2" name="kodeKecamatan" tabindex="1" type="hidden" value="" readonly />' +
-								'<span class="fa fa-repeat"></span>' +
-							'</div>' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<div class="icon-box left">' +
-								'<input id="f111_lingkupArea_3" name="wilayah" placeholder="Wilayah" tabindex="1" type="text" value="" readonly />' +
-								'<input id="f111_lingkupArea_kode3" name="kodeWilayah" tabindex="1" type="hidden" value="" readonly />' +
-								'<span class="fa fa-repeat"></span>' +
-							'</div>' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<div class="icon-box left">' +
-								'<input id="f111_lingkupArea_4" name="provinsi" placeholder="Provinsi" tabindex="1" type="text" value="" readonly />' +
-								'<input id="f111_lingkupArea_kode4" name="kodeProvinsi" tabindex="1" type="hidden" value="" readonly />' +
-								'<span class="fa fa-repeat"></span>' +
-							'</div>' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<input name="telp" placeholder="Telp" tabindex="2" type="text" value="" />' +
+							'<input name="noTelp" placeholder="Telp" tabindex="2" type="text" value="" />' +
 						'</div>' +
 						'<div class="input-box">' +
 							'<input name="email" placeholder="Email (*)" tabindex="2" type="text" value="" />' +
 						'</div>' +
-						'<div class="input-box">' +
-							'<p>Level pengguna</p>' +
-						'</div>' +
-						'<div class="select-box">' +
-							'<select name="userLevel" tabindex="1">' +
-								r_optionDHtml('level') +
-							'</select>' +
-						'</div>' +
-					'</div>' +
-					'<div class="col-md-6">' +
 						'<div class="input-box">' +
 							'<input name="username" placeholder="Username (*)" tabindex="2" type="text" value="" />' +
 						'</div>' +
@@ -252,24 +233,8 @@ function r_f3FormUser(packet) {
 						'<div class="input-box">' +
 							'<input name="re-password" placeholder="Password ulang (*)" tabindex="2" type="password" value="" />' +
 						'</div>' +
-						'<div class="input-box">' +
-							'<p>Batasi lingkup area</p>' +
-						'</div>' +
-						'<div class="select-box">' +
-							'<select name="lingkupArea" tabindex="1">' +
-								'<option value="" selected>Pilih lingkup area (*)</option>' +
-								'<option value="3">Provinsi</option>' +
-								'<option value="2">Wilayah</option>' +
-								'<option value="1">Kecamatan</option>' +
-							'</select>' +
-						'</div>' +
-						'<div class="input-box">' +
-							'<div class="icon-box left">' +
-								'<input id="batasArea" name="batasArea" placeholder="Pilih area spesifik (*)" tabindex="1" type="text" value="" />' +
-								'<input id="batasArea_id" name="idBatasArea" tabindex="2" type="hidden" value="" />' +
-								'<span class="fa fa-magic"></span>' +
-							'</div>' +
-						'</div>' +
+					'</div>' +
+					'<div class="col-md-6">' +
 						'<div class="input-box">' +
 							'<p>Pilih foto</p>' +
 						'</div>' +
@@ -300,12 +265,12 @@ function r_f3FormUser(packet) {
 		//--close
 		
 		//--gen
-		headPage.html(r_headPageHtml(3, 'Form user'));
+		headPage.html(r_headPageHtml(3, 'Form Anggota'));
 		mainPage.html(content).animate({'opacity': '1'},'fast','linear');
 		$("#preload").remove();
 		
 		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(3); });
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(412); });
 		$(".click-option").unbind().on("click", function(){ 
 			//packet session
 			clearPacket();
@@ -338,32 +303,10 @@ function r_f3FormUser(packet) {
 			});
 		});
 
-		dataTemp  	= p_getData('f4', 'f40', '');
-		sData 	    = dataTemp.feedData;
-		sDetailData = dataTemp.feedDataDetail;
-
-		$("#f-user-create [name=lingkupArea]").on('change', function(){  
-			$("#batasArea, #batasArea_id").val("");
-			if($(this).val() != ''){
-				var temp  = sData;
-				var tempD = sDetailData;
-				
-				if 	   ($(this).val() == '3') { temp = sData.provinsi; 	tempD = sDetailData.provinsi; }
-				else if($(this).val() == '2') { temp = sData.wilayah; 	tempD = sDetailData.wilayah; }
-				else if($(this).val() == '1') { temp = sData.kecamatan; tempD = sDetailData.kecamatan; }
-				autoCompleteActivator("batasArea", temp, tempD, "batasArea");
-			}else{
-				$("#batasArea").autocomplete("destroy");
-			}
-		});
-
 		fileBrowserActivator();
 		imagePreviewActivator();
 		r_navbarReactor();
 
-		//autocomplete
-		autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
-		
 		//form reactor
 		p_formHandler("f-user-create" , "addData");
 

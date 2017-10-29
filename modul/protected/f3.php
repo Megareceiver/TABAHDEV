@@ -27,6 +27,15 @@
 								);
 				break;
 
+				case "userList" : $resultList = $this->fetchAllRecord('tabah_910_anggota', "*", 'username <>"'.$_SESSION['username'].'" AND userLevel <>"'.$_SESSION['userLevel'].'"', "ORDER BY userLevel DESC, nama ASC"); 
+
+								// $resultList['feedData']['access'] = array(
+								// 	array("label" 	=> "Akses ke tabah 2.0", "status" 	=> "1")
+								// );
+				break;
+
+
+
 				default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Something went wrong, failed to collect data!", "feedData" => array()); break;
 			}
 
@@ -818,6 +827,159 @@
 			$json = $resultList;
 			
 			return $json;
+		}
+
+		public function addData($post, $target){
+			switch($target){
+				case "f31"  : 
+					$fields = array("noRegistrasi", "nama", "jabatan", "alamat", "noTelp", "email", "username");
+					$values = array();
+					foreach ($fields as $key) {
+						$value = (isset($post[$key]) && $post[$key] != "") ? $post[$key] : "";
+						array_push($values, $value);
+					}
+
+					if(isset($post['password']) && isset($post['retype_password']) && $post['password'] == $post['retype_password']) {
+						array_push($fields, "password");
+						array_push($values, md5($post['password']));
+					}
+
+					array_push($fields, "statusActive");
+					array_push($values, "1");
+					array_push($fields, "userLevel");
+					array_push($values, "2");
+
+					$resultList = $this->insert('tabah_910_anggota', $fields, $values); 
+
+					if($resultList["feedStatus"] == "success") {
+						if(isset($_FILES["imageUrl"])){
+							$upload = $this->uploadSingleImage($_FILES["imageUrl"], "avatar", "tabah_910_anggota", "urlGambar", $resultList["feedId"]);
+							array_push($resultList, array("feedUpload" => $upload['feedMessage']));
+						}
+					}
+				break;
+
+				default	   		: $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Something went wrong, failed to collect data!", "feedData" => array()); break;
+			}
+
+			/* result fetch */
+			$json = $resultList;
+		
+	        return $json;
+		}
+
+		//INSERT DATA
+		public function insert($table, $fields, $values){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+			$feedId		= "";
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $item) {
+						if($temp  == "") $temp = $item;
+						else $temp = $temp.",".$item;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($values)) {
+					foreach ($values as $item) {
+						if($temp  == "") $temp = "'".$item."'";
+						else $temp = $temp.",'".$item."'";
+					}
+
+					$values = $temp;
+					$temp   = "";
+				}
+
+				$sql = "INSERT INTO ".$table."(".$fields.", createdBy, createdDate) VALUES (".$values.", 'SESSION_TEST',NOW())";
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedId 	= $this->db->lastInsertId();
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData, "feedId" => $feedId);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+					
+		}
+
+		//UPLOAD IMAGE
+		public function uploadSingleImage($image, $dir, $table, $field, $id){
+			error_reporting(E_ALL);
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to upload data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				/*upload image*/
+				if(isset($image)){
+
+					$file_name = $image['name'];
+				    $file_size = $image['size'];
+				    $file_tmp  = $image['tmp_name'];
+				    $file_type = $image['type'];
+
+					$Validextensions = array("jpeg", "JPEG", "jpg", "JPG", "png", "PNG", "gif", "GIF");
+					$temporary 		 = explode(".", $file_name);
+					$fileExtension   = end($temporary);
+					$newFileName 	 = $dir."_".$id.".".$fileExtension;
+					$saveAs 		 = "../img/".$dir."/".$newFileName;
+
+					if (in_array($fileExtension, $Validextensions)) {
+						if(move_uploaded_file($file_tmp, $saveAs)){ 
+							$sql = "UPDATE ".$table." SET ".$field."='".$newFileName."' WHERE idData ='".$id."'";
+									
+							$result = $this->db->query($sql);
+							if($result){
+								$feedStatus	= "success";
+								$feedType   = "success".is_dir($saveAs);
+								$feedMessage= "The process has been successful";
+							}
+						}							
+					}
+				}
+				/*upload end*/
+
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+					
 		}
 
 		public function createData($data, $target){

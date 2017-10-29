@@ -53,6 +53,8 @@
 				case "berita" 			: $resultList = $this->fetchAllRequest('tabah_230_berita', "*", $post['keyword'], "ORDER BY createdDate DESC", '1'); break;
 				case "bentukLembaga" 	: $resultList = $this->requestDataDplega('f4', "f431"); break;
 				case "wilayah" 			: $resultList = $this->requestDataDplega('f4', "f403"); break;
+				case "timWilayah" 		: $resultList = $this->requestDataDplega('f4', "f402"); break;
+				case "anggotaTimWilayah": $resultList = $this->fetchAllRequest('tabah_230_berita', "*", $post['keyword'], "ORDER BY createdDate DESC", '1'); break;
 				// case "colorFetch" 		: $resultList = $this->fetchSingleRequest('colors', array("name", "idData"), $post['keyword']); break;
 
 				default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Something went wrong, failed to collect data!", "feedData" => array()); break;

@@ -867,7 +867,7 @@ footer.parent .author-box img { height: 30px; float: right }
     text-align: center;
 }
 
-.cards .list-box .list-text { margin:0; display: inline-block; margin-right: 5px; margin-top: 13px; }
+.cards .list-box .list-text { margin:0; display: inline-block; margin-right: 5px; }
 .cards .list-box .list-text.child { padding-left: 30px }
 .cards .list-box .list-text .prime, 
 .cards .list-box .list-text .second { display: block }
