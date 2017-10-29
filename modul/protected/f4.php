@@ -54,9 +54,15 @@
 				case "bentukLembaga" 	: $resultList = $this->requestDataDplega('f4', "f431"); break;
 				case "wilayah" 			: $resultList = $this->requestDataDplega('f4', "f403"); break;
 				case "timWilayah" 		: $resultList = $this->requestDataDplega('f4', "f402"); break;
-				case "anggotaTimWilayah": $resultList = $this->fetchAllRequest('tabah_230_berita', "*", $post['keyword'], "ORDER BY createdDate DESC", '1'); break;
-				// case "colorFetch" 		: $resultList = $this->fetchSingleRequest('colors', array("name", "idData"), $post['keyword']); break;
-
+				case "anggotaTimWilayah" : $resultList = $this->fetchAllRecord(
+								'tabah_101_anggotatimwilayah w JOIN tabah_910_anggota a ON w.idAnggota = a.idData', 
+								"a.idData, 
+								 w.idTimWilayah, 
+								 a.noRegistrasi, 
+								 a.nama, 
+								 a.jabatan,  
+								 a.urlGambar", $post['keyword'], "ORDER BY a.nama ASC"); 
+				break;
 				default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Something went wrong, failed to collect data!", "feedData" => array()); break;
 			}
 
@@ -135,7 +141,7 @@
 					$feedData = $result->fetchAll(PDO::FETCH_ASSOC);
 				}	
 
-				$feedType = $sql;
+				// $feedType = $sql;
 			}
 			
 			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);

@@ -403,7 +403,7 @@ function r_f1FormProposal(packet){
 		selectItems = [];
 		dataHead	= [
 			{'idFilter': '1', 'form':'Tujuan'},
-			{'idFilter': '2', 'form':'RAB'},
+			// {'idFilter': '2', 'form':'RAB'},
 			{'idFilter': '3', 'form':'Persyaratan'},
 		];
 
@@ -421,15 +421,24 @@ function r_f1FormProposal(packet){
 		kodeBentukLembaga = "";
 
 		//-- get kode bentuk lembaga for legalitas
-		var bentukLembaga = r_bentukLembagaReader();
-		dataLegalitas = p_getData('f1','f1114','',bentukLembaga[0]);
-		if(dataLegalitas != null){ 
-			dataLegalitas = dataLegalitas.feedData;
-		}else{
-			dataLegalitas.feedData = null;
-		}
+		// var bentukLembaga = r_bentukLembagaReader();
+		// dataLegalitas = p_getData('f1','f1114','',bentukLembaga[0]);
+		// if(dataLegalitas != null){ 
+		// 	dataLegalitas = dataLegalitas.feedData;
+		// }else{
+		// 	dataLegalitas.feedData = null;
+		// }
+
+		dataLegalitas = {
+			items : [
+				{noRegistrasi: "", kodePersyaratan: "1", namaLegalitas: "Proposal", noLegalitas: "", tanggalLegalitas: "", urlFile: ""},
+				{noRegistrasi: "", kodePersyaratan: "2", namaLegalitas: "RAB", noLegalitas: "", tanggalLegalitas: "",  urlFile: ""},
+				{noRegistrasi: "", kodePersyaratan: "3", namaLegalitas: "KTP Penanggung jawab", noLegalitas: "", tanggalLegalitas: "",  urlFile: ""}
+			]
+		};
+
 		//-- get data koleksi
-		dataKoleksi = p_getData('f1', 'f117','');
+		// dataKoleksi = p_getData('f1', 'f117','');
 
 		//option list 
 		optionBatch = [
@@ -501,7 +510,7 @@ function r_f1FormProposal(packet){
 				'<p><i name="nominal_terbilang"></i></p>' +
 			'</div>' +
 		'</div>' +
-		'<div class="col-md-12">' +
+		'<!--div class="col-md-12">' +
 			'<div class="input-box">' +
 				'<div class="icon-box both">' +
 					'<label class="browser-box" id="v-proposal">' +
@@ -513,7 +522,7 @@ function r_f1FormProposal(packet){
 					'<span class="left fa fa-paperclip text-purple"></span>' +
 				'</div>' +
 			'</div>' +
-		'</div>';
+		'</div-->';
 		
 		//right
 		body = body + 
@@ -527,11 +536,11 @@ function r_f1FormProposal(packet){
 		//=======================================================================
 		//=======================================================================
 		body = body + 
-		'<!--div class="col-md-12 tab-container" tab-contentIndex="3">' +
+		'<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="3">' +
 			'<div class="cards-label">' +
-				'<p><strong>Legalitas (3)</strong></p>' +
+				'<p><strong>Persyaratan (3)</strong></p>' +
 			'</div>' +
-		'</div-->';
+		'</div>';
 		
 		//render
 		body = body + '<div class="col-md-8 col-md-offset-2 tab-container" tab-contentIndex="3" id="legalitas-frame"><div class="row default">';
@@ -558,13 +567,13 @@ function r_f1FormProposal(packet){
 			'<div class="cards">' +
 				'<div class="cards-header">' +
 					'<h4>Total anggaran</h4>' +
-					'<h3>1.000.000</h3>' +
+					'<h3>0</h3>' +
 				'</div>' +
 				'<div class="summary-box">' +
 					'<div class="caption">' + 
 						'<span>terbilang</span>' +
 					'</div>' +
-					'<div class="counter-block"><i>Satu juta rupiah</i></div>' + 
+					'<div class="counter-block"><i>Nol rupiah</i></div>' + 
 				'</div>' +
 			'</div>' +
 			'<div class="cards flush">' +
@@ -617,8 +626,7 @@ function r_f1FormProposal(packet){
 		$("#preload").remove();
 		
 		//--command reactor
-		navito = ((String(r_getCookie('TABAH_userLevel')) == '1') ? 12 : 1);
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(navito); });
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(10); });
 		
 		// $(".reset").unbind().on('click', function(){ clearTargetForm('f-kelembagaan-create'); });
 		/*tab reader*/
@@ -632,84 +640,26 @@ function r_f1FormProposal(packet){
 		}
 
 		tabActivator();
-		datePickerActivator();
+		// datePickerActivator();
 		fileBrowserActivator();
-		imagePreviewActivator();
+		// imagePreviewActivator();
 		r_navbarReactor();
-		autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
-		autoCompleteActivator("f114_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
-		autoCompleteActivator("hirarkiLembaga", dataAllLembaga[0], dataAllLembaga, "hirarkiLembaga");
+		// autoCompleteActivator("f111_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
+		// autoCompleteActivator("f114_lingkupArea", sourcesData, sourcesDetailData, "lingkupArea");
+		// autoCompleteActivator("hirarkiLembaga", dataAllLembaga[0], dataAllLembaga, "hirarkiLembaga");
 
 		//form reactor
-		p_formHandler("f-kelembagaan-create" , "addData");
-		p_formHandler("f-sejarah-create" , "addData");
-		p_formHandler("f-bantuan-create" , "addData");
-		p_formHandler("f-kepengurusan-create" , "addData");
-		p_formHandler("f-kegiatanUsaha-create" , "addData");
-		p_formHandler("f-koleksi-create" , "addData");
-		p_formHandler("f-prestasi-create" , "addData");
-		p_formHandler("f-hirarki-create" , "addData");
+		// p_formHandler("f-kelembagaan-create" , "addData");
+		// p_formHandler("f-sejarah-create" , "addData");
+		// p_formHandler("f-bantuan-create" , "addData");
+		// p_formHandler("f-kepengurusan-create" , "addData");
+		// p_formHandler("f-kegiatanUsaha-create" , "addData");
+		// p_formHandler("f-koleksi-create" , "addData");
+		// p_formHandler("f-prestasi-create" , "addData");
+		// p_formHandler("f-hirarki-create" , "addData");
 
-		for(loop=0; loop<maxForm; loop++){
-			p_formHandler("f-sarana-create-" + loop , "addData");
-			p_formHandler("f-usaha-create-" + loop , "addData");
-
-			$('#f-sarana-create-' + loop + " [type=reset]").unbind().on("click", function(e){
-				e.preventDefault(); 
-				if($("#" + $(this).attr('p-container') + " [name=p-id]").val() != ""){
-					showOptionConfirm('delete');
-					clearPacket();
-					pContainer		= $(this).attr('p-container');
-					pGroup 			= $(this).attr('p-group');
-					pTarget			= $(this).attr('p-target')
-					pId				= $("#" + pContainer + " [name=p-id]").val();
-					pLabel			= $(this).attr('p-label');
-					pReferencesKey	= $("#" + pContainer + " [name=noreg]").val();
-					$(".option-yes").unbind().on("click", function(){ 
-						hideOptionList(); 
-						if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
-							$("#" + pContainer + " [browser-id=v-sarana" + pLabel + "]").css('display', 'none'); 
-							$("#" + pContainer + " [viewer-id=v-sarana" + pLabel + "]").removeClass('changed');
-							$("#" + pContainer + " [viewer-id=v-sarana" + pLabel + "]").attr('src', "img/sources/picture.png");
-							$("#" + pContainer + " [name=imageName]").html("berkas belum diunggah...");
-							p_formHandler(pContainer , "addData");
-							clearTargetFormNoreg(pContainer, $('#' + pContainer + ' [name="noreg"]').val());
-							clearPacket();
-						}; 
-					});
-				}
-			});
-
-			$('#f-usaha-create-' + loop + " [type=reset]").unbind().on("click", function(e){
-				e.preventDefault(); 
-				if($("#" + $(this).attr('p-container') + " [name=p-id]").val() != ""){
-					showOptionConfirm('delete');
-					clearPacket();
-					pContainer		= $(this).attr('p-container');
-					pGroup 			= $(this).attr('p-group');
-					pTarget			= $(this).attr('p-target')
-					pId				= $("#" + pContainer + " [name=p-id]").val();
-					pLabel			= $(this).attr('p-label');
-					pReferencesKey	= $("#" + pContainer + " [name=noreg]").val();
-					$(".option-yes").unbind().on("click", function(){ 
-						hideOptionList(); 
-						if(p_removeData(pGroup, pTarget, pId, pReferencesKey) == 'success'){ 
-							$("#" + pContainer + " [browser-id=v-usaha" + pLabel + "]").css('display', 'none'); 
-							$("#" + pContainer + " [viewer-id=v-usaha" + pLabel + "]").removeClass('changed');
-							$("#" + pContainer + " [viewer-id=v-usaha" + pLabel + "]").attr('src', "img/sources/picture.png");
-							$("#" + pContainer + " [name=imageName]").html("berkas belum diunggah...");
-							p_formHandler(pContainer , "addData");
-							clearTargetFormNoreg(pContainer, $('#' + pContainer + ' [name="noreg"]').val());
-							clearPacket();
-						}; 
-					});
-				}
-			});
-
-			currencyFormatActivator("[name=nominal]");
-		}
 		//generate data for editing
-		if(packet != "" && packet != null){ r_f1FormKelembagaanDataGenerator(packet); }		
+		// if(packet != "" && packet != null){ r_f1FormKelembagaanDataGenerator(packet); }		
 		// r_f1FormKelembagaanDataGenerator('00030200110');		
 		//$("input[name=noreg]").val('00030200110');
 	});
@@ -792,10 +742,10 @@ function r_f1DetailLembaga(packet) {
 
 		if(data.detail == undefined){
 			part[1] = part[1] + 
-			'<div class="cards">' +
+			'<div class="cards flush">' +
 				'<div class="cards-header">' +
-					'<p class="fixed offset text-black">Belum ada riwayat data, silahkan untuk melakukan permohonan bantuan dengan klik link berikut.</p>' +
-					'<button type="button" class="btn btn-warning"><span class="fa fa-pencil"></span> &nbsp; Permohonan Awal</button>' +
+					'<p class="fixed offset text-black">Silahkan untuk melakukan permohonan bantuan dengan klik link berikut.</p>' +
+					'<button type="button" class="btn btn-warning" id="add-permohonan"><span class="fa fa-pencil"></span> &nbsp; Permohonan Awal</button>' +
 					'<p>&nbsp;</p>' +
 				'</div>' +
 			'</div>';
@@ -904,6 +854,131 @@ function r_f1DetailLembaga(packet) {
 			}
 		}
 		
+
+		part[1] = part[1] + 
+		'<div class="cards">' +
+			'<div class="cards-header">' +
+				'<p class="fixed">Permohonan Awal</p>' +
+				'<div class="btn-collapse right">' +
+					'<button class="toggle-click clear" toggle-target="p1-group" type="button"><span class="fa fa-chevron-down"></span></button>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] + 
+		'<div class="cards flush toggle-contents p1-group">' + 
+			'<div class="row default">' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<div class="list-icon bg-red"><span class="fa fa-files-o"></span></div>' +
+						'<p class="list-text">Proposal Awal (2016)</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<button type="button" class="clear list-text btn-link">32211200001_1_proposalAwal.pdf</button>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text text-green">Telah diverifikasi</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text">Renovasi Masjid</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text"><b>Rp. 75,000,000</b></p>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] + 
+		'<div class="cards">' +
+			'<div class="cards-header">' +
+				'<p class="fixed">Permohonan Pencairan</p>' +
+				'<div class="btn-collapse right">' +
+					'<button class="toggle-click clear" toggle-target="p2-group" type="button"><span class="fa fa-chevron-down"></span></button>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] + 
+		'<div class="cards flush toggle-contents p2-group">' + 
+			'<div class="row default">' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<div class="list-icon bg-yellow"><span class="fa fa-files-o"></span></div>' +
+						'<p class="list-text">Proposal Pencairan (2017)</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<button type="button" class="clear list-text btn-link">32211200001_1_proposalPencairan.pdf</button>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text text-green">Pencairan selesai</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text">Renovasi Masjid</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text"><b>Rp. 53,000,000</b></p>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] + 
+		'<div class="cards">' +
+			'<div class="cards-header">' +
+				'<p class="fixed">Pelaporan</p>' +
+				'<div class="btn-collapse right">' +
+					'<button class="toggle-click clear" toggle-target="p3-group" type="button"><span class="fa fa-chevron-down"></span></button>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+		part[1] = part[1] + 
+		'<div class="cards flush toggle-contents p3-group">' + 
+			'<div class="row default">' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<div class="list-icon bg-green"><span class="fa fa-files-o"></span></div>' +
+						'<p class="list-text">Laporan (2017)</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text text-red">(Laporan belum diupload)</p>' +
+					'</div>' +
+				'</div>' +
+				'<div class="col-md-4">' +
+					'<div class="input-box">' +
+						'<div class="icon-box both">' +
+							'<label class="browser-box" id="v-logo">' +
+								'<p class="placeholder" name="imageName">berkas belum diunggah...</p>' +
+								'<input preview-id="v-logo" name="imageUrl" type="file" accept="image/*" tabindex="5" />' +
+								'<input browser-state="fileState" name="fileState" type="hidden" tabindex="1" value="add" />' +
+							'</label>' +
+							'<button type="button" browser-id="v-logo" class="browser-clear clear"><i class="fa fa-times-circle"></i></button>' +
+							'<span class="left fa fa-paperclip text-purple"></span>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
 		part[0] = part[0] + '</div>';
 		part[1] = part[1] + '</div>';
 		body	= body 	  + part[0] + part[1] + '</div></div>';
@@ -917,6 +992,7 @@ function r_f1DetailLembaga(packet) {
 		
 		//--command reactor
 		$(".back-button").unbind().on('click', function(){ r_navigateTo(r_pagePreviousReader()); });
+		$("#add-permohonan").unbind().on('click', function(){ r_navigateTo(15); });
 		$(".click-option").unbind().on("click", function(){ 
 			//packet session
 			clearPacket();
@@ -948,6 +1024,7 @@ function r_f1DetailLembaga(packet) {
 			openMaps($(this).attr('m-lng'),$(this).attr('m-lat'));
 		});
 
+		fileBrowserActivator();
 		toggleBoxActivator();
 		r_navbarReactor();
 	});
@@ -1166,17 +1243,17 @@ function r_f1legaitasGenerator(dataFecth){
 							'<button class="clear" type="submit"><span class="fa fa-check-circle-o"></span></button>' +
 						'</div>' + 
 					'</div>' +
-					'<div class="input-box">' +
+					'<!--div class="input-box">' +
 						'<input name="noreg" tabindex="5" type="hidden" value="' + dataFecth.noRegistrasi + '" />' +
 						'<input name="kodePersyaratan" tabindex="5" type="hidden" value="' + dataFecth.items[loop].kodePersyaratan + '" />' +
-						'<input name="nomorLegalitas" placeholder="Nomor (*)" tabindex="5" type="text" value="' + dataFecth.items[loop].noLegalitas + '" />' +
+						'<input name="nomorLegalitas" placeholder="Nomor (*)" type="text" value="' + dataFecth.items[loop].noLegalitas + '" />' +
 					'</div>' +
 					'<div class="input-box">' +
 						'<div class="icon-box left">' +
 							'<input name="tanggalLegalitas" class="date" placeholder="Tanggal (*)" tabindex="5" type="text" value="' + dataFecth.items[loop].tanggalLegalitas + '" />' +
 							'<span class="fa fa-calendar"></span>' +
 						'</div>' + 
-					'</div>' +
+					'</div-->' +
 					'<div class="input-box">' +
 						'<div class="icon-box both">' +
 							'<label class="browser-box" id="legalitas-' + dataFecth.items[loop].kodePersyaratan + '">' +

@@ -9,7 +9,13 @@
 		public function requestData($post, $target){
 			switch($target){
 				
-				case "f451" : $resultList = $this->getBackupFiles(); break;
+				case "f451" : $resultList = $this->fetchAllRecord(
+								'tabah_920_backuphistory l JOIN tabah_910_anggota u ON l.createdBy = u.username', 
+								"l.idData as `id`,
+								 l.namaFile as `caption`,
+								 u.nama as `createdBy`,
+								 l.createdDate", '', "ORDER BY l.createdDate DESC"); 
+				break;
 
 				default	   : $resultList = array( "feedStatus" => "failed", "feedType" => "danger", "feedMessage" => "Something went wrong, failed to collect data!", "feedData" => array()); break;
 			}
@@ -18,6 +24,180 @@
 			$json = $resultList;
 		
 	        return $json;
+		}
+		public function fetchAllRecord($table, $fields, $conditions = "", $orderBy = ""){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						$temp = $temp." ".$value;
+					}
+
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$conditions = ($conditions != "") ? "WHERE ".$conditions : "";
+
+
+				$sql = "SELECT ".$fields." FROM ".$table." ".$conditions." ".$orderBy." ";
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData = $result->fetchAll(PDO::FETCH_ASSOC);
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+		}
+
+		public function fetchAllRequest($table, $fields, $conditions = "", $orderBy = "", $paging = "1"){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						$temp = $temp." ".$value;
+					}
+
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$conditions = ($conditions != "") ? "WHERE ".$conditions : "";
+
+
+				$temp = intval($paging);
+				$temp = ($temp - 1) * 20;
+
+				$paging = "LIMIT ".$temp.",20";
+
+				$sql = "SELECT ".$fields." FROM ".$table." ".$conditions." ".$orderBy." ".$paging;
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData = $result->fetchAll(PDO::FETCH_ASSOC);
+				}	
+
+				$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
+		}
+
+		public function fetchSingleRequest($table, $fields, $conditions = ""){
+			/* initial condition */
+			$resultList = array();
+			$feedStatus	= "failed";
+			$feedType   = "danger";
+			$feedMessage= "Something went wrong, failed to collect data!";
+			$feedData	= array();
+
+			$temp		= "";
+
+			/* open connection */ 
+			$gate = $this->db;
+			if($gate){		
+
+				if(is_array($fields)) {
+					foreach ($fields as $value) {
+						if($temp  == "") $temp = $value;
+						else $temp = $temp.",".$value;
+					}
+
+					$fields = $temp;
+					$temp   = "";
+				}
+
+				if(is_array($conditions)) {
+					foreach ($conditions as $value) {
+						$temp = $temp." ".$value;
+					}
+
+					$conditions = $temp;
+					$temp   = "";
+				}
+
+				$conditions = ($conditions != "") ? "WHERE ".$conditions : "";
+
+				$sql = "SELECT ".$fields." FROM ".$table." ".$conditions;
+							
+				$result = $this->db->query($sql);
+				if($result){
+					$feedStatus	= "success";
+					$feedType   = "success";
+					$feedMessage= "The process has been successful";
+					$feedData = $result->fetch(PDO::FETCH_ASSOC);
+				}	
+
+					$feedType = $sql;
+			}
+			
+			$resultList = array( "feedStatus" => $feedStatus, "feedType" => $feedType, "feedMessage" => $feedMessage, "feedData" => $feedData);
+			
+			/* result fetch */
+			$json = $resultList;
+			
+			return $json;
 		}
 
 		public function getData($data, $target){

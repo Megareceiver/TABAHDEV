@@ -8,7 +8,7 @@ function r_f3Anggota() {
 		body  	= '';
 		part	= ['',''];
 		content = '';
-		data = p_getData('f3', 'userList');  console.log(data); //return false;
+		data = p_getData('f3', 'userList'); 
 		data = data.feedData;
 		
 		//--open
@@ -101,7 +101,7 @@ function r_f3Anggota() {
 		$("#preload").remove();
 		
 		//--command reactor
-		$(".back-button").unbind().on('click', function(){ r_navigateTo(0); });
+		$(".back-button").unbind().on('click', function(){ r_navigateTo(4); });
 		$("#add-button").unbind().on('click', function(){ profile_look_set(""); r_navigateTo(413); });
 
 		for(var loop = 0; loop < data.length; loop++){	

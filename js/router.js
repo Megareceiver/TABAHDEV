@@ -276,7 +276,7 @@ function r_customCallBack(formType, group, target, recentId, formId, feedData){
 			}
 
 			logoutAgent = 0;
-			
+			// console.log(feedData.accessType); return false;
 			if(feedData.accessType == "lembaga"){
 				r_navigateTo(10, feedData.noRegistrasi);
 			}else if(feedData.userLevel != ""){
@@ -998,6 +998,7 @@ function r_f0Dashboard() {
 		'<div class="cards flush">' +
 			'<div class="cards-header">' +
 				'<p class="fixed offset">TOTAL AJUAN SAAT INI (Rp).</p>' +
+				'<p class="fixed offset">Data berdasarkan permohonan awal yang masuk.</p>' +
 				'<div class="btn-collapse right">' +
 					'<button class="clear" type="button"><span class="fa fa-refresh"></span></button>' +
 				'</div>' +
@@ -1150,9 +1151,9 @@ function r_f0Dashboard() {
 		$("#ajuan").html(counta);
 		$("#verifikasi").html(countv);
 		$("#akun").html(parseInt(counta) + parseInt(countv));
-		$("#totalAjuan").html('53 JT');
-		$("#counter_Yayasan").html('53,000,000');
-		$("#r_counter_21").html('53,000,000');
+		$("#totalAjuan").html('75 JT');
+		$("#counter_Yayasan").html('75,000,000');
+		$("#r_counter_21").html('75,000,000');
 
 
 	});

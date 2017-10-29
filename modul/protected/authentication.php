@@ -16,17 +16,18 @@
 			$feedData		= array();			
 			$profile		= array();
 			$access			= array();
-			$accessType		= "admin";
+			$accessType		= "-";
 			$data			= array();
 
 			//validation 
 			if($username != "" && $password !=""){			
 				$profile = $this->fetchSingleRequest('tabah_910_anggota', "*", array("username = '".$username."' AND", "password = md5('".$password."') AND", "statusActive = '1'"), "");
 				
-				if ($profile['feedStatus'] == "success" && count($profile['feedData']) > 0) {
+				if ($profile['feedStatus'] == "success" && $profile['feedData'] != false && count($profile['feedData']) > 0) {
 					$profile 	= $profile['feedData'];
 					$access  	= $this->fetchAllRecord('tabah_911_anggotaaccess', "module, lihat, tambah, ubah, hapus, statusAktif", array("username = '".$username."'"), "");
 					$feedStatus = "success";
+					$accessType	= "admin";
 				}else{
 					$dataPost = array("username" => $username, "password" => $password);
 					$dataPost = json_encode($dataPost);
@@ -42,7 +43,7 @@
 					}
 				}
 
-				// $feedMessage = $profile;
+				// $feedMessage = $profile['feedData'];
 				// /* result fetch */
 				if($feedStatus == "success"){	
 					$_SESSION["login"] 			= "yes";
