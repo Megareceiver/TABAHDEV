@@ -1164,10 +1164,15 @@ function r_f1DetailLembaga(packet) {
 				'</div>' +
 				'<div class="col-md-4">' +
 					'<div class="list-box">' +
-						'<p class="list-text text-red">(Laporan belum diupload)</p>' +
+						'<button type="button" class="clear list-text btn-link">32211200001_1_laporan.pdf</button>' +
 					'</div>' +
 				'</div>' +
 				'<div class="col-md-4">' +
+					'<div class="list-box">' +
+						'<p class="list-text text-green">(sudah upload)</p>' +
+					'</div>' +
+				'</div>' +
+				'<!--div class="col-md-4">' +
 					'<div class="input-box">' +
 						'<div class="icon-box both">' +
 							'<label class="browser-box" id="v-logo">' +
@@ -1179,7 +1184,7 @@ function r_f1DetailLembaga(packet) {
 							'<span class="left fa fa-paperclip text-purple"></span>' +
 						'</div>' +
 					'</div>' +
-				'</div>' +
+				'</div-->' +
 			'</div>' +
 		'</div>';
 
@@ -1207,20 +1212,7 @@ function r_f1DetailLembaga(packet) {
 			showOptionList(); 
 
 			//-- popup
-			$("#verification-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(13, $(this).attr('p-id')); });
-			$("#user-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(46); });
-			$("#edit-card").unbind().on("click", function(){ hideOptionList(); r_pageSet(1); r_navigateTo(15, $(this).attr('p-id')); });
-			$("#delete-card").unbind().on("click", function(){ 
-				hideOptionList(); 
-				showOptionConfirm('delete');
-				$(".option-yes").unbind().on("click", function(){ 
-					hideOptionList(); 
-					if(p_removeData(pGroup, pTarget, pId) == 'success'){ 
-						r_navigateTo(r_pagePreviousReader());
-					}; 
-				});
-			});
-
+			$("#add-card").unbind().on("click", function(){ hideOptionList(); r_navigateTo(15); });
 			$("#logout-card").unbind().on("click", function(){ hideOptionList(); r_clearCookies(); r_navigateTo(); });
 		});
 
